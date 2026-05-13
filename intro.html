@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>觀察任務｜無脊椎動物分類偵探隊</title>
+  <style>
+    :root {
+      --bg: #eef8fb;
+      --card: #ffffff;
+      --primary: #1296a3;
+      --primary-dark: #0b6d78;
+      --accent: #ffb84d;
+      --ink: #143f46;
+      --muted: #577078;
+      --line: #d8e9ee;
+      --soft: #f4fbfd;
+      --correct-bg: #e8f8ee;
+      --correct-border: #28a863;
+      --incorrect-bg: #fff0f0;
+      --incorrect-border: #e35d5d;
+      --shadow: 0 12px 30px rgba(9, 75, 86, 0.14);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 184, 77, 0.25), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(18, 150, 163, 0.20), transparent 30rem),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1120px, 92vw);
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255,255,255,.85);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 42px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8f8fa;
+      color: var(--primary-dark);
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.12;
+      color: #103f46;
+    }
+
+    .lead {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.8;
+      max-width: 780px;
+    }
+
+    .hero-icon {
+      width: 160px;
+      height: 160px;
+      border-radius: 42px;
+      background: linear-gradient(145deg, #e8fbfd, #fff6df);
+      display: grid;
+      place-items: center;
+      font-size: 5rem;
+      box-shadow: inset 0 0 0 10px rgba(255,255,255,.55), 0 10px 24px rgba(9, 75, 86, 0.12);
+    }
+
+    section {
+      margin-top: 22px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(255,255,255,.85);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(20px, 3vw, 32px);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      color: #103f46;
+    }
+
+    .content-text {
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: #334f57;
+      font-weight: 650;
+    }
+
+    .content-text p { margin: 10px 0; }
+
+    .kw-blue { color: #0b82a0; font-weight: 900; background: #e8f8fa; padding: 2px 6px; border-radius: 8px; }
+    .kw-orange { color: #a86000; font-weight: 900; background: #fff1d6; padding: 2px 6px; border-radius: 8px; }
+    .kw-green { color: #198754; font-weight: 900; background: #e9f8ef; padding: 2px 6px; border-radius: 8px; }
+    .kw-red { color: #c44747; font-weight: 900; background: #fff0f0; padding: 2px 6px; border-radius: 8px; }
+
+    .observe-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .observe-card {
+      background: var(--soft);
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      text-align: center;
+      min-height: 145px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+    .observe-card .photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      border: 2px solid rgba(216, 233, 238, 0.9);
+      display: grid;
+      place-items: center;
+    }
+
+    .observe-card .photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .observe-card strong {
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+
+    .observe-card span {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.5;
+      font-weight: 650;
+    }
+
+    .quiz-card {
+      border: 2px solid var(--line);
+      background: #fbfeff;
+      border-radius: 22px;
+      padding: 20px;
+      margin-top: 18px;
+    }
+
+    .quiz-card.correct {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+    }
+
+    .quiz-card.incorrect {
+      border-color: var(--incorrect-border);
+      background: var(--incorrect-bg);
+    }
+
+    .q-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .q-head h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #103f46;
+      line-height: 1.5;
+    }
+
+    .q-type {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fff0cf;
+      border: 1px solid #ffd184;
+      color: #7b4b00;
+      font-weight: 900;
+      font-size: .86rem;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    button.choice, button.flip-card, button.pair-choice {
+      width: 100%;
+      min-height: 54px;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      padding: 12px 14px;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    button.choice:hover, button.flip-card:hover, button.pair-choice:hover {
+      transform: translateY(-2px);
+      border-color: #8edce4;
+      background: #f1fbfc;
+    }
+
+    button.choice.selected, button.flip-card.selected, button.pair-choice.selected {
+      border-color: var(--primary);
+      background: #e9f9fb;
+    }
+
+    button.choice:disabled, button.flip-card:disabled, button.pair-choice:disabled, select:disabled {
+      cursor: not-allowed;
+      opacity: .78;
+      transform: none;
+    }
+
+    .tf-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tf-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .tf-row p {
+      margin: 0;
+      line-height: 1.55;
+      font-weight: 750;
+      color: #334f57;
+    }
+
+    .tf-row button {
+      border: 2px solid var(--line);
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .tf-row button.selected {
+      border-color: var(--primary);
+      background: #e9f9fb;
+    }
+
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .flip-card {
+      min-height: 120px !important;
+      text-align: center !important;
+      display: grid;
+      place-items: center;
+      line-height: 1.6;
+    }
+
+    .flip-card .front {
+      font-size: 2.1rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .flip-card.revealed {
+      background: #fff8e8;
+      border-color: var(--accent);
+    }
+
+    .match-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .match-item {
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .match-item label {
+      display: block;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #103f46;
+    }
+
+    select {
+      width: 100%;
+      border: 2px solid #cfe3e8;
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #284c54;
+      background: white;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 13px 15px;
+      line-height: 1.65;
+      font-weight: 800;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.good { background: #dff5e8; color: #146c3b; border: 1px solid #95d8b1; }
+    .feedback.bad { background: #ffe1e1; color: #a13b3b; border: 1px solid #efaaa9; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 15px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .check-btn { background: var(--primary); color: white; }
+    .retry-btn { background: #fff0cf; color: #7b4b00; border: 2px solid #ffd184; display: none; }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      border-radius: 18px;
+      padding: 14px 18px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .prev { background: #ffffff; color: var(--primary-dark); border: 2px solid #bde7ec; }
+    .next { background: var(--primary); color: white; pointer-events: none; opacity: .42; }
+    .next.unlocked { pointer-events: auto; opacity: 1; }
+
+    .unlock-note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #fff8e8;
+      border: 1px solid #ffd992;
+      color: #76500b;
+      font-weight: 850;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      header { grid-template-columns: 1fr; text-align: center; }
+      .hero-icon { margin: 0 auto; }
+      .observe-grid { grid-template-columns: repeat(2, 1fr); }
+      .options, .match-grid { grid-template-columns: 1fr; }
+      .flip-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .wrap { width: 94vw; padding-top: 16px; }
+      section, header { border-radius: 22px; }
+      .observe-grid { grid-template-columns: 1fr; }
+      .tf-row { grid-template-columns: 1fr 1fr; }
+      .tf-row p { grid-column: 1 / -1; }
+      .nav { flex-direction: column; }
+      .nav a { width: 100%; }
+      .q-head { flex-direction: column; }
+      .q-type { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">🔎 觀察任務</div>
+        <h1>先觀察，再分類</h1>
+        <p class="lead">在認識六大無脊椎動物門之前，先學會像科學家一樣觀察：哪些特徵可以幫助我們把動物分成不同類群？</p>
+      </div>
+      <div class="hero-icon" aria-hidden="true">🦀</div>
+    </header>
+
+    <section>
+      <div class="section-title">
+        <div class="badge">學</div>
+        <h2>學習內容</h2>
+      </div>
+      <div class="content-text">
+        <p>動物界的生物大多具有幾個共同特徵：牠們是<span class="kw-blue">多細胞生物</span>，細胞<span class="kw-red">不具細胞壁</span>，也<span class="kw-red">沒有葉綠體</span>，通常以<span class="kw-orange">攝食其他生物</span>維生。</p>
+        <p>觀察動物時，不能只看牠可不可愛或顏色漂不漂亮，更重要的是看牠的<span class="kw-green">身體構造</span>、<span class="kw-green">細胞分工</span>與<span class="kw-green">身體複雜程度</span>。這些線索都可以作為分類依據。</p>
+        <p>例如蟹和螺沒有脊椎骨，但可能有<span class="kw-orange">外骨骼</span>或<span class="kw-orange">外殼</span>保護身體；蛙和虎有從頸部延伸到尾端的<span class="kw-blue">脊椎骨</span>，因此屬於脊椎動物。</p>
+      </div>
+
+      <div class="observe-grid" aria-label="觀察示例">
+        <div class="observe-card"><div class="photo"><img src="crab_specimen.png" alt="蟹標本照片"></div><strong>蟹</strong><span>沒有脊椎骨，可觀察外骨骼。</span></div>
+        <div class="observe-card"><div class="photo"><img src="snail_specimen.png" alt="螺殼標本照片"></div><strong>螺</strong><span>沒有脊椎骨，可觀察外殼。</span></div>
+        <div class="observe-card"><div class="photo"><img src="frog_specimen.png" alt="蛙骨骼標本照片"></div><strong>蛙</strong><span>有脊椎骨，屬於脊椎動物。</span></div>
+        <div class="observe-card"><div class="photo"><img src="tiger_specimen.png" alt="虎骨骼標本照片"></div><strong>虎</strong><span>有脊椎骨，屬於脊椎動物。</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <div class="badge">練</div>
+        <h2>互動練習</h2>
+      </div>
+
+      <div class="quiz-card" data-question="q1">
+        <div class="q-head">
+          <h3>1. 哪一項最符合動物界生物的共同特徵？</h3>
+          <span class="q-type">選擇題</span>
+        </div>
+        <div class="options" data-randomize="q1">
+          <button class="choice" data-answer="false">單細胞、有細胞壁、能行光合作用</button>
+          <button class="choice" data-answer="true">多細胞、不具細胞壁、以攝食其他生物維生</button>
+          <button class="choice" data-answer="false">多細胞、有葉綠體、自己製造養分</button>
+          <button class="choice" data-answer="false">沒有細胞核、細胞構造很簡單</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q2">
+        <div class="q-head">
+          <h3>2. 請判斷下列說法是否正確。</h3>
+          <span class="q-type">是非題</span>
+        </div>
+        <div class="tf-list">
+          <div class="tf-row" data-answer="true">
+            <p>動物的身體構造與複雜程度可以作為分類依據。</p>
+            <button data-value="true">是</button>
+            <button data-value="false">否</button>
+          </div>
+          <div class="tf-row" data-answer="false">
+            <p>所有沒有脊椎骨的動物，身體構造都完全相同。</p>
+            <button data-value="true">是</button>
+            <button data-value="false">否</button>
+          </div>
+          <div class="tf-row" data-answer="true">
+            <p>蟹、螺雖然沒有脊椎骨，但可能有外骨骼或外殼形成外形。</p>
+            <button data-value="true">是</button>
+            <button data-value="false">否</button>
+          </div>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q3">
+        <div class="q-head">
+          <h3>3. 翻開觀察卡，選出「適合用來分類動物」的觀察線索。</h3>
+          <span class="q-type">翻牌選線索</span>
+        </div>
+        <div class="flip-grid" data-randomize="q3">
+          <button class="flip-card" data-answer="true"><span><span class="front">🦴</span>有沒有脊椎骨</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🧩</span>身體構造複雜程度</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🔬</span>細胞分工情形</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🎨</span>今天心情喜歡的顏色</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">📛</span>名字筆畫多不多</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">⭐</span>看起來是不是可愛</span></button>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q4">
+        <div class="q-head">
+          <h3>4. 將觀察到的線索配對到正確說明。</h3>
+          <span class="q-type">下拉式配對</span>
+        </div>
+        <div class="match-grid">
+          <div class="match-item">
+            <label for="m1">蟹、螺</label>
+            <select id="m1" data-answer="沒有脊椎骨，但有外骨骼或外殼">
+              <option value="">請選擇</option>
+            </select>
+          </div>
+          <div class="match-item">
+            <label for="m2">蛙、虎</label>
+            <select id="m2" data-answer="具有脊椎骨">
+              <option value="">請選擇</option>
+            </select>
+          </div>
+          <div class="match-item">
+            <label for="m3">分類依據</label>
+            <select id="m3" data-answer="身體結構與複雜程度">
+              <option value="">請選擇</option>
+            </select>
+          </div>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="unlock-note" id="unlockNote">完成並答對本頁所有題目後，才能前往下一頁。</div>
+    </section>
+
+    <nav class="nav" aria-label="頁面導覽">
+      <a class="prev" href="index.html">← 上一頁</a>
+      <a class="next" id="nextLink" href="spine.html">下一頁 →</a>
+    </nav>
+  </div>
+
+  <script>
+    const state = { q1: false, q2: false, q3: false, q4: false };
+
+    function shuffleChildren(container) {
+      const items = Array.from(container.children);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      items.forEach(item => container.appendChild(item));
+    }
+
+    document.querySelectorAll('[data-randomize]').forEach(shuffleChildren);
+
+    const matchOptions = [
+      '沒有脊椎骨，但有外骨骼或外殼',
+      '具有脊椎骨',
+      '身體結構與複雜程度',
+      '只依照顏色分類'
+    ];
+
+    document.querySelectorAll('select').forEach(select => {
+      const shuffled = [...matchOptions].sort(() => Math.random() - 0.5);
+      shuffled.forEach(text => {
+        const option = document.createElement('option');
+        option.value = text;
+        option.textContent = text;
+        select.appendChild(option);
+      });
+    });
+
+    function setFeedback(card, ok, message) {
+      const feedback = card.querySelector('.feedback');
+      card.classList.remove('correct', 'incorrect');
+      card.classList.add(ok ? 'correct' : 'incorrect');
+      feedback.className = `feedback show ${ok ? 'good' : 'bad'}`;
+      feedback.textContent = message;
+    }
+
+    function updateUnlock() {
+      const allCorrect = Object.values(state).every(Boolean);
+      const nextLink = document.getElementById('nextLink');
+      const unlockNote = document.getElementById('unlockNote');
+      if (allCorrect) {
+        nextLink.classList.add('unlocked');
+        unlockNote.textContent = '全部答對！你可以前往下一頁，正式判斷哪些動物有脊椎骨。';
+        unlockNote.style.background = '#e8f8ee';
+        unlockNote.style.borderColor = '#95d8b1';
+        unlockNote.style.color = '#146c3b';
+      }
+    }
+
+    function lockQuestion(card) {
+      card.querySelectorAll('button.choice, button.flip-card, .tf-row button, select').forEach(el => el.disabled = true);
+      card.querySelector('.check-btn').disabled = true;
+    }
+
+    function unlockQuestion(card) {
+      card.querySelectorAll('button.choice, button.flip-card, .tf-row button, select').forEach(el => el.disabled = false);
+      card.querySelector('.retry-btn').style.display = 'none';
+      card.querySelector('.check-btn').disabled = true;
+      card.classList.remove('correct', 'incorrect');
+      const feedback = card.querySelector('.feedback');
+      feedback.className = 'feedback';
+      feedback.textContent = '';
+    }
+
+    function handleSingleChoice(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          card.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          check.disabled = false;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const selected = card.querySelector('.choice.selected');
+        const ok = selected?.dataset.answer === 'true';
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！動物界生物通常是多細胞，不具細胞壁，也沒有葉綠體，並以攝食其他生物維生。' : '再想想：動物不像植物，不具有葉綠體，也不靠光合作用製造養分。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleTF(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.tf-row').forEach(row => {
+        const buttons = row.querySelectorAll('button');
+        const shuffled = Array.from(buttons).sort(() => Math.random() - 0.5);
+        shuffled.forEach(btn => row.appendChild(btn));
+        row.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.disabled) return;
+            row.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const answered = Array.from(card.querySelectorAll('.tf-row')).every(r => r.querySelector('button.selected'));
+            check.disabled = !answered;
+          });
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const rows = Array.from(card.querySelectorAll('.tf-row'));
+        const ok = rows.every(row => row.querySelector('button.selected')?.dataset.value === row.dataset.answer);
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！分類重視可觀察的身體特徵，無脊椎動物也能再細分成不同類群。' : '有一題需要修正：沒有脊椎骨不代表身體構造都一樣，蟹、螺、水母、海星就有不同構造。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleFlip(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.flip-card').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          btn.classList.toggle('selected');
+          btn.classList.add('revealed');
+          const selectedCount = card.querySelectorAll('.flip-card.selected').length;
+          check.disabled = selectedCount === 0;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const buttons = Array.from(card.querySelectorAll('.flip-card'));
+        const ok = buttons.every(btn => (btn.dataset.answer === 'true') === btn.classList.contains('selected'));
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！有沒有脊椎骨、身體構造、細胞分工與複雜程度，都是重要分類線索。' : '再試一次：分類要看可觀察、可比較的生物特徵，不是看喜好、名字或可愛程度。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleMatch(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+          const answered = Array.from(card.querySelectorAll('select')).every(s => s.value !== '');
+          check.disabled = !answered;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const selects = Array.from(card.querySelectorAll('select'));
+        const ok = selects.every(select => select.value === select.dataset.answer);
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！蟹、螺沒有脊椎骨；蛙、虎有脊椎骨；分類時要看身體結構與複雜程度。' : '再配對一次：蟹、螺重點是沒有脊椎骨但有外骨骼或外殼；蛙、虎重點是有脊椎骨。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      const retry = card.querySelector('.retry-btn');
+      retry.addEventListener('click', () => {
+        state[card.dataset.question] = false;
+        card.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        card.querySelectorAll('.flip-card').forEach(el => el.classList.remove('revealed'));
+        card.querySelectorAll('select').forEach(select => select.value = '');
+        unlockQuestion(card);
+      });
+    });
+
+    handleSingleChoice(document.querySelector('[data-question="q1"]'));
+    handleTF(document.querySelector('[data-question="q2"]'));
+    handleFlip(document.querySelector('[data-question="q3"]'));
+    handleMatch(document.querySelector('[data-question="q4"]'));
+  </script>
+</body>
+</html>
