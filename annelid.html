@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>環節動物｜無脊椎動物分類偵探隊</title>
+  <style>
+    :root {
+      --bg: #eef8fb;
+      --card: #ffffff;
+      --primary: #1296a3;
+      --primary-dark: #0b6d78;
+      --accent: #ffb84d;
+      --ink: #143f46;
+      --muted: #577078;
+      --line: #d8e9ee;
+      --soft: #f4fbfd;
+      --correct-bg: #e8f8ee;
+      --correct-border: #28a863;
+      --incorrect-bg: #fff0f0;
+      --incorrect-border: #e35d5d;
+      --shadow: 0 12px 30px rgba(9, 75, 86, 0.14);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 184, 77, 0.25), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(18, 150, 163, 0.20), transparent 30rem),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1120px, 92vw);
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255,255,255,.85);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 42px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8f8fa;
+      color: var(--primary-dark);
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.12;
+      color: #103f46;
+    }
+
+    .lead {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.8;
+      max-width: 820px;
+    }
+
+    .hero-icon {
+      width: 160px;
+      height: 160px;
+      border-radius: 42px;
+      background: linear-gradient(145deg, #e8fbfd, #fff6df);
+      display: grid;
+      place-items: center;
+      font-size: 5rem;
+      box-shadow: inset 0 0 0 10px rgba(255,255,255,.55), 0 10px 24px rgba(9, 75, 86, 0.12);
+    }
+
+    section {
+      margin-top: 22px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(255,255,255,.85);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(20px, 3vw, 32px);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      color: #103f46;
+    }
+
+    .content-text {
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: #334f57;
+      font-weight: 650;
+    }
+
+    .content-text p { margin: 10px 0; }
+
+    .kw-blue { color: #0b82a0; font-weight: 900; background: #e8f8fa; padding: 2px 6px; border-radius: 8px; }
+    .kw-orange { color: #a86000; font-weight: 900; background: #fff1d6; padding: 2px 6px; border-radius: 8px; }
+    .kw-green { color: #198754; font-weight: 900; background: #e9f8ef; padding: 2px 6px; border-radius: 8px; }
+    .kw-red { color: #c44747; font-weight: 900; background: #fff0f0; padding: 2px 6px; border-radius: 8px; }
+    .kw-purple { color: #7052b8; font-weight: 900; background: #f2eeff; padding: 2px 6px; border-radius: 8px; }
+
+    .observe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .observe-card {
+      background: linear-gradient(180deg, #fbfeff, #f5fbfc);
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      text-align: center;
+      min-height: 195px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .observe-card .emoji {
+      font-size: 3.4rem;
+      line-height: 1;
+    }
+
+    .observe-img {
+      width: 100%;
+      height: clamp(150px, 16vw, 210px);
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      margin: 0 auto 8px;
+      border-radius: 16px;
+      background: #f6fbfc;
+      box-shadow: 0 6px 16px rgba(9, 75, 86, 0.12);
+    }
+
+    .observe-card strong {
+      font-size: 1.15rem;
+      color: #103f46;
+    }
+
+    .observe-card span {
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.5;
+      font-size: .94rem;
+    }
+
+    .motion-demo {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .worm-stage {
+      border: 2px solid var(--line);
+      background: linear-gradient(145deg, #e8fbfd, #fff6df);
+      border-radius: 24px;
+      min-height: 260px;
+      padding: 20px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .worm-motion-img {
+      width: 100%;
+      max-width: 460px;
+      height: clamp(210px, 28vw, 320px);
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      border-radius: 18px;
+      background: rgba(255,255,255,.65);
+      box-shadow: 0 8px 20px rgba(9, 75, 86, 0.12);
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .worm-motion-img.switching {
+      opacity: .45;
+      transform: scale(.98);
+    }
+
+    .demo-panel {
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 24px;
+      padding: 18px;
+    }
+
+    .demo-panel h3 {
+      margin: 0 0 10px;
+      color: #103f46;
+    }
+
+    .demo-panel p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .demo-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .demo-buttons button {
+      border: 0;
+      border-radius: 15px;
+      padding: 12px 16px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .note {
+      margin-top: 16px;
+      border-radius: 18px;
+      background: #fff8e8;
+      border: 1px solid #ffd992;
+      color: #75500c;
+      padding: 14px 16px;
+      line-height: 1.7;
+      font-weight: 850;
+      text-align: center;
+    }
+
+
+    .parts-lab {
+      margin-top: 20px;
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fbfeff, #f4fbfd);
+    }
+
+    .parts-head {
+      padding: 14px 18px;
+      background: #e9f8ef;
+      border-bottom: 2px solid var(--line);
+      color: #103f46;
+      font-weight: 900;
+      line-height: 1.7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .parts-head small {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .parts-stage {
+      position: relative;
+      background: linear-gradient(160deg,#1b3a10,#2e5a1c);
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .parts-stage svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .part-seg {
+      cursor: pointer;
+      transition: opacity .15s ease;
+    }
+
+    .part-seg:hover { opacity: .78; }
+    .part-seg.lit { opacity: 1; }
+
+    .part-popup {
+      position: absolute;
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #143f46;
+      width: min(280px, calc(100% - 28px));
+      max-height: calc(100% - 28px);
+      overflow-y: auto;
+      box-shadow: 0 4px 18px rgba(0,0,0,.22);
+      pointer-events: none;
+      display: none;
+      z-index: 20;
+      border: 2px solid var(--primary);
+      line-height: 1.65;
+    }
+
+    .part-popup.show { display: block; animation: partPopIn .2s ease; }
+
+    @keyframes partPopIn {
+      from { opacity: 0; transform: scale(.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .part-popup strong {
+      color: var(--primary-dark);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .part-popup .pp-close {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--muted);
+      pointer-events: all;
+    }
+
+    .parts-counter {
+      text-align: center;
+      padding: 10px 0 4px;
+      font-size: 13px;
+      color: #a5d6a7;
+    }
+
+    .parts-counter strong { color: #fff; }
+
+    .quiz-card {
+      border: 2px solid var(--line);
+      background: #fbfeff;
+      border-radius: 22px;
+      padding: 20px;
+      margin-top: 18px;
+    }
+
+    .quiz-card.correct {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+    }
+
+    .quiz-card.incorrect {
+      border-color: var(--incorrect-border);
+      background: var(--incorrect-bg);
+    }
+
+    .q-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .q-head h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #103f46;
+      line-height: 1.5;
+    }
+
+    .q-type {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fff0cf;
+      border: 1px solid #ffd184;
+      color: #7b4b00;
+      font-weight: 900;
+      font-size: .86rem;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    button.choice, button.feature-btn, button.select-card, button.flip-card, button.order-btn {
+      width: 100%;
+      min-height: 54px;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      padding: 12px 14px;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    button.choice:hover, button.feature-btn:hover, button.select-card:hover, button.flip-card:hover, button.order-btn:hover {
+      transform: translateY(-2px);
+      border-color: #8edce4;
+      background: #f1fbfc;
+    }
+
+    button.choice.selected, button.feature-btn.selected, button.select-card.selected, button.flip-card.selected, button.order-btn.selected {
+      border-color: var(--primary);
+      background: #e9f9fb;
+    }
+
+    button:disabled, select:disabled {
+      cursor: not-allowed !important;
+      opacity: .78;
+      transform: none !important;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .feature-btn {
+      min-height: 96px;
+      text-align: center !important;
+      display: grid;
+      place-items: center;
+      line-height: 1.5;
+    }
+
+    .feature-btn .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .flip-card {
+      min-height: 130px !important;
+      text-align: center !important;
+      display: grid;
+      place-items: center;
+      line-height: 1.6;
+    }
+
+    .flip-card .front {
+      font-size: 2.2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .flip-card.revealed {
+      background: #fff8e8;
+      border-color: var(--accent);
+    }
+
+    .match-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .match-item {
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .match-item label {
+      display: block;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #103f46;
+    }
+
+    select {
+      width: 100%;
+      border: 2px solid #cfe3e8;
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #284c54;
+      background: white;
+    }
+
+    .sort-board {
+      display: grid;
+      gap: 12px;
+    }
+
+    .sort-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .sort-label {
+      background: #fff;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      font-weight: 900;
+      color: #103f46;
+      line-height: 1.5;
+    }
+
+    .sort-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .select-card { text-align: center !important; min-height: 48px !important; }
+
+    .order-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .order-btn {
+      text-align: center !important;
+      min-height: 86px !important;
+      position: relative;
+    }
+
+    .order-btn::before {
+      content: attr(data-order);
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #e8f8fa;
+      color: var(--primary-dark);
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 13px 15px;
+      line-height: 1.65;
+      font-weight: 800;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.good { background: #dff5e8; color: #146c3b; border: 1px solid #95d8b1; }
+    .feedback.bad { background: #ffe1e1; color: #a13b3b; border: 1px solid #efaaa9; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 15px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .check-btn { background: var(--primary); color: white; }
+    .retry-btn { background: #fff0cf; color: #7b4b00; border: 2px solid #ffd184; display: none; }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      border-radius: 18px;
+      padding: 14px 18px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .prev { background: #ffffff; color: var(--primary-dark); border: 2px solid #bde7ec; }
+    .next { background: var(--primary); color: white; pointer-events: none; opacity: .42; }
+    .next.unlocked { pointer-events: auto; opacity: 1; }
+
+    .unlock-note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #fff8e8;
+      border: 1px solid #ffd992;
+      color: #76500b;
+      font-weight: 850;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 960px) {
+      header { grid-template-columns: 1fr; text-align: center; }
+      .hero-icon { margin: 0 auto; }
+      .observe-grid, .feature-grid, .match-grid, .flip-grid, .order-box { grid-template-columns: repeat(2, 1fr); }
+      .options, .sort-row, .motion-demo { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: 94vw; padding-top: 16px; }
+      section, header { border-radius: 22px; }
+      .observe-grid, .feature-grid, .match-grid, .flip-grid, .order-box { grid-template-columns: 1fr; }
+      .sort-options { grid-template-columns: 1fr; }
+      .nav { flex-direction: column; }
+      .nav a { width: 100%; }
+      .q-head { flex-direction: column; }
+      .q-type { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">🪱 一節一節，柔軟卻有力</div>
+        <h1>環節動物</h1>
+        <p class="lead">環節動物身體柔軟細長，最明顯的線索是身體一圈一圈的環狀分節，常利用體壁肌肉伸縮爬行。</p>
+      </div>
+      <div class="hero-icon" aria-hidden="true">🪱</div>
+    </header>
+
+    <section>
+      <div class="section-title">
+        <div class="badge">學</div>
+        <h2>學習內容</h2>
+      </div>
+      <div class="content-text">
+        <p><span class="kw-green">環節動物</span>的身體通常<span class="kw-blue">柔軟細長</span>，具有一圈一圈的<span class="kw-orange">環狀分節</span>。</p>
+        <p>牠們多利用<span class="kw-red">體壁肌肉伸縮</span>來爬行。觀察時，可以先找身體是否有規律的環狀分節，再思考牠如何移動。</p>
+        <p>常見的環節動物有<span class="kw-purple">蚯蚓</span>、<span class="kw-purple">水蛭</span>和<span class="kw-purple">沙蠶</span>等。</p>
+      </div>
+
+      <div class="observe-grid" aria-label="環節動物觀察卡">
+        <div class="observe-card"><img class="observe-img" src="18.png" alt="蚯蚓圖片"><strong>蚯蚓</strong><span>身體柔軟細長，有環狀分節。</span></div>
+        <div class="observe-card"><img class="observe-img" src="19.png" alt="水蛭圖片"><strong>水蛭</strong><span>身體也具分節，屬於環節動物。</span></div>
+        <div class="observe-card"><img class="observe-img" src="20.png" alt="沙蠶圖片"><strong>沙蠶</strong><span>常生活在水域或潮間帶環境。</span></div>
+      </div>
+
+      <div class="motion-demo">
+        <div class="worm-stage" aria-label="蚯蚓伸縮圖片示意">
+          <img class="worm-motion-img" id="wormImage" src="21.png" alt="蚯蚓收縮時的圖片">
+        </div>
+        <div class="demo-panel">
+          <h3>觀察蚯蚓如何前進</h3>
+          <p>按下按鈕，觀察身體一節一節的部分如何伸長、收縮。這個小動畫是示意圖，幫助你理解「體壁肌肉伸縮爬行」。</p>
+          <div class="demo-buttons">
+            <button type="button" id="contractBtn">收縮</button>
+            <button type="button" id="extendBtn">伸長前進</button>
+            <button type="button" id="resetWormBtn">重設</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">觀察重點：看到「柔軟細長、一圈一圈環狀分節、用肌肉伸縮爬行」，就要想到環節動物門。</div>
+
+      <div class="parts-lab" aria-label="認識蚯蚓身體重要部位">
+        <div class="parts-head">
+          <span>認識蚯蚓身體的幾個重要部位</span>
+          <small>點擊身體節片、頭端、環帶、尾端查看說明</small>
+        </div>
+        <div class="parts-stage" id="partsStage">
+          <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="蚯蚓身體部位互動圖">
+            <rect width="640" height="220" fill="#1b3a10"/>
+            <path d="M0,160 Q80,150 160,162 Q240,174 320,160 Q400,146 480,160 Q560,174 640,162 L640,220 L0,220 Z" fill="#2e4a1a" opacity=".7"/>
+            <path d="M0,180 Q100,168 200,182 Q300,196 400,180 Q500,164 640,178 L640,220 L0,220 Z" fill="#3d5c22" opacity=".5"/>
+            <ellipse cx="80" cy="190" rx="8" ry="5" fill="#4a3c28" opacity=".6"/>
+            <ellipse cx="220" cy="200" rx="6" ry="4" fill="#4a3c28" opacity=".5"/>
+            <ellipse cx="430" cy="195" rx="9" ry="5" fill="#4a3c28" opacity=".55"/>
+            <ellipse cx="580" cy="185" rx="7" ry="4" fill="#4a3c28" opacity=".5"/>
+
+            <ellipse class="part-seg" id="part-tail" cx="92" cy="108" rx="14" ry="22" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.5" onclick="showPart('tail')"/>
+            <rect class="part-seg" id="part-b1" x="104" y="86" width="28" height="44" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b2" x="130" y="84" width="28" height="48" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b3" x="156" y="83" width="28" height="50" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b4" x="182" y="83" width="28" height="50" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b5" x="208" y="82" width="28" height="52" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b6" x="234" y="82" width="28" height="52" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b7" x="260" y="82" width="28" height="52" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b8" x="286" y="83" width="28" height="50" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b9" x="312" y="84" width="28" height="48" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-clitellum" x="338" y="84" width="32" height="48" rx="5" fill="#d4a76a" stroke="#fde68a" stroke-width="2" onclick="showPart('clitellum')"/>
+            <rect class="part-seg" id="part-b10" x="368" y="84" width="28" height="48" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b11" x="394" y="83" width="28" height="50" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b12" x="420" y="84" width="28" height="48" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b13" x="446" y="85" width="26" height="46" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b14" x="470" y="86" width="24" height="44" rx="4" fill="#7c5a38" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <rect class="part-seg" id="part-b15" x="492" y="88" width="22" height="40" rx="4" fill="#6d4c2a" stroke="#a5d6a7" stroke-width="1.2" onclick="showPart('body')"/>
+            <ellipse class="part-seg" id="part-head" cx="527" cy="108" rx="24" ry="28" fill="#8d6540" stroke="#a5d6a7" stroke-width="1.5" onclick="showPart('head')"/>
+            <ellipse cx="542" cy="108" rx="8" ry="6" fill="#5a3a1a" opacity=".8"/>
+
+            <line x1="104" y1="148" x2="514" y2="148" stroke="#a5d6a7" stroke-width="1.2" stroke-dasharray="4,3" opacity=".5"/>
+            <text x="309" y="165" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#a5d6a7">← 環狀分節的身體（點擊各部位探索）→</text>
+            <text x="92" y="72" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#fde68a">尾端</text>
+            <text x="354" y="72" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#fde68a">環帶</text>
+            <text x="527" y="72" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#fde68a">頭端</text>
+          </svg>
+
+          <div class="part-popup" id="ppop-body"><span class="pp-close" onclick="closePart('body')">✕</span><strong>身體節片</strong>環節動物最重要的特徵是環狀分節。</div>
+          <div class="part-popup" id="ppop-head"><span class="pp-close" onclick="closePart('head')">✕</span><strong>頭端</strong>口在前端，用來吃入土壤中的有機物。</div>
+          <div class="part-popup" id="ppop-clitellum"><span class="pp-close" onclick="closePart('clitellum')">✕</span><strong>環帶</strong>蚯蚓明顯的淡色寬節，和生殖有關。</div>
+          <div class="part-popup" id="ppop-tail"><span class="pp-close" onclick="closePart('tail')">✕</span><strong>尾端</strong>殘渣從尾端排出。</div>
+        </div>
+        <div class="parts-counter">已探索：<strong id="partCount">0</strong> / 4 個部位</div>
+      </div>
+
+    </section>
+
+    <section>
+      <div class="section-title">
+        <div class="badge">練</div>
+        <h2>互動練習</h2>
+      </div>
+
+      <div class="quiz-card" data-question="q1">
+        <div class="q-head">
+          <h3>1. 哪一項最符合環節動物的主要特徵？</h3>
+          <span class="q-type">選擇題</span>
+        </div>
+        <div class="options" data-randomize="q1">
+          <button class="choice" data-answer="true">身體柔軟細長，具有環狀分節</button>
+          <button class="choice" data-answer="false">觸手及身體有刺絲胞，可捕食防禦</button>
+          <button class="choice" data-answer="false">身體柔軟、不分節，有肌肉構成的足</button>
+          <button class="choice" data-answer="false">身體表面有棘，用管足運動</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q2">
+        <div class="q-head">
+          <h3>2. 翻開動物卡，選出所有環節動物代表。</h3>
+          <span class="q-type">翻牌多選</span>
+        </div>
+        <div class="flip-grid" data-randomize="q2">
+          <button class="flip-card" data-answer="true"><span><span class="front">🪱</span>蚯蚓</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🩸</span>水蛭</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🌊</span>沙蠶</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🐌</span>蝸牛</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🪼</span>水母</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🦗</span>昆蟲</span></button>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q3">
+        <div class="q-head">
+          <h3>3. 點選所有屬於環節動物的特徵。</h3>
+          <span class="q-type">多選任務</span>
+        </div>
+        <div class="feature-grid" data-randomize="q3">
+          <button class="feature-btn" data-answer="true"><span><span class="icon">🪱</span>身體柔軟細長</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">⭕</span>具有環狀分節</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">💪</span>多用體壁肌肉伸縮爬行</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🐚</span>大多具有外殼</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🪼</span>觸手有刺絲胞</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🦴</span>具有脊椎骨</span></button>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q4">
+        <div class="q-head">
+          <h3>4. 將代表動物配對到正確的動物門。</h3>
+          <span class="q-type">下拉式配對</span>
+        </div>
+        <div class="match-grid" data-randomize="q4">
+          <div class="match-item">
+            <label for="m1">蚯蚓</label>
+            <select id="m1" data-answer="環節動物"><option value="">請選擇</option></select>
+          </div>
+          <div class="match-item">
+            <label for="m2">水蛭</label>
+            <select id="m2" data-answer="環節動物"><option value="">請選擇</option></select>
+          </div>
+          <div class="match-item">
+            <label for="m3">沙蠶</label>
+            <select id="m3" data-answer="環節動物"><option value="">請選擇</option></select>
+          </div>
+          <div class="match-item">
+            <label for="m4">蝸牛</label>
+            <select id="m4" data-answer="軟體動物"><option value="">請選擇</option></select>
+          </div>
+          <div class="match-item">
+            <label for="m5">文蛤</label>
+            <select id="m5" data-answer="軟體動物"><option value="">請選擇</option></select>
+          </div>
+          <div class="match-item">
+            <label for="m6">章魚</label>
+            <select id="m6" data-answer="軟體動物"><option value="">請選擇</option></select>
+          </div>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" data-question="q5">
+        <div class="q-head">
+          <h3>5. 環節動物與軟體動物都身體柔軟，最能區分兩者的特徵是？</h3>
+          <span class="q-type">選擇題</span>
+        </div>
+        <div class="options" data-randomize="q5">
+          <button class="choice" data-answer="false">有沒有外殼</button>
+          <button class="choice" data-answer="false">生活在水中還是陸地</button>
+          <button class="choice" data-answer="true">身體有沒有環狀分節</button>
+          <button class="choice" data-answer="false">有沒有神經系統</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="actions">
+          <button class="btn check-btn" disabled>檢查答案</button>
+          <button class="btn retry-btn">重做本題</button>
+        </div>
+      </div>
+
+      <div class="unlock-note" id="unlockNote">完成並答對本頁所有題目後，才能前往下一頁。</div>
+    </section>
+
+    <nav class="nav" aria-label="頁面導覽">
+      <a class="prev" href="mollusk.html">← 上一頁</a>
+      <a class="next" id="nextLink" href="arthropod.html">下一頁 →</a>
+    </nav>
+  </div>
+
+  <script>
+
+    let partFound = new Set();
+
+    function positionPartPopup(k, popup) {
+      const stage = document.getElementById('partsStage');
+      const anchor = k === 'body'
+        ? document.getElementById('part-b7')
+        : document.getElementById('part-' + k);
+
+      if (!stage || !anchor || !popup) return;
+
+      const stageRect = stage.getBoundingClientRect();
+      const anchorRect = anchor.getBoundingClientRect();
+
+      let left = anchorRect.left - stageRect.left + anchorRect.width + 16;
+      let top = anchorRect.top - stageRect.top + anchorRect.height / 2 - popup.offsetHeight / 2;
+
+      if (left + popup.offsetWidth > stage.clientWidth - 14) {
+        left = anchorRect.left - stageRect.left - popup.offsetWidth - 16;
+      }
+      if (left < 14) left = 14;
+
+      if (top < 14) top = 14;
+      if (top + popup.offsetHeight > stage.clientHeight - 14) {
+        top = stage.clientHeight - popup.offsetHeight - 14;
+      }
+      if (top < 14) top = 14;
+
+      popup.style.left = `${left}px`;
+      popup.style.top = `${top}px`;
+    }
+
+    function showPart(k){
+      ['body','head','clitellum','tail'].forEach(t=>{
+        const pop = document.getElementById('ppop-'+t);
+        if(pop) pop.classList.remove('show');
+      });
+
+      const target = document.getElementById('ppop-'+k);
+      if(target) {
+        target.classList.add('show');
+        positionPartPopup(k, target);
+      }
+
+      if(k==='body') document.querySelectorAll('[id^="part-b"]').forEach(e=>e.classList.add('lit'));
+      else {
+        const p = document.getElementById('part-'+k);
+        if(p) p.classList.add('lit');
+      }
+      partFound.add(k);
+      document.getElementById('partCount').textContent = partFound.size;
+    }
+    function closePart(k){
+      const el = document.getElementById('ppop-'+k);
+      if(el) el.classList.remove('show');
+    }
+    document.addEventListener('click', e => {
+      if(!e.target.closest('.part-seg') && !e.target.closest('.part-popup')) {
+        document.querySelectorAll('.part-popup').forEach(p=>p.classList.remove('show'));
+      }
+    });
+
+    const state = { q1: false, q2: false, q3: false, q4: false, q5: false };
+
+    function shuffleChildren(container) {
+      const items = Array.from(container.children);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      items.forEach(item => container.appendChild(item));
+    }
+
+    document.querySelectorAll('[data-randomize]').forEach(shuffleChildren);
+    document.querySelectorAll('.sort-options').forEach(shuffleChildren);
+
+    const wormImage = document.getElementById('wormImage');
+
+    function showWormImage(src, alt) {
+      wormImage.classList.add('switching');
+      setTimeout(() => {
+        wormImage.src = src;
+        wormImage.alt = alt;
+        wormImage.classList.remove('switching');
+      }, 120);
+    }
+
+    document.getElementById('contractBtn').addEventListener('click', () => {
+      showWormImage('21.png', '蚯蚓收縮時的圖片');
+    });
+    document.getElementById('extendBtn').addEventListener('click', () => {
+      showWormImage('22.png', '蚯蚓伸展前進時的圖片');
+    });
+    document.getElementById('resetWormBtn').addEventListener('click', () => {
+      showWormImage('21.png', '蚯蚓收縮時的圖片');
+    });
+
+    const matchOptions = ['環節動物', '軟體動物', '刺絲胞動物', '棘皮動物'];
+
+    document.querySelectorAll('select').forEach(select => {
+      const shuffled = [...matchOptions].sort(() => Math.random() - 0.5);
+      shuffled.forEach(text => {
+        const option = document.createElement('option');
+        option.value = text;
+        option.textContent = text;
+        select.appendChild(option);
+      });
+    });
+
+    function setFeedback(card, ok, message) {
+      const feedback = card.querySelector('.feedback');
+      card.classList.remove('correct', 'incorrect');
+      card.classList.add(ok ? 'correct' : 'incorrect');
+      feedback.className = `feedback show ${ok ? 'good' : 'bad'}`;
+      feedback.textContent = message;
+    }
+
+    function updateUnlock() {
+      const allCorrect = Object.values(state).every(Boolean);
+      const nextLink = document.getElementById('nextLink');
+      const unlockNote = document.getElementById('unlockNote');
+      if (allCorrect) {
+        nextLink.classList.add('unlocked');
+        unlockNote.textContent = '全部答對！你可以前往下一頁，認識節肢動物。';
+        unlockNote.style.background = '#e8f8ee';
+        unlockNote.style.borderColor = '#95d8b1';
+        unlockNote.style.color = '#146c3b';
+      }
+    }
+
+    function lockQuestion(card) {
+      card.querySelectorAll('button.choice, button.feature-btn, button.select-card, button.flip-card, button.order-btn, select').forEach(el => el.disabled = true);
+      card.querySelector('.check-btn').disabled = true;
+    }
+
+    function unlockQuestion(card) {
+      card.querySelectorAll('button.choice, button.feature-btn, button.select-card, button.flip-card, button.order-btn, select').forEach(el => el.disabled = false);
+      card.querySelector('.retry-btn').style.display = 'none';
+      card.querySelector('.check-btn').disabled = true;
+      card.classList.remove('correct', 'incorrect');
+      card.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+      card.querySelectorAll('.flip-card').forEach(el => el.classList.remove('revealed'));
+      card.querySelectorAll('select').forEach(select => select.value = '');
+      card.querySelectorAll('.order-btn').forEach(btn => btn.dataset.order = '');
+      orderClicks[card.dataset.question] = [];
+      const feedback = card.querySelector('.feedback');
+      feedback.className = 'feedback';
+      feedback.textContent = '';
+    }
+
+    function handleSingleChoice(card, successMessage, failMessage) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          card.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          check.disabled = false;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const selected = card.querySelector('.choice.selected');
+        const ok = selected?.dataset.answer === 'true';
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? successMessage : failMessage);
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleFlip(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.flip-card').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          btn.classList.toggle('selected');
+          btn.classList.add('revealed');
+          check.disabled = card.querySelectorAll('.flip-card.selected').length === 0;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const buttons = Array.from(card.querySelectorAll('.flip-card'));
+        const ok = buttons.every(btn => (btn.dataset.answer === 'true') === btn.classList.contains('selected'));
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！蚯蚓、水蛭、沙蠶都是環節動物的代表。' : '再試一次：蝸牛、水母、昆蟲不屬於環節動物門。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleMultiSelect(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.feature-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          btn.classList.toggle('selected');
+          check.disabled = card.querySelectorAll('.feature-btn.selected').length === 0;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const buttons = Array.from(card.querySelectorAll('.feature-btn'));
+        const ok = buttons.every(btn => (btn.dataset.answer === 'true') === btn.classList.contains('selected'));
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！環節動物身體柔軟細長，具有環狀分節，多用體壁肌肉伸縮爬行。' : '再試一次：外殼、刺絲胞和脊椎骨不是環節動物的主要特徵。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleMatch(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+          const answered = Array.from(card.querySelectorAll('select')).every(s => s.value !== '');
+          check.disabled = !answered;
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const selects = Array.from(card.querySelectorAll('select'));
+        const ok = selects.every(select => select.value === select.dataset.answer);
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！蚯蚓、水蛭、沙蠶屬於環節動物；蝸牛、文蛤、章魚屬於軟體動物。' : '再配對一次：蚯蚓、水蛭、沙蠶是環節動物；蝸牛、文蛤、章魚是軟體動物。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleSort(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.sort-row').forEach(row => {
+        row.querySelectorAll('.select-card').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.disabled) return;
+            row.querySelectorAll('.select-card').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const answered = Array.from(card.querySelectorAll('.sort-row')).every(r => r.querySelector('.select-card.selected'));
+            check.disabled = !answered;
+          });
+        });
+      });
+
+      check.addEventListener('click', () => {
+        const rows = Array.from(card.querySelectorAll('.sort-row'));
+        const ok = rows.every(row => row.querySelector('.select-card.selected')?.dataset.value === row.dataset.answer);
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！柔軟細長、環狀分節、體壁肌肉伸縮爬行，都是環節動物線索。' : '再想想：看到一圈一圈環狀分節，通常要想到環節動物門。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      const retry = card.querySelector('.retry-btn');
+      retry.addEventListener('click', () => {
+        state[card.dataset.question] = false;
+        unlockQuestion(card);
+      });
+    });
+
+    handleSingleChoice(
+      document.querySelector('[data-question="q1"]'),
+      '答對了！環節動物的主要特徵是身體柔軟細長，具有環狀分節。',
+      '再想想：環節動物的名稱就提醒我們，要觀察環狀分節。'
+    );
+    handleFlip(document.querySelector('[data-question="q2"]'));
+    handleMultiSelect(document.querySelector('[data-question="q3"]'));
+    handleMatch(document.querySelector('[data-question="q4"]'));
+    handleSingleChoice(
+      document.querySelector('[data-question="q5"]'),
+      '答對了！環節動物和軟體動物都可能身體柔軟，但環節動物有環狀分節，軟體動物不分節。',
+      '再想想：最能區分環節動物與軟體動物的是身體有沒有環狀分節。'
+    );
+  </script>
+</body>
+</html>

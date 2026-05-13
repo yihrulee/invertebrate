@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>延伸閱讀測驗：演化觀點｜無脊椎動物分類偵探隊</title>
+  <style>
+    :root {
+      --bg: #eef8fb;
+      --primary: #1296a3;
+      --primary-dark: #0b6d78;
+      --accent: #ffb84d;
+      --ink: #143f46;
+      --muted: #577078;
+      --line: #d8e9ee;
+      --soft: #f4fbfd;
+      --correct-bg: #e8f8ee;
+      --correct-border: #28a863;
+      --incorrect-bg: #fff0f0;
+      --incorrect-border: #e35d5d;
+      --shadow: 0 12px 30px rgba(9, 75, 86, 0.14);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 184, 77, 0.25), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(18, 150, 163, 0.20), transparent 30rem),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .wrap { width: min(1120px, 92vw); margin: 0 auto; padding: 28px 0 44px; }
+
+    header, section {
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(255,255,255,.85);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: clamp(22px, 3vw, 40px);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
+    }
+
+    section { margin-top: 22px; border-radius: var(--radius); }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8f8fa;
+      color: var(--primary-dark);
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    h1 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.12; color: #103f46; }
+    .lead { margin: 16px 0 0; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); font-weight: 750; line-height: 1.8; max-width: 850px; }
+    .hero-icon { width: 160px; height: 160px; border-radius: 42px; background: linear-gradient(145deg, #e8fbfd, #fff6df); display: grid; place-items: center; font-size: 5rem; box-shadow: inset 0 0 0 10px rgba(255,255,255,.55), 0 10px 24px rgba(9, 75, 86, 0.12); }
+
+    .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .badge { width: 42px; height: 42px; border-radius: 14px; background: var(--primary); color: white; display: grid; place-items: center; font-weight: 900; flex: 0 0 auto; }
+    h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); color: #103f46; }
+
+    .content-text { font-size: 1.08rem; line-height: 1.9; color: #334f57; font-weight: 650; }
+    .content-text p { margin: 10px 0; }
+
+    .reading-block {
+      margin: 16px 0 18px;
+      padding: 16px 18px;
+      border: 2px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(180deg, #fbfeff, #f5fbfc);
+    }
+
+    .reading-block h3 {
+      margin: 0 0 10px;
+      color: #103f46;
+      font-size: 1.28rem;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reading-block p { margin: 8px 0; }
+    .kw-blue { color: #0b82a0; font-weight: 900; background: #e8f8fa; padding: 2px 6px; border-radius: 8px; }
+    .kw-orange { color: #a86000; font-weight: 900; background: #fff1d6; padding: 2px 6px; border-radius: 8px; }
+    .kw-green { color: #198754; font-weight: 900; background: #e9f8ef; padding: 2px 6px; border-radius: 8px; }
+    .kw-red { color: #c44747; font-weight: 900; background: #fff0f0; padding: 2px 6px; border-radius: 8px; }
+    .kw-purple { color: #7052b8; font-weight: 900; background: #f2eeff; padding: 2px 6px; border-radius: 8px; }
+
+
+
+    .reading-section {
+      display: grid;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .reading-card {
+      border: 2px solid var(--line);
+      background: linear-gradient(180deg, #fbfeff, #f5fbfc);
+      border-radius: 22px;
+      padding: 18px 20px;
+    }
+
+    .reading-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.28rem;
+      line-height: 1.5;
+      color: #0b6d78;
+    }
+
+    .reading-card:nth-child(1) h3 { color: #0b82a0; }
+    .reading-card:nth-child(2) h3 { color: #a86000; }
+    .reading-card:nth-child(3) h3 { color: #7052b8; }
+    .reading-card:nth-child(4) h3 { color: #198754; }
+
+    .reading-card p,
+    .reading-card li {
+      color: #334f57;
+      font-weight: 700;
+      line-height: 1.9;
+      margin: 8px 0;
+    }
+
+    .reading-card ol {
+      margin: 8px 0 0;
+      padding-left: 1.45rem;
+    }
+
+    .key-cavity { color: #0b82a0; font-weight: 900; background: #e8f8fa; padding: 2px 6px; border-radius: 8px; }
+    .key-proto { color: #a86000; font-weight: 900; background: #fff1d6; padding: 2px 6px; border-radius: 8px; }
+    .key-deutero { color: #198754; font-weight: 900; background: #e9f8ef; padding: 2px 6px; border-radius: 8px; }
+    .key-amnion { color: #7052b8; font-weight: 900; background: #f2eeff; padding: 2px 6px; border-radius: 8px; }
+    .key-important { color: #c44747; font-weight: 900; background: #fff0f0; padding: 2px 6px; border-radius: 8px; }
+
+    .intro-box {
+      border: 2px solid #ffd992;
+      background: #fff8e8;
+      color: #75500c;
+      border-radius: 20px;
+      padding: 16px 18px;
+      font-weight: 850;
+      line-height: 1.8;
+      margin-top: 16px;
+    }
+
+    .term-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .term-card {
+      background: linear-gradient(180deg, #fbfeff, #f5fbfc);
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      min-height: 210px;
+    }
+
+    .term-card h3 { margin: 0 0 10px; color: #103f46; display: flex; align-items: center; gap: 8px; }
+    .term-card p { margin: 0; color: var(--muted); font-weight: 750; line-height: 1.65; }
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .visual-card {
+      border: 2px solid var(--line);
+      border-radius: 24px;
+      background: #fbfeff;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .visual-card h3 { margin: 0 0 14px; color: #103f46; }
+
+    .visual-image-card {
+      padding: 12px;
+      background: white;
+    }
+
+    .visual-image-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+    }
+
+    .tree {
+      min-height: 310px;
+      position: relative;
+      padding: 16px 12px 10px 34px;
+    }
+
+    .tree-line {
+      position: absolute;
+      left: 42px;
+      top: 36px;
+      bottom: 42px;
+      width: 5px;
+      border-radius: 999px;
+      background: #bde7ec;
+    }
+
+    .tree-row {
+      position: relative;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin: 14px 0;
+      z-index: 2;
+    }
+
+    .tree-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--primary);
+      border: 5px solid #e8f8fa;
+      box-shadow: 0 3px 9px rgba(9,75,86,.12);
+    }
+
+    .tree-label {
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      padding: 10px 12px;
+      font-weight: 900;
+      color: #103f46;
+      line-height: 1.45;
+    }
+
+    .tree-label small { display: block; color: var(--muted); font-weight: 750; margin-top: 4px; }
+
+    .concept-diagram {
+      display: grid;
+      gap: 12px;
+    }
+
+    .concept-row {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 10px;
+      align-items: center;
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .concept-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #e8fbfd, #fff6df);
+      display: grid;
+      place-items: center;
+      font-size: 2.2rem;
+      border: 2px solid rgba(255,255,255,.8);
+    }
+
+    .concept-row strong { display: block; color: #103f46; margin-bottom: 4px; }
+    .concept-row span { color: var(--muted); font-weight: 750; line-height: 1.55; }
+
+    .think-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .think-card {
+      border: 2px solid var(--line);
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      line-height: 1.65;
+      font-weight: 750;
+      color: var(--muted);
+    }
+
+    .think-card strong { display: block; color: #103f46; margin-bottom: 6px; }
+
+    .quiz-card {
+      border: 2px solid var(--line);
+      background: #fbfeff;
+      border-radius: 22px;
+      padding: 20px;
+      margin-top: 18px;
+    }
+    .quiz-card.correct { border-color: var(--correct-border); background: var(--correct-bg); }
+    .quiz-card.incorrect { border-color: var(--incorrect-border); background: var(--incorrect-bg); }
+
+    .q-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+    .q-head h3 { margin: 0; font-size: 1.2rem; color: #103f46; line-height: 1.5; }
+    .q-type { flex: 0 0 auto; border-radius: 999px; padding: 6px 10px; background: #fff0cf; border: 1px solid #ffd184; color: #7b4b00; font-weight: 900; font-size: .86rem; }
+
+    .options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    button.choice, button.select-card {
+      width: 100%;
+      min-height: 54px;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      padding: 12px 14px;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    button.choice:hover, button.select-card:hover { transform: translateY(-2px); border-color: #8edce4; background: #f1fbfc; }
+    button.choice.selected, button.select-card.selected { border-color: var(--primary); background: #e9f9fb; }
+    button:disabled { cursor: not-allowed !important; opacity: .78; transform: none !important; }
+
+    .match-board { display: grid; gap: 12px; }
+    .match-row { display: grid; grid-template-columns: 1fr 1.1fr; gap: 12px; align-items: stretch; }
+    .match-label { background: white; border: 2px solid var(--line); border-radius: 16px; padding: 14px; font-weight: 900; color: #103f46; line-height: 1.5; }
+    .match-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .select-card { text-align: center !important; min-height: 48px !important; }
+
+    .feedback { display: none; margin-top: 14px; border-radius: 16px; padding: 13px 15px; line-height: 1.65; font-weight: 800; }
+    .feedback.show { display: block; }
+    .feedback.good { background: #dff5e8; color: #146c3b; border: 1px solid #95d8b1; }
+    .feedback.bad { background: #ffe1e1; color: #a13b3b; border: 1px solid #efaaa9; }
+
+    .explain {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: white;
+      border: 2px dashed #bde7ec;
+      color: #334f57;
+      line-height: 1.65;
+      font-weight: 750;
+    }
+    .explain.show { display: block; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; align-items: center; }
+    .btn { border: 0; border-radius: 15px; padding: 12px 16px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: transform .15s ease, opacity .15s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .check-btn { background: var(--primary); color: white; }
+    .retry-btn { background: #fff0cf; color: #7b4b00; border: 2px solid #ffd184; display: none; }
+
+    .score-box {
+      margin-top: 18px;
+      border: 2px solid #bde7ec;
+      background: #e8f8fa;
+      color: var(--primary-dark);
+      border-radius: 22px;
+      padding: 16px;
+      text-align: center;
+      font-weight: 900;
+      line-height: 1.7;
+    }
+
+    .conclusion {
+      border: 2px solid #ffd992;
+      background: #fff8e8;
+      color: #75500c;
+      border-radius: 22px;
+      padding: 18px;
+      line-height: 1.8;
+      font-weight: 850;
+    }
+
+    .nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+    .nav a { text-decoration: none; border-radius: 18px; padding: 14px 18px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .prev { background: #ffffff; color: var(--primary-dark); border: 2px solid #bde7ec; }
+    .next { background: var(--primary); color: white; }
+    .next.unlocked { opacity: 1; }
+    .unlock-note { margin-top: 14px; padding: 14px 16px; border-radius: 18px; background: #fff8e8; border: 1px solid #ffd992; color: #76500b; font-weight: 850; line-height: 1.6; text-align: center; }
+
+    @media (max-width: 980px) {
+      header { grid-template-columns: 1fr; text-align: center; }
+      .hero-icon { margin: 0 auto; }
+      .term-grid, .think-grid { grid-template-columns: repeat(2, 1fr); }
+      .visual-grid, .match-row { grid-template-columns: 1fr; }
+      .options { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: 94vw; padding-top: 16px; }
+      header, section { border-radius: 22px; }
+      .term-grid, .think-grid { grid-template-columns: 1fr; }
+      .match-options { grid-template-columns: 1fr; }
+      .concept-row { grid-template-columns: 1fr; text-align: center; }
+      .concept-icon { margin: 0 auto; }
+      .nav { flex-direction: column; }
+      .nav a { width: 100%; }
+      .q-head { flex-direction: column; }
+      .q-type { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">🌿 延伸閱讀測驗</div>
+        <h1>從分類走向演化觀點</h1>
+        <p class="lead">前面的課程多從外形與身體構造來分類。這一頁要進一步思考：如果從演化關係來看，動物之間還有哪些更深層的共同線索？</p>
+      </div>
+      <div class="hero-icon" aria-hidden="true">🌳</div>
+    </header>
+
+    <section>
+      <div class="section-title"><div class="badge">讀</div><h2>開場說明：從外形分類走向演化思考</h2></div>
+      <div class="content-text">
+        <p>分類動物時，我們可以先觀察<span class="kw-blue">外形</span>、<span class="kw-green">身體構造</span>與<span class="kw-orange">生活方式</span>。例如有沒有脊椎骨、身體是否分節、是否有外骨骼、是否用管足運動，這些都是好用的觀察線索。</p>
+        <p>但是科學家也會追問更深的問題：這些動物在演化上是否有共同祖先？哪些構造是從共同祖先延續下來的？哪些特徵是後來在不同類群中發展出來的？這就是<span class="kw-purple">演化觀點</span>。</p>
+      </div>
+      <div class="intro-box">本頁不是要取代前面的分類方法，而是把「觀察分類」往前推進一步：從看得見的特徵，連到可能的演化關係。</div>
+    </section>
+
+    <section>
+      <div class="section-title"><div class="badge">文</div><h2>延伸閱讀本文</h2></div>
+      <div class="reading-section">
+        <article class="reading-card">
+          <h3>一、體腔——身體內部的空間</h3>
+          <p>動物的身體複雜程度，可以用<span class="key-cavity">體腔</span>來衡量。體腔是<span class="key-cavity">消化道與體壁之間的空腔</span>，充滿體腔液，有<span class="key-important">緩衝保護</span>和<span class="key-important">運輸物質</span>的功能。</p>
+          <p>最簡單的動物，如<span class="kw-blue">刺絲胞動物</span>、<span class="kw-purple">扁形動物</span>，沒有體腔，器官直接嵌在組織中；較進步的動物，如<span class="kw-green">環節動物</span>、<span class="kw-red">節肢動物</span>、<span class="kw-orange">脊椎動物</span>，則有<span class="key-cavity">真體腔</span>，讓器官能各司其職、更有效率地運作。</p>
+        </article>
+
+        <article class="reading-card">
+          <h3>二、原口動物與後口動物</h3>
+          <p>另一個重要線索是<span class="key-important">胚胎早期發育時的開口命運</span>：</p>
+          <ol>
+            <li><span class="key-proto">原口動物</span>：某些動物在胚胎發育中，第一個產生的開口如果發育成「口」，稱為原口動物，包括<span class="kw-orange">軟體動物</span>、<span class="kw-green">環節動物</span>、<span class="kw-red">節肢動物</span>等。</li>
+            <li><span class="key-deutero">後口動物</span>：若第一個開口發育成「肛門」，口則由第二個開口形成，稱為後口動物。<span class="kw-blue">棘皮動物</span>和<span class="kw-purple">脊索動物</span>，包含脊椎動物，屬於這一類。</li>
+          </ol>
+          <p>這意味著<span class="key-important">海星和人類</span>，在演化上的關係比海星和螃蟹更接近！</p>
+        </article>
+
+        <article class="reading-card">
+          <h3>三、羊膜動物</h3>
+          <p>脊椎動物中，<span class="kw-orange">爬蟲類</span>、<span class="kw-green">鳥類</span>和<span class="kw-purple">哺乳類</span>的胚胎外面包有一層<span class="key-amnion">羊膜</span>，可以在陸地上產卵或在母體內發育，不需要回到水中繁殖。</p>
+          <p>這些動物合稱<span class="key-amnion">羊膜動物</span>，是<span class="key-important">陸地生活的重要演化適應</span>。</p>
+        </article>
+
+        <article class="reading-card">
+          <h3>四、為什麼兩種觀點都重要？</h3>
+          <p><span class="key-cavity">外形分類</span>讓我們快速辨識生物；<span class="key-deutero">演化分類</span>讓我們理解生命的歷史。</p>
+          <p>當我們說「<span class="kw-blue">棘皮動物</span>和<span class="kw-purple">脊椎動物</span>同屬<span class="key-deutero">後口動物</span>」，並不是說牠們長得像，而是說牠們在<span class="key-important">演化樹</span>上共享一段較近的祖先歷史。</p>
+          <p>兩種視角各有用途，科學家通常<span class="key-important">同時運用兩者</span>。</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><div class="badge">名</div><h2>關鍵名詞框</h2></div>
+      <div class="term-grid">
+        <div class="term-card"><h3>🫧 體腔</h3><p>位於消化道與體壁之間的身體內部空間，有助於器官發展與身體活動。</p></div>
+        <div class="term-card"><h3>🚪 原口動物</h3><p>胚胎早期形成的開口後來發育成口。軟體、環節、節肢動物常列入這個方向。</p></div>
+        <div class="term-card"><h3>🌱 後口動物</h3><p>胚胎早期形成的開口後來發育成肛門，口在另一端形成。棘皮動物與脊椎動物都屬於此方向。</p></div>
+        <div class="term-card"><h3>🥚 羊膜動物</h3><p>胚胎具有羊膜等構造，可保護胚胎；爬蟲類、鳥類、哺乳類都屬於羊膜動物。</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><div class="badge">圖</div><h2>視覺素材：簡化演化樹與概念圖</h2></div>
+      <div class="visual-card visual-image-card">
+        <img src="39.png" alt="簡化演化樹與概念圖" />
+      </div>
+    </section>
+<section>
+      <div class="section-title"><div class="badge">測</div><h2>延伸測驗區</h2></div>
+
+      <div class="quiz-card" data-question="q1">
+        <div class="q-head"><h3>1. 從演化觀點思考動物分類時，最重要的想法是什麼？</h3><span class="q-type">閱讀後單選</span></div>
+        <div class="options" data-randomize="q1">
+          <button class="choice" data-answer="true">除了外形，也要思考共同祖先與發育特徵</button>
+          <button class="choice" data-answer="false">只要顏色相同，就代表演化關係最近</button>
+          <button class="choice" data-answer="false">所有無脊椎動物都屬於同一個演化支</button>
+          <button class="choice" data-answer="false">只要生活在水中，就一定是同一類</button>
+        </div>
+        <div class="feedback"></div><div class="explain">解析：演化觀點會重視共同祖先、胚胎發育與身體構造的來源，而不是只看外表像不像。</div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q2">
+        <div class="q-head"><h3>2. 體腔的概念主要指的是什麼？</h3><span class="q-type">閱讀後單選</span></div>
+        <div class="options" data-randomize="q2">
+          <button class="choice" data-answer="false">身體外面的硬殼</button>
+          <button class="choice" data-answer="true">消化道與體壁之間的身體內部空間</button>
+          <button class="choice" data-answer="false">昆蟲的翅膀</button>
+          <button class="choice" data-answer="false">海星的管足</button>
+        </div>
+        <div class="feedback"></div><div class="explain">解析：體腔是身體內部空間，能讓內臟有發展與活動的空間。</div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q3">
+        <div class="q-head"><h3>3. 下列哪一組較符合「後口動物」的例子？</h3><span class="q-type">閱讀後單選</span></div>
+        <div class="options" data-randomize="q3">
+          <button class="choice" data-answer="false">蝸牛與蚯蚓</button>
+          <button class="choice" data-answer="false">昆蟲與螃蟹</button>
+          <button class="choice" data-answer="true">海星與脊椎動物</button>
+          <button class="choice" data-answer="false">水母與海葵</button>
+        </div>
+        <div class="feedback"></div><div class="explain">解析：棘皮動物和脊椎動物都屬於後口動物方向，這是演化發育上的重要線索。</div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q4">
+        <div class="q-head"><h3>4. 羊膜動物的羊膜等構造，主要與哪一項功能有關？</h3><span class="q-type">閱讀後單選</span></div>
+        <div class="options" data-randomize="q4">
+          <button class="choice" data-answer="false">讓成體一定可以飛行</button>
+          <button class="choice" data-answer="false">讓動物一定沒有脊椎骨</button>
+          <button class="choice" data-answer="true">保護胚胎，提供較穩定的發育環境</button>
+          <button class="choice" data-answer="false">產生刺絲胞來捕食</button>
+        </div>
+        <div class="feedback"></div><div class="explain">解析：羊膜能保護胚胎，幫助胚胎在較穩定的環境中發育。</div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q5">
+        <div class="q-head"><h3>5. 為什麼棘皮動物是很好的演化思考例子？</h3><span class="q-type">閱讀後單選</span></div>
+        <div class="options" data-randomize="q5">
+          <button class="choice" data-answer="true">牠沒有脊椎骨，但和脊椎動物同屬後口動物方向</button>
+          <button class="choice" data-answer="false">牠有外骨骼，所以一定是節肢動物</button>
+          <button class="choice" data-answer="false">牠有翅膀，所以一定是昆蟲</button>
+          <button class="choice" data-answer="false">牠有刺絲胞，所以一定是刺絲胞動物</button>
+        </div>
+        <div class="feedback"></div><div class="explain">解析：棘皮動物提醒我們，外表和有無脊椎骨不是唯一線索；胚胎發育特徵也能提供演化關係資訊。</div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q6">
+        <div class="q-head"><h3>6. 將分類觀點與演化觀點配對。</h3><span class="q-type">配對題</span></div>
+        <div class="match-board">
+          <div class="match-row" data-answer="分類觀點"><div class="match-label">主要使用外形、身體構造、生活方式等可觀察線索。</div><div class="match-options"><button class="select-card" data-value="分類觀點">分類觀點</button><button class="select-card" data-value="演化觀點">演化觀點</button></div></div>
+          <div class="match-row" data-answer="演化觀點"><div class="match-label">進一步思考共同祖先、胚胎發育、原口與後口等線索。</div><div class="match-options"><button class="select-card" data-value="分類觀點">分類觀點</button><button class="select-card" data-value="演化觀點">演化觀點</button></div></div>
+        </div>
+        <div class="feedback"></div><div class="explain">解析：分類觀點偏重辨認與歸類；演化觀點進一步追問不同類群之間的共同祖先與發育關係。</div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="score-box" id="scoreBox">閱讀測驗計分：尚未完成。答對所有題目後，即可完成延伸閱讀測驗。</div>
+    </section>
+
+    <section>
+      <div class="section-title"><div class="badge">結</div><h2>結語</h2></div>
+      <div class="conclusion">分類像是幫動物建立「辨認地圖」；演化觀點則像是追蹤牠們的「生命故事」。學會從外形、構造、發育與演化關係一起思考，能幫助我們更完整地理解動物世界。</div>
+    </section>
+
+    <nav class="nav" aria-label="頁面導覽">
+      <a class="prev" href="review.html">← 上一頁</a>
+      <a class="next" id="nextLink" href="challenge.html">回到進階挑戰 →</a>
+    </nav>
+    <div class="unlock-note" id="unlockNote">完成並答對延伸測驗所有題目後，才能回到進階挑戰。</div>
+  </div>
+
+  <script>
+    const state = { q1: false, q2: false, q3: false, q4: false, q5: false, q6: false };
+    const submitted = { q1: false, q2: false, q3: false, q4: false, q5: false, q6: false };
+
+    function shuffleChildren(container) {
+      const items = Array.from(container.children);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      items.forEach(item => container.appendChild(item));
+    }
+
+    document.querySelectorAll('[data-randomize], .match-options').forEach(shuffleChildren);
+
+    function setFeedback(card, ok, message) {
+      const feedback = card.querySelector('.feedback');
+      const explain = card.querySelector('.explain');
+      card.classList.remove('correct', 'incorrect');
+      card.classList.add(ok ? 'correct' : 'incorrect');
+      feedback.className = `feedback show ${ok ? 'good' : 'bad'}`;
+      feedback.textContent = message;
+      if (explain) explain.classList.add('show');
+    }
+
+    function updateScore() {
+      const total = Object.keys(state).length;
+      const answered = Object.values(submitted).filter(Boolean).length;
+      const correct = Object.values(state).filter(Boolean).length;
+      const scoreBox = document.getElementById('scoreBox');
+      scoreBox.textContent = `閱讀測驗計分：已完成 ${answered} / ${total} 題，目前答對 ${correct} 題。`;
+
+      const allCorrect = Object.values(state).every(Boolean);
+      if (allCorrect) {
+        document.getElementById('nextLink').classList.add('unlocked');
+        const unlockNote = document.getElementById('unlockNote');
+        unlockNote.textContent = '全部答對！你已完成延伸閱讀測驗，可以回到進階挑戰。';
+        unlockNote.style.background = '#e8f8ee';
+        unlockNote.style.borderColor = '#95d8b1';
+        unlockNote.style.color = '#146c3b';
+        scoreBox.textContent = `閱讀測驗計分：${correct} / ${total}，全部答對！`;
+      }
+    }
+
+    function lockQuestion(card) {
+      card.querySelectorAll('button.choice, button.select-card').forEach(el => el.disabled = true);
+      card.querySelector('.check-btn').disabled = true;
+    }
+
+    function unlockQuestion(card) {
+      card.querySelectorAll('button.choice, button.select-card').forEach(el => el.disabled = false);
+      card.querySelector('.retry-btn').style.display = 'none';
+      card.querySelector('.check-btn').disabled = true;
+      card.classList.remove('correct', 'incorrect');
+      card.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+      const feedback = card.querySelector('.feedback');
+      feedback.className = 'feedback';
+      feedback.textContent = '';
+      const explain = card.querySelector('.explain');
+      if (explain) explain.classList.remove('show');
+    }
+
+    function handleSingleChoice(card, successMessage, failMessage) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          card.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          check.disabled = false;
+        });
+      });
+      check.addEventListener('click', () => {
+        const selected = card.querySelector('.choice.selected');
+        const ok = selected?.dataset.answer === 'true';
+        state[card.dataset.question] = ok;
+        submitted[card.dataset.question] = true;
+        setFeedback(card, ok, ok ? successMessage : failMessage);
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateScore();
+      });
+    }
+
+    function handleMatch(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.match-row').forEach(row => {
+        row.querySelectorAll('.select-card').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.disabled) return;
+            row.querySelectorAll('.select-card').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const answered = Array.from(card.querySelectorAll('.match-row')).every(r => r.querySelector('.select-card.selected'));
+            check.disabled = !answered;
+          });
+        });
+      });
+      check.addEventListener('click', () => {
+        const rows = Array.from(card.querySelectorAll('.match-row'));
+        const ok = rows.every(row => row.querySelector('.select-card.selected')?.dataset.value === row.dataset.answer);
+        state[card.dataset.question] = ok;
+        submitted[card.dataset.question] = true;
+        setFeedback(card, ok, ok ? '答對了！你能分辨分類觀點與演化觀點的差異。' : '再試一次：分類觀點偏向辨認與歸類，演化觀點偏向共同祖先與發育關係。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateScore();
+      });
+    }
+
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      const retry = card.querySelector('.retry-btn');
+      retry.addEventListener('click', () => {
+        state[card.dataset.question] = false;
+        submitted[card.dataset.question] = false;
+        unlockQuestion(card);
+        updateScore();
+      });
+    });
+
+    handleSingleChoice(document.querySelector('[data-question="q1"]'), '答對了！演化觀點會思考共同祖先與發育特徵。', '再想想：演化觀點不是只看顏色或生活環境。');
+    handleSingleChoice(document.querySelector('[data-question="q2"]'), '答對了！體腔是消化道與體壁之間的身體內部空間。', '再想想：體腔不是外殼、翅膀或管足。');
+    handleSingleChoice(document.querySelector('[data-question="q3"]'), '答對了！棘皮動物與脊椎動物都屬於後口動物方向。', '再想想：海星屬於棘皮動物，和脊椎動物同屬後口動物方向。');
+    handleSingleChoice(document.querySelector('[data-question="q4"]'), '答對了！羊膜能保護胚胎，提供較穩定的發育環境。', '再想想：羊膜和胚胎保護有關。');
+    handleSingleChoice(document.querySelector('[data-question="q5"]'), '答對了！棘皮動物能提醒我們從胚胎發育與演化關係思考分類。', '再想想：棘皮動物沒有脊椎骨，但屬於後口動物方向。');
+    handleMatch(document.querySelector('[data-question="q6"]'));
+    updateScore();
+  </script>
+</body>
+</html>

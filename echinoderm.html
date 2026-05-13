@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>棘皮動物｜無脊椎動物分類偵探隊</title>
+  <style>
+    :root {
+      --bg: #eef8fb;
+      --primary: #1296a3;
+      --primary-dark: #0b6d78;
+      --accent: #ffb84d;
+      --ink: #143f46;
+      --muted: #577078;
+      --line: #d8e9ee;
+      --correct-bg: #e8f8ee;
+      --correct-border: #28a863;
+      --incorrect-bg: #fff0f0;
+      --incorrect-border: #e35d5d;
+      --shadow: 0 12px 30px rgba(9, 75, 86, 0.14);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 184, 77, 0.25), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(18, 150, 163, 0.20), transparent 30rem),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .wrap { width: min(1120px, 92vw); margin: 0 auto; padding: 28px 0 44px; }
+
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255,255,255,.85);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 42px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8f8fa;
+      color: var(--primary-dark);
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    h1 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.12; color: #103f46; }
+    .lead { margin: 16px 0 0; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); font-weight: 700; line-height: 1.8; max-width: 820px; }
+    .hero-icon { width: 160px; height: 160px; border-radius: 42px; background: linear-gradient(145deg, #e8fbfd, #fff6df); display: grid; place-items: center; font-size: 5rem; box-shadow: inset 0 0 0 10px rgba(255,255,255,.55), 0 10px 24px rgba(9, 75, 86, 0.12); }
+
+    section { margin-top: 22px; background: rgba(255, 255, 255, 0.92); border: 2px solid rgba(255,255,255,.85); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(20px, 3vw, 32px); }
+    .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .badge { width: 42px; height: 42px; border-radius: 14px; background: var(--primary); color: white; display: grid; place-items: center; font-weight: 900; flex: 0 0 auto; }
+    h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); color: #103f46; }
+
+    .content-text { font-size: 1.08rem; line-height: 1.9; color: #334f57; font-weight: 650; }
+    .content-text p { margin: 10px 0; }
+    .kw-blue { color: #0b82a0; font-weight: 900; background: #e8f8fa; padding: 2px 6px; border-radius: 8px; }
+    .kw-orange { color: #a86000; font-weight: 900; background: #fff1d6; padding: 2px 6px; border-radius: 8px; }
+    .kw-green { color: #198754; font-weight: 900; background: #e9f8ef; padding: 2px 6px; border-radius: 8px; }
+    .kw-red { color: #c44747; font-weight: 900; background: #fff0f0; padding: 2px 6px; border-radius: 8px; }
+    .kw-purple { color: #7052b8; font-weight: 900; background: #f2eeff; padding: 2px 6px; border-radius: 8px; }
+
+    .observe-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+    .observe-card { background: linear-gradient(180deg, #fbfeff, #f5fbfc); border: 2px solid var(--line); border-radius: 22px; padding: 22px 16px; text-align: center; min-height: 380px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+    .observe-card .emoji { font-size: 3.4rem; line-height: 1; }
+    .observe-card .animal-img { width: min(280px, 92%); height: 200px; object-fit: contain; margin: 0 auto; display: block; }
+    .observe-card strong { font-size: 1.2rem; color: #103f46; }
+    .observe-card span { color: var(--muted); font-weight: 700; line-height: 1.5; font-size: .94rem; }
+
+    .hotspot-lab { margin-top: 18px; border: 2px solid var(--line); border-radius: 26px; overflow: hidden; background: #fff; }
+    .hotspot-head { padding: 16px 18px; background: #e8f8fa; border-bottom: 2px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .hotspot-head h3 { margin: 0; color: #103f46; font-size: 1.35rem; }
+    .hotspot-head p { margin: 0; color: var(--muted); font-weight: 800; }
+    .hotspot-stage { position: relative; min-height: 470px; background: linear-gradient(180deg, #102d5e 0%, #0d2b57 74%, #173f2d 74%, #18472f 100%); overflow: hidden; }
+    .hotspot-stage svg { display: block; width: 100%; height: auto; min-height: 470px; }
+    .echi-hotspot-btn {
+      position: absolute; width: 70px; height: 70px; border-radius: 999px; border: 5px solid #3d9b3f; background: #67c96c; color: #fff; font-size: 2rem; font-weight: 900;
+      display: grid; place-items: center; cursor: pointer; box-shadow: 0 10px 24px rgba(0,0,0,.22); z-index: 5; transition: transform .18s ease, filter .18s ease;
+      animation: echiPulse 1.8s ease-in-out infinite;
+    }
+    .echi-hotspot-btn:hover, .echi-hotspot-btn.active { transform: scale(1.08); filter: brightness(1.04); animation: none; }
+    @keyframes echiPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(103,201,108,.35), 0 10px 24px rgba(0,0,0,.22); }
+      50% { box-shadow: 0 0 0 12px rgba(103,201,108,0), 0 10px 24px rgba(0,0,0,.22); }
+    }
+    .echi-popup {
+      position: absolute; display: none; z-index: 6; width: min(360px, calc(100% - 30px));
+      border-radius: 18px; border: 3px solid #88d889; background: rgba(255,255,255,.98); color: #24454b; padding: 16px 18px 18px;
+      box-shadow: 0 18px 34px rgba(0,0,0,.22); line-height: 1.7; font-weight: 800;
+    }
+    .echi-popup.show { display: block; }
+    .echi-popup strong { display: block; color: #196a2e; font-size: 1.1rem; margin: 0 32px 6px 0; }
+    .echi-popup .popup-close {
+      position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 999px; border: 0; cursor: pointer;
+      display: grid; place-items: center; background: #e7f8e7; color: #196a2e; font-size: 1rem; font-weight: 900;
+    }
+    .echi-popup .popup-close:hover { background: #67c96c; color: #fff; }
+    .hotspot-count { padding: 12px 16px; background: #fff8e8; border-top: 2px solid var(--line); text-align: center; color: #75500c; font-weight: 900; }
+
+    .note { margin-top: 16px; border-radius: 18px; background: #fff8e8; border: 1px solid #ffd992; color: #75500c; padding: 14px 16px; line-height: 1.7; font-weight: 850; text-align: center; }
+
+    .quiz-card { border: 2px solid var(--line); background: #fbfeff; border-radius: 22px; padding: 20px; margin-top: 18px; }
+    .quiz-card.correct { border-color: var(--correct-border); background: var(--correct-bg); }
+    .quiz-card.incorrect { border-color: var(--incorrect-border); background: var(--incorrect-bg); }
+    .q-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+    .q-head h3 { margin: 0; font-size: 1.2rem; color: #103f46; line-height: 1.5; }
+    .q-type { flex: 0 0 auto; border-radius: 999px; padding: 6px 10px; background: #fff0cf; border: 1px solid #ffd184; color: #7b4b00; font-weight: 900; font-size: .86rem; }
+
+    .options, .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .feature-grid { grid-template-columns: repeat(3, 1fr); }
+    button.choice, button.feature-btn, button.select-card, button.flip-card {
+      width: 100%; min-height: 54px; border: 2px solid var(--line); border-radius: 16px; background: white; padding: 12px 14px; color: var(--ink); font-size: 1rem; font-weight: 800; text-align: left; cursor: pointer; transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    button.choice:hover, button.feature-btn:hover, button.select-card:hover, button.flip-card:hover { transform: translateY(-2px); border-color: #8edce4; background: #f1fbfc; }
+    button.choice.selected, button.feature-btn.selected, button.select-card.selected, button.flip-card.selected { border-color: var(--primary); background: #e9f9fb; }
+    button:disabled, select:disabled { cursor: not-allowed !important; opacity: .78; transform: none !important; }
+
+    .feature-btn { min-height: 96px; text-align: center !important; display: grid; place-items: center; line-height: 1.5; }
+    .feature-btn .icon { font-size: 2rem; display: block; margin-bottom: 4px; }
+    .flip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .flip-card { min-height: 130px !important; text-align: center !important; display: grid; place-items: center; line-height: 1.6; }
+    .flip-card .front { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+    .flip-card.revealed { background: #fff8e8; border-color: var(--accent); }
+
+    .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .match-item { background: white; border: 2px solid var(--line); border-radius: 16px; padding: 14px; }
+    .match-item label { display: block; font-weight: 900; margin-bottom: 8px; color: #103f46; }
+    select { width: 100%; border: 2px solid #cfe3e8; border-radius: 12px; padding: 10px; font-size: 1rem; font-weight: 800; color: #284c54; background: white; }
+
+    .sort-board { display: grid; gap: 12px; }
+    .sort-row { display: grid; grid-template-columns: 1fr 1.1fr; gap: 12px; align-items: stretch; }
+    .sort-label { background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 14px; font-weight: 900; color: #103f46; line-height: 1.5; }
+    .sort-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .select-card { text-align: center !important; min-height: 48px !important; }
+
+    .feedback { display: none; margin-top: 14px; border-radius: 16px; padding: 13px 15px; line-height: 1.65; font-weight: 800; }
+    .feedback.show { display: block; }
+    .feedback.good { background: #dff5e8; color: #146c3b; border: 1px solid #95d8b1; }
+    .feedback.bad { background: #ffe1e1; color: #a13b3b; border: 1px solid #efaaa9; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; align-items: center; }
+    .btn { border: 0; border-radius: 15px; padding: 12px 16px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: transform .15s ease, opacity .15s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .check-btn { background: var(--primary); color: white; }
+    .retry-btn { background: #fff0cf; color: #7b4b00; border: 2px solid #ffd184; display: none; }
+
+    .nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+    .nav a { text-decoration: none; border-radius: 18px; padding: 14px 18px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .prev { background: #ffffff; color: var(--primary-dark); border: 2px solid #bde7ec; }
+    .next { background: var(--primary); color: white; pointer-events: none; opacity: .42; }
+    .next.unlocked { pointer-events: auto; opacity: 1; }
+    .unlock-note { margin-top: 14px; padding: 14px 16px; border-radius: 18px; background: #fff8e8; border: 1px solid #ffd992; color: #76500b; font-weight: 850; line-height: 1.6; text-align: center; }
+
+    @media (max-width: 960px) {
+      header { grid-template-columns: 1fr; text-align: center; }
+      .hero-icon { margin: 0 auto; }
+      .observe-grid, .feature-grid, .match-grid, .flip-grid { grid-template-columns: repeat(2, 1fr); }
+      .options, .sort-row { grid-template-columns: 1fr; }
+      .hotspot-stage { min-height: 420px; }
+      .hotspot-stage svg { min-height: 420px; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: 94vw; padding-top: 16px; }
+      section, header { border-radius: 22px; }
+      .observe-grid, .feature-grid, .match-grid, .flip-grid { grid-template-columns: 1fr; }
+      .sort-options { grid-template-columns: 1fr; }
+      .nav { flex-direction: column; }
+      .nav a { width: 100%; }
+      .q-head { flex-direction: column; }
+      .q-type { align-self: flex-start; }
+      .echi-hotspot-btn { width: 56px; height: 56px; font-size: 1.65rem; }
+      .hotspot-stage { min-height: 380px; }
+      .hotspot-stage svg { min-height: 380px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">⭐ 沒有腳，靠管足移動</div>
+        <h1>棘皮動物</h1>
+        <p class="lead">棘皮動物都生活在海中，身體表面常有棘，並主要利用管足運動。觀察海星、海參、海膽，就能找出這一門的關鍵線索。</p>
+      </div>
+      <div class="hero-icon" aria-hidden="true">⭐</div>
+    </header>
+
+    <section>
+      <div class="section-title"><div class="badge">學</div><h2>學習內容</h2></div>
+      <div class="content-text">
+        <p><span class="kw-blue">棘皮動物</span>都生活在<span class="kw-green">海中</span>，身體表面常具有<span class="kw-red">棘</span>。</p>
+        <p>棘皮動物主要利用<span class="kw-orange">管足</span>運動。管足是牠們移動、附著或攝食時的重要構造。</p>
+        <p>常見的棘皮動物包括<span class="kw-purple">海星</span>、<span class="kw-purple">海參</span>和<span class="kw-purple">海膽</span>。</p>
+      </div>
+
+      <div class="observe-grid" aria-label="棘皮動物觀察卡">
+        <div class="observe-card"><img class="animal-img" src="36.png" alt="海星"><strong>海星</strong><span>生活在海中，利用管足運動。</span></div>
+        <div class="observe-card"><img class="animal-img" src="37.png" alt="海參"><strong>海參</strong><span>身體較柔軟，也屬於棘皮動物。</span></div>
+        <div class="observe-card"><img class="animal-img" src="38.png" alt="海膽"><strong>海膽</strong><span>身體表面有明顯的棘。</span></div>
+      </div>
+
+      <div class="hotspot-lab">
+        <div class="hotspot-head">
+          <div>
+            <h3>棘皮動物構造觀察</h3>
+            <p>點擊綠色驚嘆號，探索棘、管足、五輻射對稱、海膽長棘四個構造與功能。</p>
+          </div>
+          <div style="color:#577078;font-weight:900;">請點 ①②③④ 查看說明</div>
+        </div>
+        <div class="hotspot-stage" aria-label="棘皮動物構造觀察圖">
+          <svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="海參、海星與海膽的構造示意圖">
+            <rect width="1000" height="470" fill="#102d5e"/>
+            <circle cx="66" cy="286" r="8" fill="none" stroke="#4d79a5" stroke-width="2" opacity=".7"/>
+            <circle cx="940" cy="238" r="11" fill="none" stroke="#4d79a5" stroke-width="2" opacity=".6"/>
+            <circle cx="792" cy="317" r="7" fill="none" stroke="#4d79a5" stroke-width="2" opacity=".6"/>
+            <path d="M0,360 C120,350 190,366 300,372 C430,378 548,344 655,354 C792,366 904,376 1000,368 L1000,470 L0,470 Z" fill="#1b483e"/>
+            <path d="M0,388 C128,374 270,388 360,398 C488,410 617,390 735,390 C852,390 934,383 1000,396 L1000,470 L0,470 Z" fill="#173e29"/>
+
+            <!-- sea cucumber -->
+            <path d="M110,345 C132,312 176,302 220,304 C274,306 318,316 346,330 C364,338 374,356 370,376 C366,396 350,404 334,396 C294,378 246,374 198,374 C164,374 132,378 114,368 C100,360 99,349 110,345 Z" fill="#eb9d2f" stroke="#a45a13" stroke-width="8" stroke-linejoin="round"/>
+            <path d="M130,346 C152,326 186,320 230,321 C274,322 310,328 336,340" fill="none" stroke="#c37c20" stroke-width="10" stroke-linecap="round" opacity=".7"/>
+            <path d="M112,347 L96,336 M106,355 L88,349 M112,364 L90,364" stroke="#a45a13" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="158" cy="314" r="5" fill="#f0dc87"/><circle cx="205" cy="308" r="5" fill="#f0dc87"/><circle cx="259" cy="310" r="5" fill="#f0dc87"/><circle cx="311" cy="322" r="5" fill="#f0dc87"/>
+
+            <!-- sea star -->
+            <g transform="translate(120,70) scale(0.76)">
+              <path d="M500,108 L548,196 L646,208 L575,272 L594,366 L500,320 L406,366 L425,272 L354,208 L452,196 Z" fill="#ef8f38" stroke="#e08a3e" stroke-width="8" stroke-linejoin="round"/>
+              <circle cx="500" cy="250" r="52" fill="#e6883b" opacity=".95"/>
+              <circle cx="500" cy="250" r="34" fill="#f0a55d" opacity=".65"/>
+              <circle cx="500" cy="120" r="7" fill="#f0dc87"/><ellipse cx="514" cy="136" rx="6" ry="11" fill="#73b7e9" opacity=".9"/>
+              <circle cx="615" cy="198" r="7" fill="#f0dc87"/><ellipse cx="632" cy="207" rx="6" ry="11" fill="#73b7e9" opacity=".9"/>
+              <circle cx="568" cy="332" r="7" fill="#f0dc87"/><ellipse cx="584" cy="344" rx="6" ry="11" fill="#73b7e9" opacity=".9"/>
+              <circle cx="432" cy="332" r="7" fill="#f0dc87"/><ellipse cx="416" cy="344" rx="6" ry="11" fill="#73b7e9" opacity=".9"/>
+              <circle cx="385" cy="198" r="7" fill="#f0dc87"/><ellipse cx="368" cy="207" rx="6" ry="11" fill="#73b7e9" opacity=".9"/>
+            </g>
+
+            <!-- sea urchin -->
+            <g transform="translate(0,6)">
+              <circle cx="818" cy="346" r="48" fill="#6b3fd7"/>
+              <circle cx="818" cy="346" r="34" fill="#7b54dd"/>
+              <g stroke="#6b3fd7" stroke-width="5" stroke-linecap="round">
+                <line x1="818" y1="286" x2="818" y2="246"/>
+                <line x1="854" y1="298" x2="870" y2="272"/>
+                <line x1="873" y1="346" x2="892" y2="346"/>
+                <line x1="854" y1="392" x2="876" y2="416"/>
+                <line x1="818" y1="406" x2="818" y2="442"/>
+                <line x1="782" y1="392" x2="766" y2="416"/>
+                <line x1="762" y1="346" x2="742" y2="346"/>
+                <line x1="782" y1="298" x2="766" y2="272"/>
+              </g>
+              <ellipse cx="798" cy="300" rx="5" ry="9" fill="#73b7e9" opacity=".9"/>
+              <ellipse cx="776" cy="325" rx="5" ry="9" fill="#73b7e9" opacity=".9"/>
+              <ellipse cx="850" cy="324" rx="5" ry="9" fill="#73b7e9" opacity=".9"/>
+              <ellipse cx="841" cy="299" rx="5" ry="9" fill="#73b7e9" opacity=".9"/>
+            </g>
+
+            <!-- legend -->
+            <circle cx="706" cy="70" r="9" fill="#f0dc87"/><text x="724" y="76" fill="#dbe5ef" font-size="18" font-weight="900" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif">棘</text>
+            <ellipse cx="706" cy="104" rx="6" ry="10" fill="#73b7e9"/><text x="724" y="110" fill="#dbe5ef" font-size="18" font-weight="900" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif">管足</text>
+
+            <text x="228" y="382" fill="#f0dc87" font-size="18" font-weight="900" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif">海參</text>
+            <text x="482" y="434" fill="#f0dc87" font-size="18" font-weight="900" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif">海星</text>
+            <text x="808" y="434" fill="#f0dc87" font-size="18" font-weight="900" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif">海膽</text>
+          </svg>
+
+          <button type="button" class="echi-hotspot-btn" data-ehot="1" style="left: 47%; top: 40%;" aria-label="熱點1：五輻射對稱">!</button>
+          <button type="button" class="echi-hotspot-btn" data-ehot="2" style="left: 19%; top: 53%;" aria-label="熱點2：棘">!</button>
+          <button type="button" class="echi-hotspot-btn" data-ehot="3" style="left: 56%; top: 31%;" aria-label="熱點3：管足">!</button>
+          <button type="button" class="echi-hotspot-btn" data-ehot="4" style="left: 82%; top: 46%;" aria-label="熱點4：海膽長棘">!</button>
+
+          <div class="echi-popup" id="echiPopup" aria-live="polite"></div>
+        </div>
+        <div class="hotspot-count">已探索：<strong id="echiCount">0</strong> / 4 個構造</div>
+      </div>
+
+      <div class="note">觀察重點：看到「生活在海中、身體表面有棘、用管足運動」，就要想到棘皮動物門。</div>
+    </section>
+
+    <section>
+      <div class="section-title"><div class="badge">練</div><h2>互動練習</h2></div>
+
+      <div class="quiz-card" data-question="q1">
+        <div class="q-head"><h3>1. 哪一項最符合棘皮動物的主要特徵？</h3><span class="q-type">選擇題</span></div>
+        <div class="options" data-randomize="q1">
+          <button class="choice" data-answer="true">生活在海中，身體表面有棘，主要用管足運動</button>
+          <button class="choice" data-answer="false">身體柔軟、不分節，有肌肉構成的足</button>
+          <button class="choice" data-answer="false">觸手及身體有刺絲胞，可捕食防禦</button>
+          <button class="choice" data-answer="false">身體分節，具有外骨骼與分節附肢</button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q2">
+        <div class="q-head"><h3>2. 翻開動物卡，選出所有棘皮動物代表。</h3><span class="q-type">翻牌多選</span></div>
+        <div class="flip-grid" data-randomize="q2">
+          <button class="flip-card" data-answer="true"><span><span class="front">⭐</span>海星</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🥒</span>海參</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🟣</span>海膽</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🐌</span>蝸牛</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🦗</span>昆蟲</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🪼</span>水母</span></button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q3">
+        <div class="q-head"><h3>3. 點選所有屬於棘皮動物的特徵。</h3><span class="q-type">多選任務</span></div>
+        <div class="feature-grid" data-randomize="q3">
+          <button class="feature-btn" data-answer="true"><span><span class="icon">🌊</span>生活在海中</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">🌵</span>身體表面有棘</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">👣</span>主要利用管足運動</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🐚</span>大多有外殼</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🪼</span>觸手有刺絲胞</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🦴</span>具有脊椎骨</span></button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q4">
+        <div class="q-head"><h3>4. 下列關於棘皮動物的描述，哪一項是錯誤的？</h3><span class="q-type">選擇題</span></div>
+        <div class="options" data-randomize="q4">
+          <button class="choice" data-answer="false">棘皮動物全部生活在海洋中</button>
+          <button class="choice" data-answer="false">海星、海膽、海參都是棘皮動物的代表</button>
+          <button class="choice" data-answer="true">棘皮動物的「棘」和節肢動物的「外骨骼」功能完全相同，都是支撐身體的主要結構</button>
+          <button class="choice" data-answer="false">多數棘皮動物具有五輻射對稱的身體特徵</button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="unlock-note" id="unlockNote">完成並答對本頁所有題目後，才能前往綜合分類挑戰。</div>
+    </section>
+
+    <nav class="nav" aria-label="頁面導覽">
+      <a class="prev" href="arthroquiz.html">← 上一頁</a>
+      <a class="next" id="nextLink" href="review.html">下一頁 →</a>
+    </nav>
+  </div>
+
+  <script>
+    const echiHotspotData = {
+      1: {
+        title: '五輻射對稱',
+        text: '海星等許多棘皮動物的身體常呈五輻射對稱，表示身體可由中心向外分成五個方向，這是辨認棘皮動物的重要線索。'
+      },
+      2: {
+        title: '棘',
+        text: '棘皮動物身體表面常有棘，能保護身體，減少被掠食者攻擊，也讓牠們外觀看起來很有特色。'
+      },
+      3: {
+        title: '管足',
+        text: '管足是棘皮動物的重要構造，可幫助移動、附著、捕食與感覺環境。看到管足，就要聯想到棘皮動物。'
+      },
+      4: {
+        title: '海膽長棘',
+        text: '海膽身上的長棘特別明顯，除了保護身體，也可以協助支撐與移動，因此海膽看起來像長滿刺的球。'
+      }
+    };
+
+    const echiExplored = new Set();
+
+    function closeEchiPopup() {
+      const popup = document.getElementById('echiPopup');
+      if (!popup) return;
+      popup.classList.remove('show');
+      document.querySelectorAll('.echi-hotspot-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    document.querySelectorAll('.echi-hotspot-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.ehot;
+        const info = echiHotspotData[key];
+        const popup = document.getElementById('echiPopup');
+        const stage = btn.closest('.hotspot-stage');
+
+        document.querySelectorAll('.echi-hotspot-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        echiExplored.add(key);
+
+        popup.innerHTML = `<button type="button" class="popup-close" aria-label="關閉提示">×</button><strong>${info.title}</strong>${info.text}`;
+        popup.classList.add('show');
+
+        const btnRect = btn.getBoundingClientRect();
+        const stageRect = stage.getBoundingClientRect();
+        let left = btnRect.left - stageRect.left + btn.offsetWidth + 12;
+        let top = btnRect.top - stageRect.top - 6;
+
+        if (left + popup.offsetWidth > stage.clientWidth - 10) {
+          left = btnRect.left - stageRect.left - popup.offsetWidth - 12;
+        }
+        if (left < 10) left = 10;
+        if (top + popup.offsetHeight > stage.clientHeight - 10) {
+          top = stage.clientHeight - popup.offsetHeight - 10;
+        }
+        if (top < 10) top = 10;
+
+        popup.style.left = `${left}px`;
+        popup.style.top = `${top}px`;
+
+        popup.querySelector('.popup-close').addEventListener('click', e => {
+          e.stopPropagation();
+          closeEchiPopup();
+        });
+
+        document.getElementById('echiCount').textContent = echiExplored.size;
+      });
+    });
+
+    document.addEventListener('click', event => {
+      if (!event.target.closest('.echi-hotspot-btn') && !event.target.closest('.echi-popup')) {
+        closeEchiPopup();
+      }
+    });
+
+    const state = { q1: false, q2: false, q3: false, q4: false };
+
+    function shuffleChildren(container) {
+      const items = Array.from(container.children);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      items.forEach(item => container.appendChild(item));
+    }
+
+    document.querySelectorAll('[data-randomize]').forEach(shuffleChildren);
+    document.querySelectorAll('.sort-options').forEach(shuffleChildren);
+
+    const matchOptions = ['棘皮動物', '節肢動物', '軟體動物', '刺絲胞動物'];
+    document.querySelectorAll('select').forEach(select => {
+      const shuffled = [...matchOptions].sort(() => Math.random() - 0.5);
+      shuffled.forEach(text => {
+        const option = document.createElement('option');
+        option.value = text;
+        option.textContent = text;
+        select.appendChild(option);
+      });
+    });
+
+    function setFeedback(card, ok, message) {
+      const feedback = card.querySelector('.feedback');
+      card.classList.remove('correct', 'incorrect');
+      card.classList.add(ok ? 'correct' : 'incorrect');
+      feedback.className = `feedback show ${ok ? 'good' : 'bad'}`;
+      feedback.textContent = message;
+    }
+
+    function updateUnlock() {
+      const allCorrect = Object.values(state).every(Boolean);
+      const nextLink = document.getElementById('nextLink');
+      const unlockNote = document.getElementById('unlockNote');
+      if (allCorrect) {
+        nextLink.classList.add('unlocked');
+        unlockNote.textContent = '全部答對！你可以前往下一頁，進行綜合分類挑戰。';
+        unlockNote.style.background = '#e8f8ee';
+        unlockNote.style.borderColor = '#95d8b1';
+        unlockNote.style.color = '#146c3b';
+      }
+    }
+
+    function lockQuestion(card) {
+      card.querySelectorAll('button.choice, button.feature-btn, button.select-card, button.flip-card, select').forEach(el => el.disabled = true);
+      card.querySelector('.check-btn').disabled = true;
+    }
+
+    function unlockQuestion(card) {
+      card.querySelectorAll('button.choice, button.feature-btn, button.select-card, button.flip-card, select').forEach(el => el.disabled = false);
+      card.querySelector('.retry-btn').style.display = 'none';
+      card.querySelector('.check-btn').disabled = true;
+      card.classList.remove('correct', 'incorrect');
+      card.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+      card.querySelectorAll('.flip-card').forEach(el => el.classList.remove('revealed'));
+      card.querySelectorAll('select').forEach(select => select.value = '');
+      const feedback = card.querySelector('.feedback');
+      feedback.className = 'feedback';
+      feedback.textContent = '';
+    }
+
+    function handleSingleChoice(card, successMessage, failMessage) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          card.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          check.disabled = false;
+        });
+      });
+      check.addEventListener('click', () => {
+        const selected = card.querySelector('.choice.selected');
+        const ok = selected?.dataset.answer === 'true';
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? successMessage : failMessage);
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleFlip(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.flip-card').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          btn.classList.toggle('selected');
+          btn.classList.add('revealed');
+          check.disabled = card.querySelectorAll('.flip-card.selected').length === 0;
+        });
+      });
+      check.addEventListener('click', () => {
+        const buttons = Array.from(card.querySelectorAll('.flip-card'));
+        const ok = buttons.every(btn => (btn.dataset.answer === 'true') === btn.classList.contains('selected'));
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！海星、海參、海膽都是棘皮動物。' : '再試一次：蝸牛、昆蟲、水母不是棘皮動物代表。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleMultiSelect(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.feature-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          btn.classList.toggle('selected');
+          check.disabled = card.querySelectorAll('.feature-btn.selected').length === 0;
+        });
+      });
+      check.addEventListener('click', () => {
+        const buttons = Array.from(card.querySelectorAll('.feature-btn'));
+        const ok = buttons.every(btn => (btn.dataset.answer === 'true') === btn.classList.contains('selected'));
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！棘皮動物生活在海中，身體表面有棘，主要利用管足運動。' : '再試一次：外殼、刺絲胞和脊椎骨不是棘皮動物的主要特徵。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleMatch(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+          const answered = Array.from(card.querySelectorAll('select')).every(s => s.value !== '');
+          check.disabled = !answered;
+        });
+      });
+      check.addEventListener('click', () => {
+        const selects = Array.from(card.querySelectorAll('select'));
+        const ok = selects.every(select => select.value === select.dataset.answer);
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！海星、海參和海膽都屬於棘皮動物。' : '再配對一次：這三種代表動物都屬於棘皮動物門。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    function handleSort(card) {
+      const check = card.querySelector('.check-btn');
+      card.querySelectorAll('.sort-row').forEach(row => {
+        row.querySelectorAll('.select-card').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.disabled) return;
+            row.querySelectorAll('.select-card').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const answered = Array.from(card.querySelectorAll('.sort-row')).every(r => r.querySelector('.select-card.selected'));
+            check.disabled = !answered;
+          });
+        });
+      });
+      check.addEventListener('click', () => {
+        const rows = Array.from(card.querySelectorAll('.sort-row'));
+        const ok = rows.every(row => row.querySelector('.select-card.selected')?.dataset.value === row.dataset.answer);
+        state[card.dataset.question] = ok;
+        setFeedback(card, ok, ok ? '答對了！海中生活、有棘、管足運動，都指向棘皮動物門。' : '再想想：看到海星、海參、海膽，或看到棘和管足，要想到棘皮動物門。');
+        lockQuestion(card);
+        if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
+        updateUnlock();
+      });
+    }
+
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      const retry = card.querySelector('.retry-btn');
+      retry.addEventListener('click', () => {
+        state[card.dataset.question] = false;
+        unlockQuestion(card);
+      });
+    });
+
+    handleSingleChoice(document.querySelector('[data-question="q1"]'), '答對了！棘皮動物生活在海中，身體表面有棘，主要用管足運動。', '再想想：棘皮動物的關鍵線索是海中生活、棘和管足。');
+    handleFlip(document.querySelector('[data-question="q2"]'));
+    handleMultiSelect(document.querySelector('[data-question="q3"]'));
+    handleSingleChoice(document.querySelector('[data-question="q4"]'), '答對了！棘皮動物的棘與節肢動物外骨骼功能並不完全相同。', '再想想：題目要找錯誤的描述，棘皮動物的棘不等於節肢動物的外骨骼。');
+  </script>
+</body>
+</html>

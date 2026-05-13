@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>扁形動物｜無脊椎動物分類偵探隊</title>
+  <style>
+    :root{--bg:#eef8fb;--primary:#1296a3;--primary-dark:#0b6d78;--ink:#143f46;--muted:#577078;--line:#d8e9ee;--correct-bg:#e8f8ee;--correct-border:#28a863;--incorrect-bg:#fff0f0;--incorrect-border:#e35d5d;--shadow:0 12px 30px rgba(9,75,86,.14);--radius:24px;--accent:#ffb84d}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 8%,rgba(255,184,77,.25),transparent 28rem),radial-gradient(circle at 90% 10%,rgba(18,150,163,.2),transparent 30rem),var(--bg);min-height:100vh}.wrap{width:min(1120px,92vw);margin:0 auto;padding:28px 0 44px}header,section{background:rgba(255,255,255,.92);border:2px solid rgba(255,255,255,.85);border-radius:30px;box-shadow:var(--shadow);padding:clamp(20px,3vw,36px)}header{display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center}.eyebrow{display:inline-flex;gap:8px;padding:8px 14px;border-radius:999px;background:#e8f8fa;color:var(--primary-dark);font-weight:900;margin-bottom:14px}h1{margin:0;font-size:clamp(2rem,5vw,4rem);line-height:1.12;color:#103f46}.lead{margin:16px 0 0;color:var(--muted);font-size:clamp(1.05rem,2vw,1.25rem);font-weight:700;line-height:1.8;max-width:820px}.hero-icon{width:160px;height:160px;border-radius:42px;background:linear-gradient(145deg,#e8fbfd,#fff6df);display:grid;place-items:center;font-size:5rem;box-shadow:inset 0 0 0 10px rgba(255,255,255,.55),0 10px 24px rgba(9,75,86,.12)}section{margin-top:22px}.section-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}.badge{width:42px;height:42px;border-radius:14px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:900;flex:0 0 auto}h2{margin:0;font-size:clamp(1.35rem,3vw,2rem);color:#103f46}.content-text{font-size:1.08rem;line-height:1.9;color:#334f57;font-weight:650}.content-text p{margin:10px 0}.kw-blue{color:#0b82a0;font-weight:900;background:#e8f8fa;padding:2px 6px;border-radius:8px}.kw-orange{color:#a86000;font-weight:900;background:#fff1d6;padding:2px 6px;border-radius:8px}.kw-green{color:#198754;font-weight:900;background:#e9f8ef;padding:2px 6px;border-radius:8px}.kw-red{color:#c44747;font-weight:900;background:#fff0f0;padding:2px 6px;border-radius:8px}.kw-purple{color:#7052b8;font-weight:900;background:#f2eeff;padding:2px 6px;border-radius:8px}.observe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.observe-card{background:linear-gradient(180deg,#fbfeff,#f5fbfc);border:2px solid var(--line);border-radius:22px;padding:18px;text-align:center;min-height:345px;display:flex;flex-direction:column;justify-content:center;gap:12px}.observe-card .emoji{font-size:3.4rem;line-height:1;min-height:220px;display:flex;align-items:center;justify-content:center}.observe-card strong{font-size:1.15rem;color:#103f46}.observe-card span{color:var(--muted);font-weight:700;line-height:1.5;font-size:.94rem}.note{margin-top:16px;border-radius:18px;background:#fff8e8;border:1px solid #ffd992;color:#75500c;padding:14px 16px;line-height:1.7;font-weight:850;text-align:center}.quiz-card{border:2px solid var(--line);background:#fbfeff;border-radius:22px;padding:20px;margin-top:18px}.quiz-card.correct{border-color:var(--correct-border);background:var(--correct-bg)}.quiz-card.incorrect{border-color:var(--incorrect-border);background:var(--incorrect-bg)}.q-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}.q-head h3{margin:0;font-size:1.2rem;color:#103f46;line-height:1.5}.q-type{flex:0 0 auto;border-radius:999px;padding:6px 10px;background:#fff0cf;border:1px solid #ffd184;color:#7b4b00;font-weight:900;font-size:.86rem}.options,.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.feature-grid{grid-template-columns:repeat(3,1fr)}button.choice,button.feature-btn,button.select-card,button.flip-card{width:100%;min-height:54px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;color:var(--ink);font-size:1rem;font-weight:800;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}button.choice:hover,button.feature-btn:hover,button.select-card:hover,button.flip-card:hover{transform:translateY(-2px);border-color:#8edce4;background:#f1fbfc}button.selected{border-color:var(--primary);background:#e9f9fb}button:disabled,select:disabled{cursor:not-allowed!important;opacity:.78;transform:none!important}.feature-btn{min-height:96px;text-align:center!important;display:grid;place-items:center;line-height:1.5}.feature-btn .icon{font-size:2rem;display:block;margin-bottom:4px}.flip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.flip-card{min-height:130px!important;text-align:center!important;display:grid;place-items:center;line-height:1.6}.flip-card .front{font-size:2.2rem;display:block;margin-bottom:8px}.flip-card.revealed{background:#fff8e8;border-color:var(--accent)}.match-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.match-item{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px}.match-item label{display:block;font-weight:900;margin-bottom:8px;color:#103f46}select{width:100%;border:2px solid #cfe3e8;border-radius:12px;padding:10px;font-size:1rem;font-weight:800;color:#284c54;background:#fff}.sort-board{display:grid;gap:12px}.sort-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}.sort-label{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;font-weight:900;color:#103f46;line-height:1.5}.sort-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.select-card{text-align:center!important;min-height:48px!important}.feedback{display:none;margin-top:14px;border-radius:16px;padding:13px 15px;line-height:1.65;font-weight:800}.feedback.show{display:block}.feedback.good{background:#dff5e8;color:#146c3b;border:1px solid #95d8b1}.feedback.bad{background:#ffe1e1;color:#a13b3b;border:1px solid #efaaa9}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.btn{border:0;border-radius:15px;padding:12px 16px;font-size:1rem;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn:disabled{opacity:.45;cursor:not-allowed}.check-btn{background:var(--primary);color:#fff}.retry-btn{background:#fff0cf;color:#7b4b00;border:2px solid #ffd184;display:none}.nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px}.nav a{text-decoration:none;border-radius:18px;padding:14px 18px;font-weight:900;display:inline-flex;align-items:center;justify-content:center}.prev{background:#fff;color:var(--primary-dark);border:2px solid #bde7ec}.next{background:var(--primary);color:#fff;pointer-events:none;opacity:.42}.next.unlocked{pointer-events:auto;opacity:1}.unlock-note{margin-top:14px;padding:14px 16px;border-radius:18px;background:#fff8e8;border:1px solid #ffd992;color:#76500b;font-weight:850;line-height:1.6;text-align:center}
+.annotate-card{margin-top:18px;border:2px dashed #bfe4ea;border-radius:24px;background:linear-gradient(180deg,#fbfeff,#eef9fb);padding:20px}.annotate-title{margin:0 0 8px;font-size:1.2rem;color:#103f46}.annotate-intro{margin:0 0 12px;color:var(--muted);font-weight:750;line-height:1.7}.annotate-status{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#e8f8fa;color:#0b6d78;font-weight:900;margin-bottom:14px}.annotate-layout{display:grid;grid-template-columns:1.25fr .95fr;gap:16px;align-items:start}.annotate-stage{position:relative;min-height:390px;border:2px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#ffffff,#f6fbfc);overflow:hidden;padding:16px}.annotate-stage svg{width:100%;height:100%;display:block}.callout-slot{position:absolute;width:min(180px,36%);min-height:56px;border:2px dashed #8edce4;border-radius:16px;background:rgba(255,255,255,.96);color:#4e6a70;font-size:.95rem;font-weight:900;line-height:1.4;padding:10px 12px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:transform .15s,border-color .15s,background .15s,box-shadow .15s}.callout-slot:hover{transform:translateY(-2px);border-color:var(--primary);box-shadow:0 6px 16px rgba(9,75,86,.08)}.callout-slot.filled{border-style:solid;border-color:#28a863;background:#e8f8ee;color:#146c3b;cursor:default}.callout-slot.active-target{border-color:#ffb84d;background:#fff8e8}.slot-head{top:24px;left:18px}.slot-nerve{top:24px;right:18px}.slot-flat{bottom:20px;left:18px}.slot-noskeleton{bottom:20px;right:18px}.tag-bank{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tag-btn{border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 12px;font-size:.98rem;font-weight:900;color:#143f46;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.tag-btn:hover{transform:translateY(-2px);border-color:#8edce4;background:#f1fbfc}.tag-btn.selected{border-color:#ffb84d;background:#fff7e6}.tag-btn.placed{border-color:#95d8b1;background:#e8f8ee;color:#146c3b;cursor:default}.annotate-panel{border:2px solid var(--line);border-radius:22px;background:#fbfeff;padding:16px}.annotate-panel h4{margin:0 0 10px;font-size:1.02rem;color:#103f46}.annotate-tip{margin:0 0 12px;color:#577078;font-weight:700;line-height:1.6}.annotate-feedback{margin-top:14px;border-radius:16px;padding:13px 15px;font-weight:850;line-height:1.7;background:#eef7fa;color:#365961;border:1px solid #cfe3e8}.annotate-feedback.good{background:#e8f8ee;color:#146c3b;border-color:#95d8b1}.annotate-feedback.bad{background:#fff0f0;color:#a13b3b;border-color:#efaaa9}.annotate-feedback.done{background:#e8f8ee;color:#146c3b;border-color:#95d8b1}.annotate-reset{margin-top:12px;background:#fff0cf;color:#7b4b00;border:2px solid #ffd184}.feature-legend{margin-top:12px;padding:12px 14px;border-radius:16px;background:#fff8e8;border:1px solid #ffd992;color:#75500c;font-weight:800;line-height:1.7}.explore-image-wrap{margin:18px auto 0;border:2px solid var(--line);border-radius:22px;background:#fff;padding:14px;text-align:center;box-shadow:0 8px 18px rgba(9,75,86,.08)}.explore-image-wrap img{display:block;width:min(760px,100%);height:auto;margin:0 auto;border-radius:16px;object-fit:contain}.explore-image-caption{margin:10px 0 0;color:#577078;font-weight:850;line-height:1.6}@media(max-width:960px){.annotate-layout{grid-template-columns:1fr}.annotate-stage{min-height:420px}}@media(max-width:620px){.tag-bank{grid-template-columns:1fr}.callout-slot{width:43%;font-size:.86rem;min-height:50px;padding:8px 10px}.slot-head,.slot-nerve{top:14px}.slot-flat,.slot-noskeleton{bottom:14px}.annotate-stage{min-height:430px;padding:10px}}
+
+.animal-img{width:min(310px,92%);height:210px;object-fit:contain;display:block;margin:0 auto;filter:drop-shadow(0 8px 14px rgba(9,75,86,.12))}.animal-img.small{width:54px;height:54px;margin:0 12px 0 0;display:inline-block;vertical-align:middle}.fallback-emoji{display:none;font-size:3.4rem}.choice-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.regen-choice{min-height:185px!important;text-align:center!important;display:grid!important;place-items:center!important;font-size:1.34rem!important;border-color:#e1d8f0!important;background:#fff!important}.regen-choice .choice-icon{font-size:3rem;display:block;margin-bottom:12px}.regen-choice.selected{border-color:#6d32d8!important;background:#f6f0ff!important}.pairing-card{border:2px solid #e1d8f0;background:linear-gradient(180deg,#fbfffc,#fff);border-radius:22px;margin-top:18px;overflow:hidden}.pairing-head{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#f3fff8;border-bottom:2px solid #e1d8f0;padding:18px 22px}.pairing-title{display:flex;align-items:center;gap:14px;font-size:1.18rem;font-weight:900;color:#103f46}.pairing-icon{width:54px;height:54px;border-radius:16px;background:#d8fff1;display:grid;place-items:center;font-size:2rem}.pairing-pill{border-radius:999px;padding:10px 16px;background:#d8fff1;color:#28786e;font-weight:900}.pairing-body{padding:24px;background:#fff}.pairing-instruction{border:2px dashed #c9b5ff;border-radius:20px;background:#f7f1ff;color:#56416f;text-align:center;font-weight:850;line-height:1.8;padding:18px;margin-bottom:20px}.pairing-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.animal-bank,.drop-zones{display:grid;gap:12px}.drag-animal{min-height:92px;border:2px solid #e1d8f0;border-radius:18px;background:#fff;display:flex;align-items:center;padding:14px;font-size:1.12rem;font-weight:900;color:#0f1935;cursor:grab;transition:transform .15s,border-color .15s,background .15s}.drag-animal:hover{transform:translateY(-2px);border-color:#bca9ef;background:#fbf8ff}.drag-animal.selected{border-color:#6d32d8;background:#f6f0ff}.drag-animal.placed{opacity:.55;cursor:default}.drop-zone{min-height:126px;border:2px dashed #9fead9;border-radius:18px;background:#f2fffc;padding:15px;color:#28786e;font-weight:900;transition:border-color .15s,background .15s}.drop-zone[data-zone="parasite"]{border-color:#ee93b6;background:#fff2f7;color:#ad315f}.drop-zone.active{border-color:#ffb84d;background:#fff8e8}.zone-label{display:block;margin-bottom:10px;font-size:1.08rem}.placed-list{display:flex;flex-wrap:wrap;gap:8px}.placed-chip{border-radius:999px;background:#fff;border:1px solid rgba(20,63,70,.18);padding:6px 10px;color:#143f46;font-size:.92rem;font-weight:900}.pairing-feedback{display:none;margin-top:14px;border-radius:16px;padding:13px 15px;line-height:1.65;font-weight:850}.pairing-feedback.show{display:block}.pairing-feedback.good{background:#dff5e8;color:#146c3b;border:1px solid #95d8b1}.pairing-feedback.bad{background:#ffe1e1;color:#a13b3b;border:1px solid #efaaa9}@media(max-width:960px){.choice-cards,.pairing-grid{grid-template-columns:1fr}.pairing-head{align-items:flex-start;flex-direction:column}}@media(max-width:620px){.animal-img{width:min(270px,92%);height:180px}.observe-card{min-height:255px}.observe-card .emoji{min-height:138px}.regen-choice{min-height:140px!important}.pairing-body{padding:16px}.drag-animal{min-height:78px}.animal-img.small{width:44px;height:44px}.pairing-title{font-size:1.02rem}.pairing-pill{align-self:flex-start}}
+@media(max-width:960px){header{grid-template-columns:1fr;text-align:center}.hero-icon{margin:0 auto}.observe-grid,.feature-grid,.match-grid,.flip-grid{grid-template-columns:repeat(2,1fr)}.options,.sort-row{grid-template-columns:1fr}}@media(max-width:620px){.wrap{width:94vw;padding-top:16px}header,section{border-radius:22px}.observe-grid,.feature-grid,.match-grid,.flip-grid{grid-template-columns:1fr}.sort-options{grid-template-columns:1fr}.nav{flex-direction:column}.nav a{width:100%}.q-head{flex-direction:column}.q-type{align-self:flex-start}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">〰️ 薄薄的身體，兩種命運</div>
+        <h1>扁形動物</h1>
+        <p class="lead">觀察渦蟲、絛蟲與吸蟲，找出牠們共同的身體線索：腹背扁平、沒有骨骼，但具有神經。</p>
+      </div>
+      <div class="hero-icon" aria-hidden="true">〰️</div>
+    </header>
+
+    <section>
+      <div class="section-title"><div class="badge">學</div><h2>學習內容</h2></div>
+      <div class="content-text">
+        <p><span class="kw-purple">扁形動物</span>的身體<span class="kw-purple">腹背扁平</span>，<span class="kw-orange">沒有骨骼</span>，但具有<span class="kw-green">神經</span>。</p>
+        <p>有些扁形動物可行<span class="kw-red">斷裂生殖</span>，例如<span class="kw-blue">渦蟲</span>。</p>
+        <p>有些扁形動物會<span class="kw-red">寄生</span>於人體並引起疾病，例如<span class="kw-blue">絛蟲</span>與<span class="kw-blue">吸蟲</span>。</p>
+      </div>
+      <div class="observe-grid">
+        <div class="observe-card"><div class="emoji"><img class="animal-img" src="11.png" alt="渦蟲圖片" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback-emoji">〰️</span></div><strong>渦蟲</strong><span>身體腹背扁平，有些可行斷裂生殖。</span></div>
+        <div class="observe-card"><div class="emoji"><img class="animal-img" src="12.png" alt="絛蟲圖片" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback-emoji">🧵</span></div><strong>絛蟲</strong><span>可寄生於人體，引起疾病。</span></div>
+        <div class="observe-card"><div class="emoji"><img class="animal-img" src="13.png" alt="吸蟲圖片" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback-emoji">🪱</span></div><strong>吸蟲</strong><span>身體扁平，有些會寄生。</span></div>
+      </div>
+
+      <div class="annotate-card">
+        <h3 class="annotate-title">探索：身體特徵標註圖</h3>
+        <p class="annotate-intro">先點選右側的特徵標籤，再點選渦蟲圖周圍的標註框，把正確的特徵放到正確位置。</p>
+        <div class="annotate-status" id="annotateStatus">已完成 0 / 4 個標註</div>
+        <div class="annotate-layout">
+          <div class="annotate-stage" aria-label="渦蟲身體特徵標註圖">
+            <button class="callout-slot slot-head" data-answer="head" type="button">標註頭部特徵</button>
+            <button class="callout-slot slot-nerve" data-answer="nerve" type="button">標註神經特徵</button>
+            <button class="callout-slot slot-flat" data-answer="flat" type="button">標註身體形狀</button>
+            <button class="callout-slot slot-noskeleton" data-answer="noskeleton" type="button">標註骨骼特徵</button>
+            <svg viewBox="0 0 760 420" role="img" aria-label="渦蟲示意圖">
+              <defs>
+                <linearGradient id="wormFill" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#d9f5f8"/>
+                  <stop offset="100%" stop-color="#7dcfd8"/>
+                </linearGradient>
+              </defs>
+              <path d="M115 208 C165 120, 280 88, 405 100 C495 109, 590 138, 660 206 C598 270, 497 314, 376 320 C255 327, 157 286, 115 208 Z" fill="url(#wormFill)" stroke="#0b6d78" stroke-width="8"/>
+              <path d="M197 194 C258 164, 330 152, 431 158 C506 162, 567 178, 620 205" fill="none" stroke="#5fb6c0" stroke-width="5" stroke-linecap="round" opacity=".65"/>
+              <path d="M206 228 C286 246, 385 248, 516 227" fill="none" stroke="#5fb6c0" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+              <path d="M198 183 C242 193, 281 210, 306 238" fill="none" stroke="#4b6f8f" stroke-width="6" stroke-linecap="round"/>
+              <path d="M189 225 C243 220, 282 208, 327 186" fill="none" stroke="#4b6f8f" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="176" cy="191" r="8" fill="#143f46"/>
+              <circle cx="176" cy="222" r="8" fill="#143f46"/>
+              <line x1="210" y1="165" x2="168" y2="122" stroke="#9acfd8" stroke-width="4"/>
+              <line x1="570" y1="185" x2="646" y2="114" stroke="#9acfd8" stroke-width="4"/>
+              <line x1="286" y1="278" x2="208" y2="351" stroke="#9acfd8" stroke-width="4"/>
+              <line x1="531" y1="265" x2="626" y2="336" stroke="#9acfd8" stroke-width="4"/>
+            </svg>
+          </div>
+          <div class="annotate-panel">
+            <h4>請選擇特徵標籤</h4>
+            <p class="annotate-tip">操作方式：先點一個標籤，再點左邊對應的標註框。答錯可以重新選，全部完成後會顯示總結。</p>
+            <div class="tag-bank" id="tagBank">
+              <button class="tag-btn" data-tag="head" type="button">前端感覺較明顯</button>
+              <button class="tag-btn" data-tag="nerve" type="button">具有神經</button>
+              <button class="tag-btn" data-tag="flat" type="button">身體腹背扁平</button>
+              <button class="tag-btn" data-tag="noskeleton" type="button">沒有骨骼</button>
+            </div>
+            <div class="annotate-feedback" id="annotateFeedback">請先點選一個特徵標籤，再到左邊完成標註。</div>
+            <button class="btn annotate-reset" id="annotateReset" type="button">重做標註</button>
+            <div class="feature-legend">小提醒：渦蟲是扁形動物的代表，重點是<strong>腹背扁平</strong>、<strong>沒有骨骼</strong>、<strong>具有神經</strong>，而且前端感覺通常較明顯。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-image-wrap">
+        <img src="222.png" alt="扁形動物身體特徵補充圖" onerror="this.parentElement.style.display='none'">
+        <p class="explore-image-caption">補充觀察圖：搭配上方標註活動，觀察扁形動物的身體特徵。</p>
+      </div>
+
+      <div class="note">觀察重點：看到「腹背扁平、沒有骨骼、可能斷裂生殖或寄生」，就要想到扁形動物門。</div>
+    </section>
+
+    <section>
+      <div class="section-title"><div class="badge">練</div><h2>互動練習</h2></div>
+
+      <div class="quiz-card" data-question="q1">
+        <div class="q-head"><h3>1. 哪一項最符合扁形動物的主要特徵？</h3><span class="q-type">選擇題</span></div>
+        <div class="options" data-randomize="q1">
+          <button class="choice" data-answer="true">身體腹背扁平、沒有骨骼，具有神經</button>
+          <button class="choice" data-answer="false">觸手及身體有刺絲胞，可捕食防禦</button>
+          <button class="choice" data-answer="false">身體柔軟、不分節，有肌肉構成的足</button>
+          <button class="choice" data-answer="false">身體表面有棘，主要用管足運動</button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q2">
+        <div class="q-head"><h3>2. 翻開動物卡，選出所有扁形動物代表。</h3><span class="q-type">翻牌多選</span></div>
+        <div class="flip-grid" data-randomize="q2">
+          <button class="flip-card" data-answer="true"><span><span class="front">〰️</span>渦蟲</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🧵</span>絛蟲</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🪱</span>吸蟲</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🪼</span>水母</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">🐌</span>蝸牛</span></button>
+          <button class="flip-card" data-answer="false"><span><span class="front">⭐</span>海星</span></button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q3">
+        <div class="q-head"><h3>3. 點選所有屬於扁形動物的特徵。</h3><span class="q-type">多選任務</span></div>
+        <div class="feature-grid" data-randomize="q3">
+          <button class="feature-btn" data-answer="true"><span><span class="icon">〰️</span>身體腹背扁平</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">🚫</span>沒有骨骼</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">🧠</span>具有神經</span></button>
+          <button class="feature-btn" data-answer="true"><span><span class="icon">🧵</span>有些會寄生人體</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🐚</span>大多有外殼</span></button>
+          <button class="feature-btn" data-answer="false"><span><span class="icon">🪼</span>觸手有刺絲胞</span></button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q4">
+        <div class="q-head"><h3>4. 將代表動物配對到正確說明。</h3><span class="q-type">下拉式配對</span></div>
+        <div class="match-grid">
+          <div class="match-item"><label for="m1">渦蟲</label><select id="m1" data-answer="可行斷裂生殖"><option value="">請選擇</option></select></div>
+          <div class="match-item"><label for="m2">絛蟲</label><select id="m2" data-answer="可寄生於人體"><option value="">請選擇</option></select></div>
+          <div class="match-item"><label for="m3">吸蟲</label><select id="m3" data-answer="可寄生於人體"><option value="">請選擇</option></select></div>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+
+      <div class="quiz-card" data-question="q5">
+        <div class="q-head"><h3>5. 渦蟲被切成兩半後，會發生什麼事？</h3><span class="q-type">選擇題</span></div>
+        <div class="choice-cards" data-randomize="q5">
+          <button class="choice regen-choice" data-answer="false"><span><span class="choice-icon">💀</span>兩段都會死亡</span></button>
+          <button class="choice regen-choice" data-answer="true"><span><span class="choice-icon">✂️</span>兩段各自再生成完整個體</span></button>
+        </div>
+        <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="quiz-card" data-question="q6">
+        <div class="q-head"><h3>6. 配對挑戰：把動物拖到正確的生活方式。</h3><span class="q-type">拖曳配對</span></div>
+        <div class="pairing-card">
+          <div class="pairing-head">
+            <div class="pairing-title"><span class="pairing-icon">🔗</span>配對挑戰：把動物拖到正確的生活方式</div>
+            <span class="pairing-pill">互動 2</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-instruction">把左側三種動物，拖曳到右側對應的生活方式框中<br><span style="color:#897ba3">行動裝置可先點動物，再點生活方式框</span></div>
+            <div class="pairing-grid">
+              <div class="animal-bank" id="animalBank">
+                <button class="drag-animal" type="button" draggable="true" data-animal="planaria" data-answer="free"><img class="animal-img small" src="11.png" alt="渦蟲圖片" onerror="this.style.display='none'">渦蟲</button>
+                <button class="drag-animal" type="button" draggable="true" data-animal="tapeworm" data-answer="parasite"><img class="animal-img small" src="12.png" alt="絛蟲圖片" onerror="this.style.display='none'">絛蟲</button>
+                <button class="drag-animal" type="button" draggable="true" data-animal="fluke" data-answer="parasite"><img class="animal-img small" src="13.png" alt="吸蟲圖片" onerror="this.style.display='none'">吸蟲</button>
+              </div>
+              <div class="drop-zones">
+                <div class="drop-zone" data-zone="free"><span class="zone-label">🌊 自由生活・可再生</span><div class="placed-list"></div></div>
+                <div class="drop-zone" data-zone="parasite"><span class="zone-label">⚠️ 寄生・可能致病</span><div class="placed-list"></div></div>
+              </div>
+            </div>
+            <div class="pairing-feedback"></div>
+          </div>
+        </div>
+        <div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
+      </div>
+
+      <div class="unlock-note" id="unlockNote">完成並答對本頁所有題目後，才能前往下一頁。</div>
+    </section>
+
+    <nav class="nav" aria-label="頁面導覽"><a class="prev" href="cnidarian.html">← 上一頁</a><a class="next" id="nextLink" href="mollusk.html">下一頁 →</a></nav>
+  </div>
+
+  <script>
+    const state={q1:false,q2:false,q3:false,q4:false,q5:false,q6:false};
+    function shuffleChildren(c){const a=Array.from(c.children);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}a.forEach(x=>c.appendChild(x))}
+    document.querySelectorAll('[data-randomize],.sort-options').forEach(shuffleChildren);
+    const matchOptions=['可行斷裂生殖','可寄生於人體','有刺絲胞','有外殼'];
+    document.querySelectorAll('select').forEach(s=>{[...matchOptions].sort(()=>Math.random()-.5).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;s.appendChild(o)})});
+    function setFeedback(card,ok,msg){const f=card.querySelector('.feedback');card.classList.remove('correct','incorrect');card.classList.add(ok?'correct':'incorrect');f.className=`feedback show ${ok?'good':'bad'}`;f.textContent=msg}
+    function updateUnlock(){if(Object.values(state).every(Boolean)){const n=document.getElementById('nextLink'),u=document.getElementById('unlockNote');n.classList.add('unlocked');u.textContent='全部答對！你可以前往下一頁，認識軟體動物。';u.style.background='#e8f8ee';u.style.borderColor='#95d8b1';u.style.color='#146c3b'}}
+    function lock(card){card.querySelectorAll('button:not(.retry-btn),select').forEach(e=>e.disabled=true);card.querySelector('.check-btn').disabled=true;const retry=card.querySelector('.retry-btn');if(retry)retry.disabled=false}
+    function reset(card){state[card.dataset.question]=false;card.querySelectorAll('button,select').forEach(e=>e.disabled=false);card.querySelector('.check-btn').disabled=true;card.querySelector('.retry-btn').style.display='none';card.classList.remove('correct','incorrect');card.querySelectorAll('.selected').forEach(e=>e.classList.remove('selected'));card.querySelectorAll('.flip-card').forEach(e=>e.classList.remove('revealed'));card.querySelectorAll('select').forEach(s=>s.value='');const f=card.querySelector('.feedback');f.className='feedback';f.textContent=''}
+    function single(card,sel,good,bad){const check=card.querySelector('.check-btn');card.querySelectorAll(sel).forEach(b=>b.onclick=()=>{if(b.disabled)return;card.querySelectorAll(sel).forEach(x=>x.classList.remove('selected'));b.classList.add('selected');check.disabled=false});check.onclick=()=>{const ok=card.querySelector(`${sel}.selected`)?.dataset.answer==='true';state[card.dataset.question]=ok;setFeedback(card,ok,ok?good:bad);lock(card);if(!ok)card.querySelector('.retry-btn').style.display='inline-flex';updateUnlock()}}
+    function flip(card){const check=card.querySelector('.check-btn');card.querySelectorAll('.flip-card').forEach(b=>b.onclick=()=>{if(b.disabled)return;b.classList.toggle('selected');b.classList.add('revealed');check.disabled=card.querySelectorAll('.flip-card.selected').length===0});check.onclick=()=>{const ok=[...card.querySelectorAll('.flip-card')].every(b=>(b.dataset.answer==='true')===b.classList.contains('selected'));state[card.dataset.question]=ok;setFeedback(card,ok,ok?'答對了！渦蟲、絛蟲、吸蟲都是扁形動物代表。':'再試一次：水母、蝸牛、海星不是扁形動物。');lock(card);if(!ok)card.querySelector('.retry-btn').style.display='inline-flex';updateUnlock()}}
+    function multi(card){const check=card.querySelector('.check-btn');card.querySelectorAll('.feature-btn').forEach(b=>b.onclick=()=>{if(b.disabled)return;b.classList.toggle('selected');check.disabled=card.querySelectorAll('.feature-btn.selected').length===0});check.onclick=()=>{const ok=[...card.querySelectorAll('.feature-btn')].every(b=>(b.dataset.answer==='true')===b.classList.contains('selected'));state[card.dataset.question]=ok;setFeedback(card,ok,ok?'答對了！扁形動物身體扁平、沒有骨骼、具有神經，有些會寄生。':'再試一次：外殼和刺絲胞不是扁形動物的主要特徵。');lock(card);if(!ok)card.querySelector('.retry-btn').style.display='inline-flex';updateUnlock()}}
+    function match(card){const check=card.querySelector('.check-btn');card.querySelectorAll('select').forEach(s=>s.onchange=()=>{check.disabled=![...card.querySelectorAll('select')].every(x=>x.value)});check.onclick=()=>{const ok=[...card.querySelectorAll('select')].every(s=>s.value===s.dataset.answer);state[card.dataset.question]=ok;setFeedback(card,ok,ok?'答對了！渦蟲可斷裂生殖；絛蟲和吸蟲可能寄生於人體。':'再配對一次：渦蟲重點是斷裂生殖；絛蟲、吸蟲重點是寄生。');lock(card);if(!ok)card.querySelector('.retry-btn').style.display='inline-flex';updateUnlock()}}
+    function sort(card){const check=card.querySelector('.check-btn');card.querySelectorAll('.sort-row').forEach(r=>r.querySelectorAll('.select-card').forEach(b=>b.onclick=()=>{if(b.disabled)return;r.querySelectorAll('.select-card').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');check.disabled=![...card.querySelectorAll('.sort-row')].every(x=>x.querySelector('.selected'))}));check.onclick=()=>{const ok=[...card.querySelectorAll('.sort-row')].every(r=>r.querySelector('.selected')?.dataset.value===r.dataset.answer);state[card.dataset.question]=ok;setFeedback(card,ok,ok?'答對了！身體扁平、沒有骨骼、可能寄生，都是扁形動物線索。':'再想想：看到腹背扁平和寄生線索，要想到扁形動物門。');lock(card);if(!ok)card.querySelector('.retry-btn').style.display='inline-flex';updateUnlock()}}
+
+    function initAnnotate(){
+      const tagButtons=[...document.querySelectorAll('.tag-btn')];
+      const slots=[...document.querySelectorAll('.callout-slot')];
+      const feedback=document.getElementById('annotateFeedback');
+      const status=document.getElementById('annotateStatus');
+      const resetBtn=document.getElementById('annotateReset');
+      let activeTag=null;
+      let completed=0;
+      function setFeedback(type,text){feedback.className='annotate-feedback '+type;feedback.textContent=text}
+      function updateStatus(){status.textContent=`已完成 ${completed} / 4 個標註`;if(completed===4){status.style.background='#e8f8ee';status.style.color='#146c3b';setFeedback('done','完成標註！渦蟲前端感覺較明顯，身體腹背扁平、沒有骨骼，而且具有神經。')}}
+      tagButtons.forEach(btn=>btn.addEventListener('click',()=>{if(btn.disabled)return;tagButtons.forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');activeTag=btn;slots.filter(s=>!s.disabled).forEach(s=>s.classList.add('active-target'));setFeedback('',`已選擇：「${btn.textContent}」，請點左邊正確的標註框。`)}));
+      slots.forEach(slot=>slot.addEventListener('click',()=>{
+        if(slot.disabled)return;
+        if(!activeTag){setFeedback('bad','請先從右邊選一個特徵標籤，再進行標註。');return}
+        if(activeTag.dataset.tag===slot.dataset.answer){
+          slot.textContent=activeTag.textContent;
+          slot.disabled=true;
+          slot.classList.add('filled');
+          slot.classList.remove('active-target');
+          activeTag.disabled=true;
+          activeTag.classList.remove('selected');
+          activeTag.classList.add('placed');
+          slots.filter(s=>!s.disabled).forEach(s=>s.classList.remove('active-target'));
+          completed+=1;
+          activeTag=null;
+          if(completed<4){setFeedback('good','答對了！繼續完成其他標註。')}
+          updateStatus();
+        }else{
+          setFeedback('bad','這個位置不太對，再看看渦蟲圖和文字提示，重新選擇一次。');
+        }
+      }));
+      resetBtn.addEventListener('click',()=>{
+        activeTag=null;completed=0;
+        status.textContent='已完成 0 / 4 個標註';
+        status.style.background='#e8f8fa';status.style.color='#0b6d78';
+        slots.forEach(slot=>{slot.disabled=false;slot.className=slot.className.replace(/ filled| active-target/g,'');
+          if(slot.classList.contains('slot-head')) slot.textContent='標註頭部特徵';
+          if(slot.classList.contains('slot-nerve')) slot.textContent='標註神經特徵';
+          if(slot.classList.contains('slot-flat')) slot.textContent='標註身體形狀';
+          if(slot.classList.contains('slot-noskeleton')) slot.textContent='標註骨骼特徵';
+        });
+        tagButtons.forEach(btn=>{btn.disabled=false;btn.classList.remove('selected','placed')});
+        setFeedback('','請先點選一個特徵標籤，再到左邊完成標註。');
+      });
+    }
+
+
+    function pairMatch(card){
+      const animals=[...card.querySelectorAll('.drag-animal')];
+      const zones=[...card.querySelectorAll('.drop-zone')];
+      const check=card.querySelector('.check-btn');
+      const feedback=card.querySelector('.pairing-feedback');
+      let active=null;
+      function refreshCheck(){check.disabled=!animals.every(a=>a.dataset.zone)}
+      function placeAnimal(animal,zone){
+        if(animal.disabled)return;
+        animal.dataset.zone=zone.dataset.zone;
+        animal.classList.add('placed');
+        animal.classList.remove('selected');
+        active=null;
+        zones.forEach(z=>z.classList.remove('active'));
+        renderPlacements();
+        refreshCheck();
+      }
+      function renderPlacements(){
+        zones.forEach(z=>z.querySelector('.placed-list').innerHTML='');
+        animals.forEach(a=>{
+          if(!a.dataset.zone)return;
+          const zone=card.querySelector(`.drop-zone[data-zone="${a.dataset.zone}"] .placed-list`);
+          const chip=document.createElement('span');
+          chip.className='placed-chip';
+          chip.textContent=a.textContent.trim();
+          zone.appendChild(chip);
+        });
+      }
+      animals.forEach(a=>{
+        a.addEventListener('click',()=>{if(a.disabled)return;animals.forEach(x=>x.classList.remove('selected'));a.classList.add('selected');active=a;zones.forEach(z=>z.classList.add('active'))});
+        a.addEventListener('dragstart',e=>{if(a.disabled){e.preventDefault();return}e.dataTransfer.setData('text/plain',a.dataset.animal);active=a});
+      });
+      zones.forEach(z=>{
+        z.addEventListener('click',()=>{if(active)placeAnimal(active,z)});
+        z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('active')});
+        z.addEventListener('dragleave',()=>z.classList.remove('active'));
+        z.addEventListener('drop',e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain');const animal=animals.find(a=>a.dataset.animal===id)||active;if(animal)placeAnimal(animal,z)});
+      });
+      check.onclick=()=>{
+        const ok=animals.every(a=>a.dataset.zone===a.dataset.answer);
+        state[card.dataset.question]=ok;
+        card.classList.remove('correct','incorrect');
+        card.classList.add(ok?'correct':'incorrect');
+        feedback.className=`pairing-feedback show ${ok?'good':'bad'}`;
+        feedback.textContent=ok?'配對成功！渦蟲多為自由生活且可再生；絛蟲和吸蟲可寄生並可能致病。':'再試一次：渦蟲對應「自由生活・可再生」；絛蟲、吸蟲對應「寄生・可能致病」。';
+        animals.forEach(a=>a.disabled=true);zones.forEach(z=>z.style.pointerEvents='none');check.disabled=true;
+        if(!ok){const retry=card.querySelector('.retry-btn');retry.style.display='inline-flex';retry.disabled=false;}
+        updateUnlock();
+      };
+      card.querySelector('.retry-btn').onclick=()=>{
+        state[card.dataset.question]=false;active=null;
+        animals.forEach(a=>{a.disabled=false;delete a.dataset.zone;a.classList.remove('selected','placed')});
+        zones.forEach(z=>{z.style.pointerEvents='auto';z.classList.remove('active');z.querySelector('.placed-list').innerHTML=''});
+        card.classList.remove('correct','incorrect');
+        feedback.className='pairing-feedback';feedback.textContent='';
+        check.disabled=true;const retry=card.querySelector('.retry-btn');retry.disabled=false;retry.style.display='none';
+      };
+    }
+
+    document.querySelectorAll('.quiz-card').forEach(c=>{if(c.dataset.question!=='q6')c.querySelector('.retry-btn').onclick=()=>reset(c)});
+    single(document.querySelector('[data-question="q1"]'),'.choice','答對了！扁形動物身體腹背扁平、沒有骨骼，並具有神經。','再想想：刺絲胞、外殼、管足都不是扁形動物的核心線索。');
+    flip(document.querySelector('[data-question="q2"]'));
+    multi(document.querySelector('[data-question="q3"]'));
+    match(document.querySelector('[data-question="q4"]'));
+    single(document.querySelector('[data-question="q5"]'),'.regen-choice','答對了！渦蟲可行斷裂生殖，切成兩段後可能各自再生成完整個體。','再想想：渦蟲具有很強的再生能力。');
+    pairMatch(document.querySelector('[data-question="q6"]'));
+    initAnnotate();
+  </script>
+</body>
+</html>
