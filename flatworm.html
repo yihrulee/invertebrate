@@ -150,32 +150,6 @@
         <div class="feedback"></div><div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
       </div>
 
-      <div class="quiz-card" data-question="q6">
-        <div class="q-head"><h3>6. 配對挑戰：把動物拖到正確的生活方式。</h3><span class="q-type">拖曳配對</span></div>
-        <div class="pairing-card">
-          <div class="pairing-head">
-            <div class="pairing-title"><span class="pairing-icon">🔗</span>配對挑戰：把動物拖到正確的生活方式</div>
-            <span class="pairing-pill">互動 2</span>
-          </div>
-          <div class="pairing-body">
-            <div class="pairing-instruction">把左側三種動物，拖曳到右側對應的生活方式框中<br><span style="color:#897ba3">行動裝置可先點動物，再點生活方式框</span></div>
-            <div class="pairing-grid">
-              <div class="animal-bank" id="animalBank">
-                <button class="drag-animal" type="button" draggable="true" data-animal="planaria" data-answer="free"><img class="animal-img small" src="11.png" alt="渦蟲圖片" onerror="this.style.display='none'">渦蟲</button>
-                <button class="drag-animal" type="button" draggable="true" data-animal="tapeworm" data-answer="parasite"><img class="animal-img small" src="12.png" alt="絛蟲圖片" onerror="this.style.display='none'">絛蟲</button>
-                <button class="drag-animal" type="button" draggable="true" data-animal="fluke" data-answer="parasite"><img class="animal-img small" src="13.png" alt="吸蟲圖片" onerror="this.style.display='none'">吸蟲</button>
-              </div>
-              <div class="drop-zones">
-                <div class="drop-zone" data-zone="free"><span class="zone-label">🌊 自由生活・可再生</span><div class="placed-list"></div></div>
-                <div class="drop-zone" data-zone="parasite"><span class="zone-label">⚠️ 寄生・可能致病</span><div class="placed-list"></div></div>
-              </div>
-            </div>
-            <div class="pairing-feedback"></div>
-          </div>
-        </div>
-        <div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
-      </div>
-
       <div class="unlock-note" id="unlockNote">完成並答對本頁所有題目後，才能前往下一頁。</div>
     </section>
 
@@ -183,7 +157,7 @@
   </div>
 
   <script>
-    const state={q1:false,q2:false,q3:false,q4:false,q5:false,q6:false};
+    const state={q1:false,q2:false,q3:false,q4:false,q5:false};
     function shuffleChildren(c){const a=Array.from(c.children);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}a.forEach(x=>c.appendChild(x))}
     document.querySelectorAll('[data-randomize],.sort-options').forEach(shuffleChildren);
     const matchOptions=['可行斷裂生殖','可寄生於人體','有刺絲胞','有外殼'];
@@ -245,72 +219,12 @@
     }
 
 
-    function pairMatch(card){
-      const animals=[...card.querySelectorAll('.drag-animal')];
-      const zones=[...card.querySelectorAll('.drop-zone')];
-      const check=card.querySelector('.check-btn');
-      const feedback=card.querySelector('.pairing-feedback');
-      let active=null;
-      function refreshCheck(){check.disabled=!animals.every(a=>a.dataset.zone)}
-      function placeAnimal(animal,zone){
-        if(animal.disabled)return;
-        animal.dataset.zone=zone.dataset.zone;
-        animal.classList.add('placed');
-        animal.classList.remove('selected');
-        active=null;
-        zones.forEach(z=>z.classList.remove('active'));
-        renderPlacements();
-        refreshCheck();
-      }
-      function renderPlacements(){
-        zones.forEach(z=>z.querySelector('.placed-list').innerHTML='');
-        animals.forEach(a=>{
-          if(!a.dataset.zone)return;
-          const zone=card.querySelector(`.drop-zone[data-zone="${a.dataset.zone}"] .placed-list`);
-          const chip=document.createElement('span');
-          chip.className='placed-chip';
-          chip.textContent=a.textContent.trim();
-          zone.appendChild(chip);
-        });
-      }
-      animals.forEach(a=>{
-        a.addEventListener('click',()=>{if(a.disabled)return;animals.forEach(x=>x.classList.remove('selected'));a.classList.add('selected');active=a;zones.forEach(z=>z.classList.add('active'))});
-        a.addEventListener('dragstart',e=>{if(a.disabled){e.preventDefault();return}e.dataTransfer.setData('text/plain',a.dataset.animal);active=a});
-      });
-      zones.forEach(z=>{
-        z.addEventListener('click',()=>{if(active)placeAnimal(active,z)});
-        z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('active')});
-        z.addEventListener('dragleave',()=>z.classList.remove('active'));
-        z.addEventListener('drop',e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain');const animal=animals.find(a=>a.dataset.animal===id)||active;if(animal)placeAnimal(animal,z)});
-      });
-      check.onclick=()=>{
-        const ok=animals.every(a=>a.dataset.zone===a.dataset.answer);
-        state[card.dataset.question]=ok;
-        card.classList.remove('correct','incorrect');
-        card.classList.add(ok?'correct':'incorrect');
-        feedback.className=`pairing-feedback show ${ok?'good':'bad'}`;
-        feedback.textContent=ok?'配對成功！渦蟲多為自由生活且可再生；絛蟲和吸蟲可寄生並可能致病。':'再試一次：渦蟲對應「自由生活・可再生」；絛蟲、吸蟲對應「寄生・可能致病」。';
-        animals.forEach(a=>a.disabled=true);zones.forEach(z=>z.style.pointerEvents='none');check.disabled=true;
-        if(!ok){const retry=card.querySelector('.retry-btn');retry.style.display='inline-flex';retry.disabled=false;}
-        updateUnlock();
-      };
-      card.querySelector('.retry-btn').onclick=()=>{
-        state[card.dataset.question]=false;active=null;
-        animals.forEach(a=>{a.disabled=false;delete a.dataset.zone;a.classList.remove('selected','placed')});
-        zones.forEach(z=>{z.style.pointerEvents='auto';z.classList.remove('active');z.querySelector('.placed-list').innerHTML=''});
-        card.classList.remove('correct','incorrect');
-        feedback.className='pairing-feedback';feedback.textContent='';
-        check.disabled=true;const retry=card.querySelector('.retry-btn');retry.disabled=false;retry.style.display='none';
-      };
-    }
-
     document.querySelectorAll('.quiz-card').forEach(c=>{if(c.dataset.question!=='q6')c.querySelector('.retry-btn').onclick=()=>reset(c)});
     single(document.querySelector('[data-question="q1"]'),'.choice','答對了！扁形動物身體腹背扁平、沒有骨骼，並具有神經。','再想想：刺絲胞、外殼、管足都不是扁形動物的核心線索。');
     flip(document.querySelector('[data-question="q2"]'));
     multi(document.querySelector('[data-question="q3"]'));
     match(document.querySelector('[data-question="q4"]'));
     single(document.querySelector('[data-question="q5"]'),'.regen-choice','答對了！渦蟲可行斷裂生殖，切成兩段後可能各自再生成完整個體。','再想想：渦蟲具有很強的再生能力。');
-    pairMatch(document.querySelector('[data-question="q6"]'));
     initAnnotate();
   </script>
 </body>

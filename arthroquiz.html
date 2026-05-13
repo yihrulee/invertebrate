@@ -383,47 +383,10 @@
 
       <div class="quiz-card" data-question="q5">
         <div class="q-head">
-          <h3>5. 將類群配對到正確觀察線索。</h3>
-          <span class="q-type">下拉式配對</span>
-        </div>
-        <div class="match-grid">
-          <div class="match-item"><label for="m1">昆蟲</label><select id="m1" data-answer="頭、胸、腹；三對步足"><option value="">請選擇</option></select></div>
-          <div class="match-item"><label for="m2">蜘蛛</label><select id="m2" data-answer="頭胸部、腹部；四對步足"><option value="">請選擇</option></select></div>
-          <div class="match-item"><label for="m3">蝦、蟹</label><select id="m3" data-answer="五對步足；第一對常為螯足"><option value="">請選擇</option></select></div>
-        </div>
-        <div class="feedback"></div>
-        <div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
-      </div>
-
-      <div class="quiz-card" data-question="q6">
-        <div class="q-head">
-          <h3>6. 根據線索判斷牠是哪一類。</h3>
-          <span class="q-type">點選配對</span>
-        </div>
-        <div class="sort-board">
-          <div class="sort-row" data-answer="昆蟲">
-            <div class="sort-label">身體分頭、胸、腹三部分，大多有三對步足。</div>
-            <div class="sort-options"><button class="select-card" data-value="昆蟲">昆蟲</button><button class="select-card" data-value="蜘蛛">蜘蛛</button><button class="select-card" data-value="蝦蟹">蝦蟹</button></div>
-          </div>
-          <div class="sort-row" data-answer="蜘蛛">
-            <div class="sort-label">身體分為頭胸部與腹部，有四對步足。</div>
-            <div class="sort-options"><button class="select-card" data-value="昆蟲">昆蟲</button><button class="select-card" data-value="蜘蛛">蜘蛛</button><button class="select-card" data-value="蝦蟹">蝦蟹</button></div>
-          </div>
-          <div class="sort-row" data-answer="蝦蟹">
-            <div class="sort-label">多生活於水中，有五對步足，第一對常形成螯足。</div>
-            <div class="sort-options"><button class="select-card" data-value="昆蟲">昆蟲</button><button class="select-card" data-value="蜘蛛">蜘蛛</button><button class="select-card" data-value="蝦蟹">蝦蟹</button></div>
-          </div>
-        </div>
-        <div class="feedback"></div>
-        <div class="actions"><button class="btn check-btn" disabled>檢查答案</button><button class="btn retry-btn">重做本題</button></div>
-      </div>
-
-      <div class="quiz-card" data-question="q7">
-        <div class="q-head">
-          <h3>7. 「只要沒有翅膀，就不可能是昆蟲。」這句話正確嗎？</h3>
+          <h3>5. 「只要沒有翅膀，就不可能是昆蟲。」這句話正確嗎？</h3>
           <span class="q-type">情境判斷</span>
         </div>
-        <div class="options" data-randomize="q7">
+        <div class="options" data-randomize="q5">
           <button class="choice" data-answer="false">正確，所有昆蟲一定都有兩對翅膀。</button>
           <button class="choice" data-answer="true">不正確，有些昆蟲沒有翅膀，例如衣魚、頭蝨和螞蟻中的工蟻。</button>
           <button class="choice" data-answer="false">正確，沒有翅膀就一定是蜘蛛。</button>
@@ -443,7 +406,7 @@
   </div>
 
   <script>
-    const state = { q1: false, q2: false, q3: false, q4: false, q5: false, q6: false, q7: false };
+    const state = { q1: false, q2: false, q3: false, q4: false, q5: false };
 
     function shuffleChildren(container) {
       const items = Array.from(container.children);
@@ -664,10 +627,8 @@
       '再想想：頭胸部與腹部、四對步足是蜘蛛；五對步足與螯足是蝦蟹。'
     );
     handleMultiSelect(document.querySelector('[data-question="q4"]'));
-    handleMatch(document.querySelector('[data-question="q5"]'));
-    handleSort(document.querySelector('[data-question="q6"]'));
     handleSingleChoice(
-      document.querySelector('[data-question="q7"]'),
+      document.querySelector('[data-question="q5"]'),
       '答對了！有些昆蟲沒有翅膀，所以不能只靠有沒有翅膀判斷。',
       '再想想：課本提到有些昆蟲沒有翅膀，例如衣魚、頭蝨和螞蟻中的工蟻。'
     );

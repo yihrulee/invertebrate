@@ -909,53 +909,12 @@
         </div>
       </div>
 
-      <div class="quiz-card" data-question="q5">
+<div class="quiz-card" data-question="q5">
         <div class="q-head">
-          <h3>5. 根據線索判斷可能是哪一類軟體動物。</h3>
-          <span class="q-type">點選配對</span>
-        </div>
-        <div class="sort-board">
-          <div class="sort-row" data-answer="蝸牛或文蛤">
-            <div class="sort-label">有明顯外殼保護身體，但活動能力較受限制。</div>
-            <div class="sort-options"><button class="select-card" data-value="蝸牛或文蛤">蝸牛或文蛤</button><button class="select-card" data-value="章魚或烏賊">章魚或烏賊</button><button class="select-card" data-value="水母或海星">水母或海星</button></div>
-          </div>
-          <div class="sort-row" data-answer="章魚或烏賊">
-            <div class="sort-label">外殼退化或消失，因此能較快速、靈活地移動。</div>
-            <div class="sort-options"><button class="select-card" data-value="蝸牛或文蛤">蝸牛或文蛤</button><button class="select-card" data-value="章魚或烏賊">章魚或烏賊</button><button class="select-card" data-value="水母或海星">水母或海星</button></div>
-          </div>
-        </div>
-        <div class="feedback"></div>
-        <div class="actions">
-          <button class="btn check-btn" disabled>檢查答案</button>
-          <button class="btn retry-btn">重做本題</button>
-        </div>
-      </div>
-
-      <div class="quiz-card" data-question="q6">
-        <div class="q-head">
-          <h3>6. 如果某動物身體柔軟、不分節，且具有保護身體的外殼，牠最可能屬於哪一門？</h3>
+          <h3>5. 章魚雖然沒有外殼，但牠仍屬於軟體動物，原因是？</h3>
           <span class="q-type">情境判斷</span>
         </div>
-        <div class="options" data-randomize="q6">
-          <button class="choice" data-answer="true">軟體動物門</button>
-          <button class="choice" data-answer="false">節肢動物門</button>
-          <button class="choice" data-answer="false">刺絲胞動物門</button>
-          <button class="choice" data-answer="false">棘皮動物門</button>
-        </div>
-        <div class="feedback"></div>
-        <div class="actions">
-          <button class="btn check-btn" disabled>檢查答案</button>
-          <button class="btn retry-btn">重做本題</button>
-        </div>
-      </div>
-
-
-      <div class="quiz-card" data-question="q7">
-        <div class="q-head">
-          <h3>7. 章魚雖然沒有外殼，但牠仍屬於軟體動物，原因是？</h3>
-          <span class="q-type">情境判斷</span>
-        </div>
-        <div class="options" data-randomize="q7">
+        <div class="options" data-randomize="q5">
           <button class="choice" data-answer="false">章魚生活在海洋中，和蝸牛一樣都是水生動物</button>
           <button class="choice" data-answer="true">章魚的身體仍是柔軟、不分節的，且具有肌肉足（腕）</button>
           <button class="choice" data-answer="false">章魚和蝸牛一樣都有觸角</button>
@@ -1055,7 +1014,7 @@
     });
 
 
-    const state = { q1: false, q2: false, q3: false, q4: false, q5: false, q6: false, q7: false };
+    const state = { q1: false, q2: false, q3: false, q4: false, q5: false };
 
     function shuffleChildren(container) {
       const items = Array.from(container.children);
@@ -1251,14 +1210,8 @@
     handleFlip(document.querySelector('[data-question="q2"]'));
     handleMatch(document.querySelector('[data-question="q3"]'));
     handleMultiSelect(document.querySelector('[data-question="q4"]'));
-    handleSort(document.querySelector('[data-question="q5"]'));
     handleSingleChoice(
-      document.querySelector('[data-question="q6"]'),
-      '答對了！身體柔軟、不分節，而且可能有外殼，是軟體動物的重要線索。',
-      '再想想：題目中的「身體柔軟、不分節、外殼」指向軟體動物門。'
-    );
-    handleSingleChoice(
-      document.querySelector('[data-question="q7"]'),
+      document.querySelector('[data-question="q5"]'),
       '答對了！章魚雖然外殼退化消失，但仍具有柔軟、不分節的身體，也有由肌肉足演化而來的腕。',
       '再想想：分類重點不是生活環境或外殼，而是身體柔軟、不分節，且具有肌肉足。'
     );

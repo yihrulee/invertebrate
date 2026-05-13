@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>無脊椎動物分類英雄榜擂台賽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dora-blue: #0096D6;
+            --dora-red: #E3001B;
+            --dora-yellow: #FFD900;
+            --pure-white: #FFFFFF;
+            --bg-color: #E8F6FC;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+
+        .btn-action {
+            background-color: var(--dora-blue);
+            color: white;
+            border-radius: 16px;
+            font-weight: 900;
+            box-shadow: 0 6px 0 #0077AA;
+            transition: all 0.1s;
+            cursor: pointer;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-action:active { transform: translateY(6px); box-shadow: 0 0 0 #0077AA; }
+        
+        .btn-red {
+            background-color: var(--dora-red);
+            color: white;
+            border-radius: 999px;
+            font-weight: 900;
+            box-shadow: 0 6px 0 #B30015;
+            transition: all 0.1s;
+            cursor: pointer;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-red:active { transform: translateY(6px); box-shadow: 0 0 0 #B30015; }
+
+        .btn-gray {
+            background-color: #9CA3AF;
+            color: white;
+            border-radius: 16px;
+            font-weight: 900;
+            box-shadow: 0 6px 0 #6B7280;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+        .btn-gray:active { transform: translateY(6px); box-shadow: 0 0 0 #6B7280; }
+
+        .category-btn {
+            background-color: white;
+            border: 4px solid var(--dora-blue);
+            color: var(--dora-blue);
+            border-radius: 20px;
+            padding: 14px 8px;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 6px 0 var(--dora-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.35;
+            min-height: 96px;
+        }
+        .category-btn:hover { background-color: #f0f9ff; }
+        .category-btn:active { transform: translateY(6px); box-shadow: 0 0 0 var(--dora-blue); }
+        .category-btn .sub-text { font-size: 17px; }
+
+        .track-area {
+            width: 100%;
+            height: 250px;
+            background: #e2e8f0;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+            border: 4px dashed #cbd5e1;
+        }
+        
+        .runner {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border: 4px solid var(--dora-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 140px;
+            z-index: 10;
+        }
+        .runner img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .danger-zone {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: repeating-linear-gradient(
+                45deg,
+                #ffcccc,
+                #ffcccc 15px,
+                #ff9999 15px,
+                #ff9999 30px
+            );
+            border-left: 6px solid var(--dora-red);
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, -50%, 0); }
+            20%, 80% { transform: translate3d(4px, -50%, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, -50%, 0); }
+            40%, 60% { transform: translate3d(8px, -50%, 0); }
+        }
+        .main-shake { animation: mainShake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes mainShake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+
+        .pop-out { animation: popOut 0.3s ease-out forwards; }
+        @keyframes popOut {
+            0% { transform: translateY(-50%) scale(1); opacity: 1; }
+            100% { transform: translateY(-100%) scale(1.5); opacity: 0; }
+        }
+
+        .pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50;
+            align-items: center; justify-content: center; backdrop-filter: blur(4px);
+        }
+        .overlay-content {
+            background: white; padding: 40px 30px; border-radius: 32px; text-align: center;
+            max-width: 500px; width: 90%; border: 6px solid var(--dora-blue);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        .leaderboard-table th { background-color: var(--dora-blue); color: white; padding: 12px; }
+        .leaderboard-table td { padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center; font-weight: bold; }
+        .leaderboard-table tr:nth-child(even) td { background-color: #f8fafc; }
+        .rank-1 { color: #D4AF37; font-size: 1.3em; }
+        .rank-2 { color: #C0C0C0; font-size: 1.2em; }
+        .rank-3 { color: #CD7F32; font-size: 1.2em; }
+
+        .input-field {
+            width: 100%; padding: 16px; border-radius: 16px; border: 3px solid #cbd5e1;
+            font-size: 20px; font-weight: bold; margin-bottom: 16px; text-align: center;
+            transition: all 0.2s;
+        }
+        .input-field:focus { border-color: var(--dora-blue); outline: none; box-shadow: 0 0 0 4px rgba(0,150,214,0.2); }
+
+        @media (max-width: 640px) {
+            .category-btn { font-size: 16px; min-height: 88px; }
+            .category-btn .sub-text { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center gap-4">
+            <div class="font-black text-[var(--dora-blue)] text-xl md:text-3xl flex items-center gap-3">
+                <i class="fa-solid fa-person-running"></i>
+                無脊椎動物分類英雄榜擂台賽
+            </div>
+            <div class="text-base font-bold text-gray-500 bg-gray-100 px-4 py-2 rounded-full whitespace-nowrap">
+                英雄榜擂台賽
+            </div>
+        </div>
+    </header>
+
+    <main id="main-game-area" class="max-w-5xl mx-auto px-4 py-6">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border-4 border-[var(--dora-blue)] mb-6 flex justify-between items-center pop-in">
+            <div class="text-2xl md:text-3xl font-black text-[var(--dora-blue)]">
+                分數: <span id="score" class="text-[var(--dora-red)]">0</span>
+            </div>
+            <div class="text-2xl md:text-3xl font-black text-[var(--dora-blue)]">
+                生命: <span id="lives" class="text-3xl">❤️❤️❤️</span>
+            </div>
+        </div>
+
+        <div class="track-area mb-8">
+            <div class="danger-zone"><i class="fa-solid fa-skull-crossbones text-white text-2xl"></i></div>
+            
+            <div id="runner" class="runner hidden">
+                <img id="runner-img" src="" alt="生物圖片">
+                <div id="runner-name" class="font-black text-xl text-[var(--dora-blue)] text-center w-full truncate"></div>
+            </div>
+            
+            <div id="start-hint" class="absolute inset-0 flex items-center justify-center text-gray-400 font-black text-3xl tracking-wider text-center px-4">
+                等待遊戲開始...
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pb-16">
+            <button class="category-btn" onclick="game.checkAnswer('刺絲胞動物門')">
+                <div class="text-4xl mb-2">🪼</div>
+                <span>刺絲胞動物門</span>
+            </button>
+            <button class="category-btn" onclick="game.checkAnswer('扁形動物門')">
+                <div class="text-4xl mb-2">🪱</div>
+                <span>扁形動物門</span>
+            </button>
+            <button class="category-btn" onclick="game.checkAnswer('軟體動物門')">
+                <div class="text-4xl mb-2">🐚</div>
+                <span>軟體動物門</span>
+            </button>
+            <button class="category-btn" onclick="game.checkAnswer('環節動物門')">
+                <div class="text-4xl mb-2">🪱</div>
+                <span>環節動物門</span>
+            </button>
+            <button class="category-btn" onclick="game.checkAnswer('節肢動物門')">
+                <div class="text-4xl mb-2">🦀</div>
+                <span>節肢動物門</span>
+            </button>
+            <button class="category-btn" onclick="game.checkAnswer('棘皮動物門')">
+                <div class="text-4xl mb-2">⭐</div>
+                <span>棘皮動物門</span>
+            </button>
+        </div>
+
+    </main>
+
+    <div id="gameOverlay" class="overlay">
+        <div class="overlay-content pop-in">
+            <div id="overlay-header">
+                <i class="fa-solid fa-bolt text-6xl text-[var(--dora-yellow)] mb-4"></i>
+                <h1 id="overlayTitle" class="text-4xl md:text-5xl font-black mb-4 text-[var(--dora-blue)]">無脊椎動物分類英雄榜擂台賽</h1>
+                <p id="overlayDesc" class="text-xl font-bold text-gray-600 mb-8 leading-relaxed">
+                    愈快答對，分數愈高！<br>
+                    <span class="text-[var(--dora-red)]">判斷牠屬於哪一個無脊椎動物門！</span><br><span class='text-sm text-gray-500'>每位學生只保留最高分進入英雄榜。</span><br><span class="text-sm text-gray-500">每位學生只保留最高分進入英雄榜。</span>
+                </p>
+            </div>
+
+            <div id="result-message" class="hidden mb-6"></div>
+
+            <div id="login-form" class="hidden">
+                <p class="text-2xl font-black text-[var(--dora-blue)] mb-6">要登錄最高分到英雄榜嗎？</p>
+                <div class="flex gap-3 mb-2">
+                    <input type="text" id="stu-class" class="input-field w-1/2" placeholder="班級 (例:701)">
+                    <input type="text" id="stu-seat" class="input-field w-1/2" placeholder="座號 (例:05)">
+                </div>
+            </div>
+
+            <div id="leaderboard-section" class="hidden mb-6">
+                <h3 class="text-2xl font-black text-[var(--dora-blue)] mb-4"><i class="fa-solid fa-trophy text-[var(--dora-yellow)]"></i> 英雄榜</h3>
+                <div id="leaderboard-loading" class="text-gray-500 font-bold py-4">成績傳送中，請稍候...</div>
+                <div class="overflow-x-auto rounded-xl border-2 border-[var(--dora-blue)]">
+                    <table id="leaderboard-table" class="leaderboard-table w-full text-base hidden">
+                        <thead>
+                            <tr><th>名次</th><th>班級</th><th>座號</th><th>分數</th></tr>
+                        </thead>
+                        <tbody id="leaderboard-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="overlayBtnContainer" class="flex flex-col gap-4 mt-6">
+                <button class="btn-action w-full py-5 text-3xl" onclick="game.start()">開始挑戰！</button>
+            </div>
+            
+            <div id="afterLeaderboardActions" class="hidden flex flex-col gap-4 mt-4">
+                <button id="btn-return" type="button" onclick="game.start()" class="btn-red w-full py-5 text-2xl">
+                    <i class="fa-solid fa-rotate-right"></i> 再玩一次
+                </button>
+                <a id="btn-challenge-home" href="challenge.html" class="btn-action w-full py-5 text-2xl">
+                    <i class="fa-solid fa-door-open"></i> 回到進階挑戰入口
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwrbAvdP9xkpvu95xpU73xwg6JEg2EvsLSnyqs-SRiWr1yAvfmlBV5SG502_vmOtXPs/exec";
+
+        const organisms = [
+            { name: "水母", img: "7.jpg", category: "刺絲胞動物門" },
+            { name: "水螅", img: "8.jpg", category: "刺絲胞動物門" },
+            { name: "珊瑚", img: "9.jpg", category: "刺絲胞動物門" },
+            { name: "海葵", img: "10.jpg", category: "刺絲胞動物門" },
+            { name: "渦蟲", img: "11.png", category: "扁形動物門" },
+            { name: "中華肝吸蟲", img: "12.png", category: "扁形動物門" },
+            { name: "絛蟲", img: "13.png", category: "扁形動物門" },
+            { name: "蝸牛", img: "14.png", category: "軟體動物門" },
+            { name: "文蛤", img: "15.png", category: "軟體動物門" },
+            { name: "章魚", img: "16.png", category: "軟體動物門" },
+            { name: "烏賊", img: "17.png", category: "軟體動物門" },
+            { name: "蚯蚓", img: "18.png", category: "環節動物門" },
+            { name: "水蛭", img: "19.png", category: "環節動物門" },
+            { name: "沙蠶", img: "20.png", category: "環節動物門" },
+            { name: "天牛", img: "23.png", category: "節肢動物門" },
+            { name: "蜘蛛", img: "24.png", category: "節肢動物門" },
+            { name: "龍蝦", img: "25.png", category: "節肢動物門" },
+            { name: "螃蟹", img: "26.png", category: "節肢動物門" },
+            { name: "海星", img: "36.png", category: "棘皮動物門" },
+            { name: "海參", img: "37.png", category: "棘皮動物門" },
+            { name: "海膽", img: "38.png", category: "棘皮動物門" },
+            { name: "螞蟻", img: "40.png", category: "節肢動物門" },
+            { name: "衣魚", img: "41.png", category: "節肢動物門" }
+        ];
+
+        const BASE_SCORE = 5000;
+        const MIN_SCORE = 500;
+        const PENALTY = 1000;
+
+        const game = {
+            score: 0,
+            lives: 3,
+            currentIndex: 0,
+            items: [],
+            timer: null,
+            position: 0,
+            speed: 0.35,
+            isPlaying: false,
+            
+            init: function() {
+                const overlay = document.getElementById('gameOverlay');
+                overlay.style.display = 'flex';
+                this.resetOverlayToStart();
+            },
+            
+            resetOverlayToStart: function() {
+                document.getElementById('overlay-header').classList.remove('hidden');
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('leaderboard-section').classList.add('hidden');
+                document.getElementById('afterLeaderboardActions').classList.add('hidden');
+                document.getElementById('result-message').classList.add('hidden');
+                document.getElementById('result-message').innerHTML = '';
+                document.getElementById('leaderboard-loading').classList.remove('hidden');
+                document.getElementById('leaderboard-loading').innerText = '成績傳送中，請稍候...';
+                document.getElementById('leaderboard-table').classList.add('hidden');
+                document.getElementById('leaderboard-body').innerHTML = '';
+                document.getElementById('stu-class').value = '';
+                document.getElementById('stu-seat').value = '';
+                
+                document.getElementById('overlayTitle').innerText = "無脊椎動物分類英雄榜擂台賽";
+                document.getElementById('overlayTitle').style.color = "var(--dora-blue)";
+                document.getElementById('overlayDesc').innerHTML = "愈快答對，分數愈高！<br><span class='text-sm text-[var(--dora-red)]'>判斷牠屬於哪一個無脊椎動物門！</span>";
+                
+                const btnContainer = document.getElementById('overlayBtnContainer');
+                btnContainer.innerHTML = '';
+                btnContainer.classList.remove('hidden');
+                
+                const startBtn = document.createElement('button');
+                startBtn.className = 'btn-action w-full py-5 text-3xl';
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 開始挑戰！';
+                startBtn.onclick = () => this.start();
+                btnContainer.appendChild(startBtn);
+            },
+            
+            start: function() {
+                document.getElementById('gameOverlay').style.display = 'none';
+                document.getElementById('start-hint').style.display = 'none';
+                document.getElementById('result-message').innerHTML = '';
+                document.getElementById('result-message').classList.add('hidden');
+                
+                this.score = 0;
+                this.lives = 3;
+                this.currentIndex = 0;
+                this.isPlaying = true;
+                
+                this.items = [...organisms].sort(() => Math.random() - 0.5);
+                
+                this.updateStats();
+                this.spawn();
+            },
+            
+            spawn: function() {
+                if (this.currentIndex >= this.items.length) {
+                    this.end(true);
+                    return;
+                }
+                
+                this.position = 0;
+                this.speed = 0.35 + (this.currentIndex * 0.015);
+                
+                const currentItem = this.items[this.currentIndex];
+                const runner = document.getElementById('runner');
+                const runnerImg = document.getElementById('runner-img');
+                
+                runnerImg.src = currentItem.img;
+                runnerImg.onerror = function() {
+                    this.src = `https://placehold.co/120x120/4A90E2/FFF?text=${encodeURIComponent(currentItem.name)}`;
+                };
+                document.getElementById('runner-name').innerText = currentItem.name;
+                
+                runner.style.left = '0%';
+                runner.style.display = 'flex';
+                runner.classList.remove('hidden', 'pop-out', 'shake');
+                
+                clearInterval(this.timer);
+                this.timer = setInterval(() => this.tick(), 20);
+            },
+            
+            tick: function() {
+                if (!this.isPlaying) return;
+                
+                this.position += this.speed;
+                const runner = document.getElementById('runner');
+                runner.style.left = `calc(${this.position}% - ${this.position * 1.4}px)`;
+                
+                if (this.position >= 100) {
+                    this.handleWrong();
+                }
+            },
+            
+            checkAnswer: function(category) {
+                if (!this.isPlaying) return;
+                
+                const currentItem = this.items[this.currentIndex];
+                
+                if (category === currentItem.category) {
+                    this.isPlaying = false;
+                    clearInterval(this.timer);
+                    
+                    let points = Math.floor(BASE_SCORE - (this.position * 45));
+                    if (points < MIN_SCORE) points = MIN_SCORE;
+                    
+                    this.score += points;
+                    this.updateStats();
+                    
+                    const runner = document.getElementById('runner');
+                    runner.classList.add('pop-out');
+                    
+                    setTimeout(() => {
+                        runner.style.display = 'none';
+                        this.currentIndex++;
+                        this.isPlaying = true;
+                        this.spawn();
+                    }, 300);
+                } else {
+                    this.score -= PENALTY;
+                    if (this.score < 0) this.score = 0;
+                    this.updateStats();
+                    
+                    document.getElementById('main-game-area').classList.add('main-shake');
+                    setTimeout(() => document.getElementById('main-game-area').classList.remove('main-shake'), 400);
+                    
+                    this.handleWrong();
+                }
+            },
+            
+            handleWrong: function() {
+                this.isPlaying = false;
+                clearInterval(this.timer);
+                
+                this.lives--;
+                this.updateStats();
+                
+                const runner = document.getElementById('runner');
+                runner.classList.add('shake');
+                
+                setTimeout(() => {
+                    runner.classList.remove('shake');
+                    if (this.lives <= 0) {
+                        this.end(false);
+                    } else {
+                        runner.style.display = 'none';
+                        this.currentIndex++;
+                        this.isPlaying = true;
+                        this.spawn();
+                    }
+                }, 400);
+            },
+            
+            updateStats: function() {
+                document.getElementById('score').innerText = this.score;
+                document.getElementById('lives').innerText = '❤️'.repeat(this.lives) + '🖤'.repeat(3 - this.lives);
+            },
+            
+            end: function(isWin) {
+                this.isPlaying = false;
+                clearInterval(this.timer);
+                
+                document.getElementById('runner').style.display = 'none';
+                document.getElementById('start-hint').style.display = 'flex';
+                
+                const overlay = document.getElementById('gameOverlay');
+                const title = document.getElementById('overlayTitle');
+                const desc = document.getElementById('overlayDesc');
+                const btnContainer = document.getElementById('overlayBtnContainer');
+                const resultBox = document.getElementById('result-message');
+                
+                overlay.style.display = 'flex';
+                btnContainer.innerHTML = '';
+                resultBox.innerHTML = '';
+                resultBox.classList.add('hidden');
+                
+                if (isWin || this.currentIndex > 0) {
+                    document.getElementById('overlay-header').classList.add('hidden');
+                    document.getElementById('login-form').classList.remove('hidden');
+                    
+                    const msg = isWin ? '太強了！過關！' : '挑戰結束！';
+                    resultBox.innerHTML = `
+                        <div class="mb-6">
+                            <h2 class="text-4xl font-black text-[var(--dora-red)] mb-2">${msg}</h2>
+                            <p class="text-2xl font-bold text-gray-600">最終得分：<span class="text-4xl text-[var(--dora-blue)]">${this.score}</span></p>
+                            <p class="text-base font-bold text-gray-500 mt-3">英雄榜會以班級＋座號辨識學生，每位學生只保留最高分。</p>
+                        </div>`;
+                    resultBox.classList.remove('hidden');
+                    
+                    const submitBtn = document.createElement('button');
+                    submitBtn.className = 'btn-action w-full py-4 text-2xl';
+                    submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 登錄分數';
+                    submitBtn.onclick = () => submitToGAS();
+                    
+                    const skipBtn = document.createElement('button');
+                    skipBtn.className = 'btn-gray w-full py-4 text-2xl';
+                    skipBtn.innerHTML = '不登錄，顯示選項';
+                    skipBtn.onclick = () => {
+                        document.getElementById('login-form').classList.add('hidden');
+                        btnContainer.classList.add('hidden');
+                        document.getElementById('afterLeaderboardActions').classList.remove('hidden');
+                    };
+                    
+                    btnContainer.classList.remove('hidden');
+                    btnContainer.appendChild(submitBtn);
+                    btnContainer.appendChild(skipBtn);
+                } else {
+                    document.getElementById('overlay-header').classList.remove('hidden');
+                    document.getElementById('login-form').classList.add('hidden');
+                    title.innerText = "挑戰失敗";
+                    title.style.color = "#EF5350";
+                    desc.innerText = "別氣餒，無脊椎動物分類需要多加練習，再試一次吧！";
+                    
+                    const retryBtn = document.createElement('button');
+                    retryBtn.className = 'btn-action w-full py-4 text-2xl';
+                    retryBtn.innerText = "重新開始";
+                    retryBtn.onclick = () => this.start();
+                    btnContainer.classList.remove('hidden');
+                    btnContainer.appendChild(retryBtn);
+                }
+            }
+        };
+
+        async function submitToGAS() {
+            const cls = document.getElementById('stu-class').value.trim();
+            const seat = document.getElementById('stu-seat').value.trim();
+            
+            if (!cls || !seat) {
+                alert("請輸入班級與座號喔！");
+                return;
+            }
+            
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('overlayBtnContainer').classList.add('hidden');
+            document.getElementById('leaderboard-section').classList.remove('hidden');
+            document.getElementById('afterLeaderboardActions').classList.add('hidden');
+            document.getElementById('leaderboard-loading').classList.remove('hidden');
+            document.getElementById('leaderboard-table').classList.add('hidden');
+
+            const requestUrl = `${GAS_URL}?class=${encodeURIComponent(cls)}&seat=${encodeURIComponent(seat)}&score=${game.score}`;
+
+            try {
+                const response = await fetch(requestUrl);
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.leaderboard)) {
+                    renderLeaderboard(result.leaderboard);
+                } else {
+                    throw new Error(result.message || '英雄榜資料格式錯誤');
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                document.getElementById('leaderboard-loading').innerHTML = `
+                    <div class="text-red-500 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> 成績已送出，但無法載入即時英雄榜。</div>
+                    <div class="text-sm">可能原因：Apps Script 權限未完全開放或網路阻擋。</div>
+                `;
+                document.getElementById('afterLeaderboardActions').classList.remove('hidden');
+            }
+        }
+
+        function normalizeRow(row) {
+            const cls = String(row.class || row['班級'] || '').trim();
+            const seat = String(row.seat || row.num || row['座號'] || '').trim();
+            const score = Number(row.score || row['分數'] || 0);
+            return { cls, seat, score, raw: row };
+        }
+
+        function getHighestScoreRows(data) {
+            const bestMap = new Map();
+
+            data.forEach((row, order) => {
+                const normalized = normalizeRow(row);
+                if (!normalized.cls || !normalized.seat) return;
+
+                const key = `${normalized.cls}-${normalized.seat}`;
+                const previous = bestMap.get(key);
+
+                if (!previous || normalized.score > previous.score || (normalized.score === previous.score && order < previous.order)) {
+                    bestMap.set(key, { ...normalized, order });
+                }
+            });
+
+            return Array.from(bestMap.values()).sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.order - b.order;
+            });
+        }
+
+        function renderLeaderboard(data) {
+            document.getElementById('leaderboard-loading').classList.add('hidden');
+            document.getElementById('leaderboard-table').classList.remove('hidden');
+            document.getElementById('afterLeaderboardActions').classList.remove('hidden');
+            
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = '';
+            
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-gray-500">目前尚無排名資料</td></tr>';
+                return;
+            }
+            
+            const highestRows = getHighestScoreRows(data);
+            const top10 = highestRows.slice(0, 10);
+            const currentClass = document.getElementById('stu-class').value.trim();
+            const currentSeat = document.getElementById('stu-seat').value.trim();
+            
+            if (top10.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-gray-500">目前尚無排名資料</td></tr>';
+                return;
+            }
+            
+            top10.forEach((row, index) => {
+                let rankClass = '';
+                let rankIcon = index + 1;
+                if (index === 0) { rankClass = 'rank-1'; rankIcon = '<i class="fa-solid fa-crown"></i> 1'; }
+                else if (index === 1) { rankClass = 'rank-2'; rankIcon = '2'; }
+                else if (index === 2) { rankClass = 'rank-3'; rankIcon = '3'; }
+
+                const rowClass = (row.cls === currentClass && row.seat === currentSeat) 
+                                 ? 'bg-yellow-100 text-[var(--dora-red)]' : '';
+
+                tbody.innerHTML += `
+                    <tr class="${rowClass}">
+                        <td class="${rankClass}">${rankIcon}</td>
+                        <td>${row.cls || '-'}</td>
+                        <td>${row.seat || '-'}</td>
+                        <td class="text-[var(--dora-red)]">${row.score || '0'}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.onload = () => {
+            game.init();
+        };
+    </script>
+</body>
+</html>

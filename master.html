@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>生物版我不是機器人：分類風雲榜</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dora-blue: #0096D6;
+            --dora-red: #E3001B;
+            --dora-yellow: #FFD900;
+            --pure-white: #FFFFFF;
+            --bg-color: #E8F6FC;
+            --success: #16a34a;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+        .btn-action {
+            background-color: var(--dora-blue);
+            color: white;
+            border-radius: 16px;
+            font-weight: 900;
+            box-shadow: 0 6px 0 #0077AA;
+            transition: all 0.1s;
+            cursor: pointer;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-action:active { transform: translateY(6px); box-shadow: 0 0 0 #0077AA; }
+        .btn-red {
+            background-color: var(--dora-red);
+            color: white;
+            border-radius: 999px;
+            font-weight: 900;
+            box-shadow: 0 6px 0 #B30015;
+            transition: all 0.1s;
+            cursor: pointer;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-red:active { transform: translateY(6px); box-shadow: 0 0 0 #B30015; }
+        .btn-gray {
+            background-color: #9CA3AF;
+            color: white;
+            border-radius: 16px;
+            font-weight: 900;
+            box-shadow: 0 6px 0 #6B7280;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+        .btn-gray:active { transform: translateY(6px); box-shadow: 0 0 0 #6B7280; }
+        .captcha-card {
+            background: white;
+            border-radius: 28px;
+            border: 5px solid var(--dora-blue);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+        .grid-tile {
+            position: relative;
+            background: white;
+            border: 4px solid #cbd5e1;
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.12s;
+            min-height: 132px;
+            box-shadow: 0 6px 0 #cbd5e1;
+        }
+        .grid-tile:active { transform: translateY(6px); box-shadow: 0 0 0 #cbd5e1; }
+        .grid-tile.selected {
+            border-color: var(--dora-blue);
+            background: #e0f2fe;
+            box-shadow: 0 6px 0 #0077AA;
+        }
+        .grid-tile.correct-flash {
+            border-color: var(--success);
+            box-shadow: 0 6px 0 #15803d;
+        }
+        .grid-tile.wrong-flash {
+            border-color: var(--dora-red);
+            box-shadow: 0 6px 0 #B30015;
+        }
+        .grid-tile img {
+            width: 100%;
+            height: 102px;
+            object-fit: contain;
+            background: #f8fafc;
+            padding: 4px;
+            display: block;
+        }
+        .tile-name {
+            font-weight: 900;
+            color: #1f2937;
+            font-size: 18px;
+            text-align: center;
+            padding: 6px 4px 8px;
+            line-height: 1.15;
+        }
+        .checkmark {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            background: var(--dora-blue);
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+        }
+        .grid-tile.selected .checkmark { display: flex; }
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+        .pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .overlay-content {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 32px;
+            text-align: center;
+            max-width: 540px;
+            width: 92%;
+            border: 6px solid var(--dora-blue);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .leaderboard-table th { background-color: var(--dora-blue); color: white; padding: 12px; }
+        .leaderboard-table td { padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center; font-weight: bold; }
+        .leaderboard-table tr:nth-child(even) td { background-color: #f8fafc; }
+        .rank-1 { color: #D4AF37; font-size: 1.3em; }
+        .rank-2 { color: #C0C0C0; font-size: 1.2em; }
+        .rank-3 { color: #CD7F32; font-size: 1.2em; }
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: 3px solid #cbd5e1;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .input-field:focus { border-color: var(--dora-blue); outline: none; box-shadow: 0 0 0 4px rgba(0,150,214,0.2); }
+
+        .timer-health-box {
+            width: 150px;
+            min-width: 150px;
+            background: #fef9c3;
+            border: 4px solid var(--dora-yellow);
+            border-radius: 22px;
+            padding: 16px 12px;
+            text-align: center;
+            box-shadow: 0 6px 0 #eab308;
+        }
+        .timer-health-label {
+            font-weight: 900;
+            color: #6b7280;
+            font-size: 22px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        .timer-health-track {
+            width: 100%;
+            height: 28px;
+            background: white;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 3px solid #fecaca;
+        }
+        .timer-health-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #fecaca, #ef4444, #b91c1c);
+            border-radius: 999px;
+            transition: width 0.05s linear;
+            box-shadow: inset 0 -4px 8px rgba(0,0,0,0.18);
+        }
+        .timer-health-number {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .grid-tile { min-height: 112px; border-radius: 14px; }
+            .grid-tile img { height: 82px; }
+            .tile-name { font-size: 15px; }
+            .overlay-content { padding: 28px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center gap-4">
+            <div class="font-black text-[var(--dora-blue)] text-xl md:text-3xl flex items-center gap-3">
+                <i class="fa-solid fa-table-cells-large"></i>
+                生物版我不是機器人：分類風雲榜
+            </div>
+            <div class="text-base font-bold text-gray-500 bg-gray-100 px-4 py-2 rounded-full whitespace-nowrap">
+                九宮格驗證賽
+            </div>
+        </div>
+    </header>
+
+    <main id="main-game-area" class="max-w-5xl mx-auto px-4 py-6">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border-4 border-[var(--dora-blue)] mb-6 grid grid-cols-3 gap-2 items-center pop-in">
+            <div class="text-xl md:text-3xl font-black text-[var(--dora-blue)] text-center">
+                分數<br class="md:hidden"><span id="score" class="text-[var(--dora-red)]">0</span>
+            </div>
+            <div class="text-xl md:text-3xl font-black text-[var(--dora-blue)] text-center">
+                題目<br class="md:hidden"><span id="roundInfo" class="text-[var(--dora-red)]">1/10</span>
+            </div>
+            <div class="text-xl md:text-3xl font-black text-[var(--dora-blue)] text-center">
+                生命<br class="md:hidden"><span id="lives" class="text-2xl md:text-3xl">❤️❤️❤️</span>
+            </div>
+        </div>
+
+        <section class="captcha-card p-4 md:p-6 mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-5">
+                <div class="text-center md:text-left">
+                    <div class="text-gray-500 font-black text-lg">請選出所有屬於</div>
+                    <div id="targetCategory" class="text-3xl md:text-5xl font-black text-[var(--dora-blue)] leading-tight">刺絲胞動物門</div>
+                    <div class="text-gray-500 font-bold mt-2">的生物。每題只有 3 個正確答案，點滿 3 個會自動判定；血量流完會扣 1 顆愛。</div>
+                </div>
+                <div class="timer-health-box">
+                    <div class="timer-health-label">血量</div>
+                    <div class="timer-health-track">
+                        <div id="timerHealthFill" class="timer-health-fill"></div>
+                    </div>
+                    <div id="timerText" class="timer-health-number">20</div>
+                </div>
+            </div>
+
+            <div id="grid" class="grid grid-cols-3 gap-3 md:gap-4 mb-6"></div>
+
+            <div class="text-center text-lg md:text-xl font-black text-gray-500 bg-gray-100 rounded-2xl py-4 px-3">
+                <i class="fa-solid fa-hand-pointer text-[var(--dora-blue)]"></i>
+                請點選 3 個答案；點滿 3 個後自動計分進入下一題
+            </div>
+        </section>
+
+        <div id="feedback" class="hidden text-center text-2xl font-black bg-white border-4 rounded-3xl p-5 shadow-sm"></div>
+    </main>
+
+    <div id="gameOverlay" class="overlay">
+        <div class="overlay-content pop-in">
+            <div id="overlay-header">
+                <i class="fa-solid fa-robot text-6xl text-[var(--dora-yellow)] mb-4"></i>
+                <h1 id="overlayTitle" class="text-4xl md:text-5xl font-black mb-4 text-[var(--dora-blue)]">生物版我不是機器人：分類風雲榜</h1>
+                <p id="overlayDesc" class="text-xl font-bold text-gray-600 mb-8 leading-relaxed">
+                    每題九宮格中只有 3 個正確答案！<br>
+                    <span class="text-sm text-[var(--dora-red)]">點選 3 個生物後會自動判定，並立刻進入下一題。</span><br>
+                    <span class="text-sm text-gray-500">每位學生只保留最高分進入風雲榜。</span>
+                </p>
+            </div>
+
+            <div id="result-message" class="hidden mb-6"></div>
+
+            <div id="login-form" class="hidden">
+                <p class="text-2xl font-black text-[var(--dora-blue)] mb-6">要登錄最高分到風雲榜嗎？</p>
+                <div class="flex gap-3 mb-2">
+                    <input type="text" id="stu-class" class="input-field w-1/2" placeholder="班級 (例:701)">
+                    <input type="text" id="stu-seat" class="input-field w-1/2" placeholder="座號 (例:05)">
+                </div>
+            </div>
+
+            <div id="leaderboard-section" class="hidden mb-6">
+                <h3 class="text-2xl font-black text-[var(--dora-blue)] mb-4"><i class="fa-solid fa-trophy text-[var(--dora-yellow)]"></i> 分類風雲榜</h3>
+                <div id="leaderboard-loading" class="text-gray-500 font-bold py-4">成績傳送中，請稍候...</div>
+                <div class="overflow-x-auto rounded-xl border-2 border-[var(--dora-blue)]">
+                    <table id="leaderboard-table" class="leaderboard-table w-full text-base hidden">
+                        <thead>
+                            <tr><th>名次</th><th>班級</th><th>座號</th><th>分數</th></tr>
+                        </thead>
+                        <tbody id="leaderboard-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="overlayBtnContainer" class="flex flex-col gap-4 mt-6">
+                <button class="btn-action w-full py-5 text-3xl" onclick="game.start()">開始挑戰！</button>
+            </div>
+            
+            <div id="afterLeaderboardActions" class="hidden flex flex-col gap-4 mt-4">
+                <button id="btn-return" type="button" onclick="game.start()" class="btn-red w-full py-5 text-2xl">
+                    <i class="fa-solid fa-rotate-right"></i> 再玩一次
+                </button>
+                <a id="btn-challenge-home" href="challenge.html" class="btn-action w-full py-5 text-2xl">
+                    <i class="fa-solid fa-door-open"></i> 回到進階挑戰入口
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzsQ_HRJBDe8YzqJcmDJT6nseue0JI7jYwPVHYueJyhvfBBAWn6JtyJ2WGuXFRvCxvR/exec";
+        const GAME_NAME = "生物版我不是機器人：分類風雲榜";
+
+        const organisms = [
+            { name: "水母", img: "7.jpg", category: "刺絲胞動物門" },
+            { name: "水螅", img: "8.jpg", category: "刺絲胞動物門" },
+            { name: "珊瑚", img: "9.jpg", category: "刺絲胞動物門" },
+            { name: "海葵", img: "10.jpg", category: "刺絲胞動物門" },
+            { name: "渦蟲", img: "11.png", category: "扁形動物門" },
+            { name: "中華肝吸蟲", img: "12.png", category: "扁形動物門" },
+            { name: "絛蟲", img: "13.png", category: "扁形動物門" },
+            { name: "蝸牛", img: "14.png", category: "軟體動物門" },
+            { name: "文蛤", img: "15.png", category: "軟體動物門" },
+            { name: "章魚", img: "16.png", category: "軟體動物門" },
+            { name: "烏賊", img: "17.png", category: "軟體動物門" },
+            { name: "蚯蚓", img: "18.png", category: "環節動物門" },
+            { name: "水蛭", img: "19.png", category: "環節動物門" },
+            { name: "沙蠶", img: "20.png", category: "環節動物門" },
+            { name: "天牛", img: "23.png", category: "節肢動物門" },
+            { name: "蜘蛛", img: "24.png", category: "節肢動物門" },
+            { name: "龍蝦", img: "25.png", category: "節肢動物門" },
+            { name: "螃蟹", img: "26.png", category: "節肢動物門" },
+            { name: "海星", img: "36.png", category: "棘皮動物門" },
+            { name: "海參", img: "37.png", category: "棘皮動物門" },
+            { name: "海膽", img: "38.png", category: "棘皮動物門" },
+            { name: "螞蟻", img: "40.png", category: "節肢動物門" },
+            { name: "衣魚", img: "41.png", category: "節肢動物門" }
+        ];
+
+        const categories = ["刺絲胞動物門", "扁形動物門", "軟體動物門", "環節動物門", "節肢動物門", "棘皮動物門"];
+        const TOTAL_ROUNDS = 15;
+        const START_TIME = 20;
+        const BASE_SCORE = 5000;
+        const MIN_SCORE = 500;
+        const PENALTY = 1000;
+        const REQUIRED_SELECTIONS = 3;
+        const NEXT_ROUND_DELAY = 700;
+
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function sample(array, count) {
+            return shuffle(array).slice(0, count);
+        }
+
+        const game = {
+            score: 0,
+            lives: 3,
+            round: 1,
+            currentCategory: '',
+            currentTiles: [],
+            selectedIndexes: new Set(),
+            timer: null,
+            timeLeft: START_TIME,
+            timerStartMs: 0,
+            timerDurationMs: START_TIME * 1000,
+            elapsedPercent: 0,
+            locked: false,
+
+            init: function() {
+                document.getElementById('gameOverlay').style.display = 'flex';
+                this.resetOverlayToStart();
+            },
+
+            resetOverlayToStart: function() {
+                document.getElementById('overlay-header').classList.remove('hidden');
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('leaderboard-section').classList.add('hidden');
+                document.getElementById('afterLeaderboardActions').classList.add('hidden');
+                document.getElementById('result-message').classList.add('hidden');
+                document.getElementById('result-message').innerHTML = '';
+                document.getElementById('leaderboard-loading').classList.remove('hidden');
+                document.getElementById('leaderboard-loading').innerText = '成績傳送中，請稍候...';
+                document.getElementById('leaderboard-table').classList.add('hidden');
+                document.getElementById('leaderboard-body').innerHTML = '';
+                document.getElementById('stu-class').value = '';
+                document.getElementById('stu-seat').value = '';
+                document.getElementById('overlayTitle').innerText = GAME_NAME;
+                document.getElementById('overlayTitle').style.color = "var(--dora-blue)";
+                document.getElementById('overlayDesc').innerHTML = "每題九宮格中只有 3 個正確答案！<br><span class='text-sm text-[var(--dora-red)]'>點選 3 個生物後會自動判定，並立刻進入下一題。</span><br><span class='text-sm text-gray-500'>每位學生只保留最高分進入風雲榜。</span>";
+                const btnContainer = document.getElementById('overlayBtnContainer');
+                btnContainer.innerHTML = '';
+                btnContainer.classList.remove('hidden');
+                const startBtn = document.createElement('button');
+                startBtn.className = 'btn-action w-full py-5 text-3xl';
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 開始挑戰！';
+                startBtn.onclick = () => this.start();
+                btnContainer.appendChild(startBtn);
+            },
+
+            start: function() {
+                clearInterval(this.timer);
+                document.getElementById('gameOverlay').style.display = 'none';
+                document.getElementById('feedback').classList.add('hidden');
+                this.score = 0;
+                this.lives = 3;
+                this.round = 1;
+                this.locked = false;
+                this.updateStats();
+                this.newRound();
+            },
+
+            newRound: function() {
+                if (this.round > TOTAL_ROUNDS || this.lives <= 0) {
+                    this.end();
+                    return;
+                }
+                this.locked = false;
+                this.selectedIndexes = new Set();
+                this.timeLeft = START_TIME;
+                this.updateTimerHealth();
+                document.getElementById('feedback').classList.add('hidden');
+
+                this.currentCategory = categories[Math.floor(Math.random() * categories.length)];
+                document.getElementById('targetCategory').innerText = this.currentCategory;
+
+                const correctPool = organisms.filter(item => item.category === this.currentCategory);
+                const wrongPool = organisms.filter(item => item.category !== this.currentCategory);
+                const correctItems = sample(correctPool, REQUIRED_SELECTIONS);
+                const wrongItems = sample(wrongPool, 9 - correctItems.length);
+                this.currentTiles = shuffle([...correctItems, ...wrongItems]);
+                this.renderGrid();
+                this.updateStats();
+                this.startTimer();
+            },
+
+            renderGrid: function() {
+                const grid = document.getElementById('grid');
+                grid.innerHTML = '';
+                this.currentTiles.forEach((item, index) => {
+                    const tile = document.createElement('button');
+                    tile.type = 'button';
+                    tile.className = 'grid-tile';
+                    tile.onclick = () => this.toggleTile(index);
+                    tile.innerHTML = `
+                        <img src="${item.img}" alt="${item.name}" onerror="this.src='https://placehold.co/200x140/4A90E2/FFF?text=${encodeURIComponent(item.name)}'">
+                        <div class="tile-name">${item.name}</div>
+                        <div class="checkmark"><i class="fa-solid fa-check"></i></div>
+                    `;
+                    grid.appendChild(tile);
+                });
+            },
+
+            updateTimerHealth: function(percentLeft = 100) {
+                const fill = document.getElementById('timerHealthFill');
+                const safePercent = Math.max(0, Math.min(100, percentLeft));
+                if (fill) fill.style.width = safePercent + '%';
+            },
+
+            startTimer: function() {
+                clearInterval(this.timer);
+                this.timerStartMs = Date.now();
+                this.timerDurationMs = START_TIME * 1000;
+                this.updateTimerHealth(100);
+                this.timer = setInterval(() => {
+                    if (this.locked) return;
+
+                    const elapsedMs = Date.now() - this.timerStartMs;
+                    const remainingMs = Math.max(0, this.timerDurationMs - elapsedMs);
+                    const percentLeft = (remainingMs / this.timerDurationMs) * 100;
+                    this.elapsedPercent = 100 - percentLeft;
+                    this.timeLeft = Math.ceil(remainingMs / 1000);
+                    this.updateTimerHealth(percentLeft);
+
+                    if (remainingMs <= 0) {
+                        this.verifyAnswer(true);
+                    }
+                }, 50);
+            },
+
+            toggleTile: function(index) {
+                if (this.locked) return;
+                if (this.selectedIndexes.has(index)) {
+                    this.selectedIndexes.delete(index);
+                } else {
+                    if (this.selectedIndexes.size >= REQUIRED_SELECTIONS) return;
+                    this.selectedIndexes.add(index);
+                }
+                const tile = document.querySelectorAll('.grid-tile')[index];
+                tile.classList.toggle('selected');
+
+                if (this.selectedIndexes.size === REQUIRED_SELECTIONS) {
+                    setTimeout(() => this.verifyAnswer(false), 120);
+                }
+            },
+
+            clearSelection: function() {
+                if (this.locked) return;
+                this.selectedIndexes.clear();
+                document.querySelectorAll('.grid-tile').forEach(tile => tile.classList.remove('selected'));
+            },
+
+            verifyAnswer: function(isTimeout = false) {
+                if (this.locked) return;
+                this.locked = true;
+                clearInterval(this.timer);
+
+                const correctIndexes = new Set();
+                this.currentTiles.forEach((item, index) => {
+                    if (item.category === this.currentCategory) correctIndexes.add(index);
+                });
+
+                let missed = 0;
+                let extra = 0;
+                correctIndexes.forEach(index => {
+                    if (!this.selectedIndexes.has(index)) missed++;
+                });
+                this.selectedIndexes.forEach(index => {
+                    if (!correctIndexes.has(index)) extra++;
+                });
+
+                const totalErrors = missed + extra + (isTimeout ? 1 : 0);
+                const tiles = document.querySelectorAll('.grid-tile');
+                tiles.forEach((tile, index) => {
+                    if (correctIndexes.has(index)) tile.classList.add('correct-flash');
+                    if (this.selectedIndexes.has(index) && !correctIndexes.has(index)) tile.classList.add('wrong-flash');
+                });
+
+                const feedback = document.getElementById('feedback');
+                feedback.classList.remove('hidden', 'border-green-500', 'border-red-500', 'text-green-600', 'text-red-600');
+
+                if (totalErrors === 0) {
+                    let gained = Math.floor(BASE_SCORE - (this.elapsedPercent * 45));
+                    if (gained < MIN_SCORE) gained = MIN_SCORE;
+                    this.score += gained;
+                    feedback.classList.add('border-green-500', 'text-green-600');
+                    feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> 答對！+${gained} 分`;
+                } else {
+                    this.lives--;
+                    const penalty = isTimeout ? 0 : PENALTY;
+                    this.score = Math.max(0, this.score - penalty);
+                    document.getElementById('main-game-area').classList.add('shake');
+                    setTimeout(() => document.getElementById('main-game-area').classList.remove('shake'), 400);
+                    feedback.classList.add('border-red-500', 'text-red-600');
+                    const timeoutText = isTimeout ? '血量歸零！扣 1 顆愛' : '答錯！扣 1 顆愛，-1000 分';
+                    feedback.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${timeoutText}`;
+                }
+
+                this.updateStats();
+                setTimeout(() => {
+                    this.round++;
+                    this.newRound();
+                }, NEXT_ROUND_DELAY);
+            },
+
+            updateStats: function() {
+                document.getElementById('score').innerText = this.score;
+                document.getElementById('roundInfo').innerText = `${Math.min(this.round, TOTAL_ROUNDS)}/${TOTAL_ROUNDS}`;
+                document.getElementById('lives').innerText = '❤️'.repeat(this.lives) + '🖤'.repeat(3 - this.lives);
+            },
+
+            end: function() {
+                clearInterval(this.timer);
+                this.locked = true;
+                const overlay = document.getElementById('gameOverlay');
+                const btnContainer = document.getElementById('overlayBtnContainer');
+                const resultBox = document.getElementById('result-message');
+                overlay.style.display = 'flex';
+                document.getElementById('overlay-header').classList.add('hidden');
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('leaderboard-section').classList.add('hidden');
+                document.getElementById('afterLeaderboardActions').classList.add('hidden');
+                resultBox.innerHTML = `
+                    <div class="mb-6">
+                        <h2 class="text-4xl font-black text-[var(--dora-red)] mb-2">挑戰結束！</h2>
+                        <p class="text-2xl font-bold text-gray-600">最終得分：<span class="text-4xl text-[var(--dora-blue)]">${this.score}</span></p>
+                        <p class="text-base font-bold text-gray-500 mt-3">風雲榜會以班級＋座號辨識學生，每位學生只保留最高分。</p>
+                    </div>`;
+                resultBox.classList.remove('hidden');
+                btnContainer.innerHTML = '';
+                const submitBtn = document.createElement('button');
+                submitBtn.className = 'btn-action w-full py-4 text-2xl';
+                submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 登錄分數並查看風雲榜';
+                submitBtn.onclick = () => submitToGAS();
+                const skipBtn = document.createElement('button');
+                skipBtn.className = 'btn-gray w-full py-4 text-2xl';
+                skipBtn.innerHTML = '不登錄，顯示選項';
+                skipBtn.onclick = () => {
+                    document.getElementById('login-form').classList.add('hidden');
+                    btnContainer.classList.add('hidden');
+                    document.getElementById('afterLeaderboardActions').classList.remove('hidden');
+                };
+                btnContainer.classList.remove('hidden');
+                btnContainer.appendChild(submitBtn);
+                btnContainer.appendChild(skipBtn);
+            }
+        };
+
+        async function submitToGAS() {
+            const cls = document.getElementById('stu-class').value.trim();
+            const seat = document.getElementById('stu-seat').value.trim();
+            if (!cls || !seat) {
+                alert("請輸入班級與座號喔！");
+                return;
+            }
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('overlayBtnContainer').classList.add('hidden');
+            document.getElementById('leaderboard-section').classList.remove('hidden');
+            document.getElementById('afterLeaderboardActions').classList.add('hidden');
+            document.getElementById('leaderboard-loading').classList.remove('hidden');
+            document.getElementById('leaderboard-table').classList.add('hidden');
+
+            const requestUrl = `${GAS_URL}?class=${encodeURIComponent(cls)}&seat=${encodeURIComponent(seat)}&score=${game.score}&game=${encodeURIComponent(GAME_NAME)}`;
+            try {
+                const response = await fetch(requestUrl);
+                const result = await response.json();
+                if (result.success && Array.isArray(result.leaderboard)) {
+                    renderLeaderboard(result.leaderboard);
+                } else {
+                    throw new Error(result.message || '風雲榜資料格式錯誤');
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                document.getElementById('leaderboard-loading').innerHTML = `
+                    <div class="text-red-500 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> 成績已送出，但無法載入即時風雲榜。</div>
+                    <div class="text-sm">可能原因：Apps Script 權限未完全開放、網址未更新或網路阻擋。</div>
+                `;
+                document.getElementById('afterLeaderboardActions').classList.remove('hidden');
+            }
+        }
+
+        function normalizeRow(row) {
+            const cls = String(row.class || row['班級'] || '').trim();
+            const seat = String(row.seat || row.num || row['座號'] || '').trim();
+            const score = Number(row.score || row['分數'] || 0);
+            return { cls, seat, score, raw: row };
+        }
+
+        function getHighestScoreRows(data) {
+            const bestMap = new Map();
+            data.forEach((row, order) => {
+                const normalized = normalizeRow(row);
+                if (!normalized.cls || !normalized.seat) return;
+                const key = `${normalized.cls}-${normalized.seat}`;
+                const previous = bestMap.get(key);
+                if (!previous || normalized.score > previous.score || (normalized.score === previous.score && order < previous.order)) {
+                    bestMap.set(key, { ...normalized, order });
+                }
+            });
+            return Array.from(bestMap.values()).sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.order - b.order;
+            });
+        }
+
+        function renderLeaderboard(data) {
+            document.getElementById('leaderboard-loading').classList.add('hidden');
+            document.getElementById('leaderboard-table').classList.remove('hidden');
+            document.getElementById('afterLeaderboardActions').classList.remove('hidden');
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = '';
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-gray-500">目前尚無排名資料</td></tr>';
+                return;
+            }
+            const highestRows = getHighestScoreRows(data);
+            const top10 = highestRows.slice(0, 10);
+            const currentClass = document.getElementById('stu-class').value.trim();
+            const currentSeat = document.getElementById('stu-seat').value.trim();
+            if (top10.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-gray-500">目前尚無排名資料</td></tr>';
+                return;
+            }
+            top10.forEach((row, index) => {
+                let rankClass = '';
+                let rankIcon = index + 1;
+                if (index === 0) { rankClass = 'rank-1'; rankIcon = '<i class="fa-solid fa-crown"></i> 1'; }
+                else if (index === 1) { rankClass = 'rank-2'; rankIcon = '2'; }
+                else if (index === 2) { rankClass = 'rank-3'; rankIcon = '3'; }
+                const rowClass = (row.cls === currentClass && row.seat === currentSeat) ? 'bg-yellow-100 text-[var(--dora-red)]' : '';
+                tbody.innerHTML += `
+                    <tr class="${rowClass}">
+                        <td class="${rankClass}">${rankIcon}</td>
+                        <td>${row.cls || '-'}</td>
+                        <td>${row.seat || '-'}</td>
+                        <td class="text-[var(--dora-red)]">${row.score || '0'}</td>
+                    </tr>`;
+            });
+        }
+
+        window.onload = () => game.init();
+    </script>
+</body>
+</html>
