@@ -481,7 +481,7 @@
       </div>
       <div class="content-text">
         <p>動物界的生物大多具有幾個共同特徵：牠們是<span class="kw-blue">多細胞生物</span>，細胞<span class="kw-red">不具細胞壁</span>，也<span class="kw-red">沒有葉綠體</span>，通常以<span class="kw-orange">攝食其他生物</span>維生。</p>
-        <p>觀察動物時，不能只看牠可不可愛或顏色漂不漂亮，更重要的是看牠的<span class="kw-green">身體構造</span>、<span class="kw-green">細胞分工</span>與<span class="kw-green">身體複雜程度</span>。這些線索都可以作為分類依據。</p>
+        <p>觀察動物時，不能只看牠可不可愛或顏色漂不漂亮，更重要的是看牠的<span class="kw-green">身體構造</span>、<span class="kw-green">細胞分工</span>與<span class="kw-green">身體結構的複雜程度</span>。這些線索都可以作為分類依據。</p>
         <p>例如蟹和螺沒有脊椎骨，但可能有<span class="kw-orange">外骨骼</span>或<span class="kw-orange">外殼</span>保護身體；蛙和虎有從頸部延伸到尾端的<span class="kw-blue">脊椎骨</span>，因此屬於脊椎動物。</p>
       </div>
 
@@ -524,7 +524,7 @@
         </div>
         <div class="tf-list">
           <div class="tf-row" data-answer="true">
-            <p>動物的身體構造與複雜程度可以作為分類依據。</p>
+            <p>動物的身體結構與複雜程度可以作為分類依據。</p>
             <button data-value="true">是</button>
             <button data-value="false">否</button>
           </div>
@@ -553,7 +553,7 @@
         </div>
         <div class="flip-grid" data-randomize="q3">
           <button class="flip-card" data-answer="true"><span><span class="front">🦴</span>有沒有脊椎骨</span></button>
-          <button class="flip-card" data-answer="true"><span><span class="front">🧩</span>身體構造複雜程度</span></button>
+          <button class="flip-card" data-answer="true"><span><span class="front">🧩</span>身體結構的複雜程度</span></button>
           <button class="flip-card" data-answer="true"><span><span class="front">🔬</span>細胞分工情形</span></button>
           <button class="flip-card" data-answer="false"><span><span class="front">🎨</span>今天心情喜歡的顏色</span></button>
           <button class="flip-card" data-answer="false"><span><span class="front">📛</span>名字筆畫多不多</span></button>
@@ -586,7 +586,7 @@
           </div>
           <div class="match-item">
             <label for="m3">分類依據</label>
-            <select id="m3" data-answer="身體結構與複雜程度">
+            <select id="m3" data-answer="身體結構的複雜程度">
               <option value="">請選擇</option>
             </select>
           </div>
@@ -624,7 +624,7 @@
     const matchOptions = [
       '沒有脊椎骨，但有外骨骼或外殼',
       '具有脊椎骨',
-      '身體結構與複雜程度',
+      '身體結構的複雜程度',
       '只依照顏色分類'
     ];
 
@@ -760,7 +760,7 @@
         const selects = Array.from(card.querySelectorAll('select'));
         const ok = selects.every(select => select.value === select.dataset.answer);
         state[card.dataset.question] = ok;
-        setFeedback(card, ok, ok ? '答對了！蟹、螺沒有脊椎骨；蛙、虎有脊椎骨；分類時要看身體結構與複雜程度。' : '再配對一次：蟹、螺重點是沒有脊椎骨但有外骨骼或外殼；蛙、虎重點是有脊椎骨。');
+        setFeedback(card, ok, ok ? '答對了！蟹、螺沒有脊椎骨；蛙、虎有脊椎骨；分類時要看身體結構的複雜程度。' : '再配對一次：蟹、螺重點是沒有脊椎骨但有外骨骼或外殼；蛙、虎重點是有脊椎骨。');
         lockQuestion(card);
         if (!ok) card.querySelector('.retry-btn').style.display = 'inline-flex';
         updateUnlock();
