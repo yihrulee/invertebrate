@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>脊椎動物學習評量</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #eef8fb;
+    --card: #ffffff;
+    --primary: #1296a3;
+    --primary-dark: #0b6d78;
+    --accent: #ffb84d;
+    --ink: #143f46;
+    --muted: #577078;
+    --line: #d8e9ee;
+    --soft: #f4fbfd;
+    --correct-bg: #e8f8ee;
+    --correct-border: #28a863;
+    --incorrect-bg: #fff0f0;
+    --incorrect-border: #e35d5d;
+    --shadow: 0 12px 30px rgba(9,75,86,0.14);
+    --radius: 24px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255,184,77,0.22), transparent 28rem),
+      radial-gradient(circle at 90% 10%, rgba(18,150,163,0.18), transparent 30rem),
+      var(--bg);
+    min-height: 100vh;
+    padding: 28px 0 56px;
+  }
+  .wrap { width: min(820px, 92vw); margin: 0 auto; }
+
+  /* ── Header ── */
+  header {
+    background: rgba(255,255,255,0.93);
+    border: 2px solid rgba(255,255,255,.85);
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    padding: clamp(22px,4vw,40px);
+    display: flex; gap: 22px; align-items: center;
+    margin-bottom: 22px;
+  }
+  .hero-icon {
+    width: 90px; height: 90px; border-radius: 28px; flex: 0 0 auto;
+    background: linear-gradient(145deg,#e8fbfd,#fff6df);
+    display: grid; place-items: center; font-size: 3.2rem;
+    box-shadow: inset 0 0 0 6px rgba(255,255,255,.55), 0 8px 18px rgba(9,75,86,0.12);
+  }
+  .header-text h1 { font-size: clamp(1.6rem,4vw,2.4rem); line-height: 1.2; color: #103f46; }
+  .header-text p { color: var(--muted); font-size: 1rem; margin-top: 6px; font-weight: 700; }
+
+  /* ── Info fields ── */
+  .info-card {
+    background: rgba(255,255,255,0.93);
+    border: 2px solid rgba(255,255,255,.85);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 26px 30px;
+    margin-bottom: 22px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .info-field { flex: 1 1 160px; display: flex; flex-direction: column; gap: 6px; }
+  .info-field label { font-size: 0.88rem; font-weight: 900; color: var(--primary-dark); letter-spacing: .05em; }
+  .info-field input {
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: var(--soft);
+    color: var(--ink);
+    transition: border-color .2s;
+    outline: none;
+  }
+  .info-field input:focus { border-color: var(--primary); background: #fff; }
+
+  /* ── Question card ── */
+  .q-card {
+    background: rgba(255,255,255,0.93);
+    border: 2px solid rgba(255,255,255,.85);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 30px;
+    margin-bottom: 18px;
+    transition: border-color .3s;
+  }
+  .q-card.answered { border-color: var(--primary); }
+  .q-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--primary); color: #fff; font-weight: 900; font-size: .95rem;
+    margin-bottom: 12px; flex: 0 0 auto;
+  }
+  .q-stem {
+    font-size: 1.08rem; font-weight: 700; line-height: 1.75;
+    color: #1a4f58; margin-bottom: 16px;
+  }
+  .q-context {
+    background: #f0fafc; border-left: 4px solid var(--primary);
+    border-radius: 0 12px 12px 0;
+    padding: 10px 16px; margin-bottom: 14px;
+    font-size: .97rem; line-height: 1.7; color: #33626b;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-label {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; border-radius: 14px;
+    border: 2px solid var(--line);
+    cursor: pointer; font-size: 1rem; line-height: 1.5;
+    transition: background .18s, border-color .18s;
+    user-select: none;
+  }
+  .option-label:hover { background: #f0fafc; border-color: var(--primary); }
+  .option-label input[type=radio] { display: none; }
+  .option-label.selected { background: #dff4f8; border-color: var(--primary); font-weight: 700; }
+  .opt-circle {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #e0eef2; display: grid; place-items: center;
+    font-weight: 900; font-size: .85rem; color: var(--primary-dark);
+    flex: 0 0 26px; margin-top: 1px;
+  }
+  .option-label.selected .opt-circle { background: var(--primary); color: #fff; }
+
+  /* After submit */
+  .option-label.correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .option-label.incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .option-label.correct .opt-circle { background: var(--correct-border); color: #fff; }
+  .option-label.incorrect .opt-circle { background: var(--incorrect-border); color: #fff; }
+
+  .explain {
+    margin-top: 14px; padding: 14px 18px;
+    background: #f8fffb; border: 2px solid #b8e8c8;
+    border-radius: 14px; font-size: .97rem; line-height: 1.8;
+    color: #185a30; display: none;
+  }
+  .explain.show { display: block; }
+
+  /* ── Submit button ── */
+  .submit-wrap { text-align: center; margin-top: 30px; }
+  #submitBtn {
+    background: var(--primary);
+    color: #fff; border: none; border-radius: 18px;
+    padding: 16px 52px; font-size: 1.15rem; font-weight: 900;
+    cursor: pointer; box-shadow: 0 8px 22px rgba(18,150,163,0.35);
+    transition: background .2s, transform .15s, box-shadow .2s;
+    font-family: inherit; letter-spacing: .04em;
+  }
+  #submitBtn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(18,150,163,0.40); }
+  #submitBtn:disabled { background: #a0c8cc; cursor: not-allowed; box-shadow: none; }
+
+  /* ── Score card ── */
+  #scoreCard {
+    display: none;
+    background: rgba(255,255,255,0.97);
+    border: 3px solid var(--primary);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 34px 32px;
+    margin-bottom: 28px; text-align: center;
+  }
+  #scoreCard h2 { font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 10px; }
+  .score-big { font-size: 4rem; font-weight: 900; color: var(--primary); line-height: 1; }
+  .score-sub { color: var(--muted); font-size: 1rem; margin-top: 8px; font-weight: 700; }
+  .upload-status { margin-top: 16px; font-size: .95rem; font-weight: 700; color: var(--muted); }
+  .upload-status.ok { color: #198754; }
+  .upload-status.err { color: #c44747; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hero-icon">🦎</div>
+    <div class="header-text">
+      <h1>脊椎動物學習評量</h1>
+      <p>第3章 地球上的生物・脊索動物門 ／ 共10題素養導向選擇題</p>
+    </div>
+  </header>
+
+  <!-- 基本資料 -->
+  <div class="info-card">
+    <div class="info-field">
+      <label>班　級</label>
+      <input type="text" id="classInput" placeholder="例：701"/>
+    </div>
+    <div class="info-field">
+      <label>座　號</label>
+      <input type="text" id="seatInput" placeholder="例：12"/>
+    </div>
+    <div class="info-field">
+      <label>姓　名</label>
+      <input type="text" id="nameInput" placeholder="例：王小明"/>
+    </div>
+  </div>
+
+  <!-- Score card (hidden until submit) -->
+  <div id="scoreCard">
+    <h2>🎉 評量結果</h2>
+    <div class="score-big" id="scoreBig">—</div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="upload-status" id="uploadStatus"></div>
+  </div>
+
+  <!-- Questions -->
+  <div id="quizContainer"></div>
+
+  <div class="submit-wrap">
+    <button id="submitBtn" disabled>提交答案</button>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    stem: "小明在水族館觀察一種魚類，發現它的骨骼大部分是軟的，身體側面有數條裂縫狀開口，沒有鰾。根據以上特徵，這種魚最可能屬於哪一類？",
+    options: ["硬骨魚", "軟骨魚", "兩生類", "爬蟲類"],
+    answer: 1,
+    explain: "軟骨魚的主要特徵是骨骼大部分為軟骨，具有數條鰓裂（題目說的「裂縫狀開口」），且沒有鰾（無法利用鰾控制浮沉，必須靠擺動身體）。常見例子有魟魚和鯊魚。硬骨魚則有鰓蓋和鰾。"
+  },
+  {
+    context: "某生態調查報告記載：「溪流邊發現一批卵，孵化後幼體在水中生活並以鰓呼吸，長大後移居陸地，改以肺呼吸。」",
+    stem: "根據此調查報告，這種動物最可能是下列哪一類？",
+    options: ["爬蟲類", "魚類", "兩生類", "哺乳類"],
+    answer: 2,
+    explain: "兩生類的幼體生活在水中以鰓呼吸，成體則以肺呼吸。因皮膚無法有效防止水分散失，且行體外受精，故大多生活在潮溼或靠近水的環境，例如蛙、蟾蜍、山椒魚等。"
+  },
+  {
+    stem: "鳥類能夠飛行，與其身體構造息息相關。下列哪一項「不是」有助於鳥類飛行的構造特徵？",
+    options: ["骨骼輕且中空", "肺延伸出氣囊協助呼吸", "體表具有鱗片或骨板", "眼睛具有半透明瞬膜保護"],
+    answer: 2,
+    explain: "體表具有鱗片或骨板是爬蟲類的特徵，而非鳥類。鳥類體表覆有羽毛。有助飛行的構造包括：骨骼中空（減輕重量）、氣囊（協助呼吸並減重）、瞬膜（保護眼睛）、前肢演化為翅膀等。"
+  },
+  {
+    context: "老師在黑板上畫出以下分類：卵生哺乳類（如鴨嘴獸）、有袋類（如袋鼠）、有完整胎盤類（如人類）。",
+    stem: "同學小華說：「鴨嘴獸不算哺乳類，因為牠是卵生的。」這個說法是否正確？請選出最佳說明。",
+    options: [
+      "正確，哺乳類一定是胎生的",
+      "不正確，哺乳類的共同特徵是母體能分泌乳汁哺育幼體，鴨嘴獸符合此特徵",
+      "不正確，鴨嘴獸屬於爬蟲類",
+      "正確，只有有胎盤的動物才叫哺乳類"
+    ],
+    answer: 1,
+    explain: "哺乳類最核心的共同特徵是「母體能分泌乳汁哺育幼體」，而非一定是胎生。鴨嘴獸和針鼴是卵生的哺乳類，卵孵化後幼兒仍由母體以乳汁餵養，所以仍屬哺乳類。"
+  },
+  {
+    stem: "海馬的外形特殊，常讓人誤以為牠不是魚。下列哪一項特徵可以說明海馬確實是硬骨魚？",
+    options: [
+      "海馬生活在水中",
+      "海馬的鰓外側有鰓蓋保護",
+      "海馬以鰓裂直接呼吸",
+      "海馬沒有鱗片"
+    ],
+    answer: 1,
+    explain: "硬骨魚的主要特徵之一是「鰓的外側有鰓蓋保護」。軟骨魚則沒有鰃蓋，而是以外露的鰓裂呼吸。海馬具有鰓蓋，因此確實是硬骨魚。生活在水中或沒有鱗片並非硬骨魚的專屬特徵。"
+  },
+  {
+    context: "在一次戶外教學中，同學觀察到一隻動物：體表有堅硬的鱗片，在陸地上爬行，正在產卵，卵上有外殼。",
+    stem: "根據觀察特徵，這隻動物最可能屬於哪一類？並選出該類動物能在乾燥陸地生活的最主要原因。",
+    options: [
+      "兩生類；皮膚可直接吸收水分",
+      "爬蟲類；體表鱗片與有殼卵能防止水分散失",
+      "哺乳類；體表毛髮可保溫防水",
+      "鳥類；體表羽毛與氣囊協助呼吸"
+    ],
+    answer: 1,
+    explain: "爬蟲類皮膚具角質層且體表有鱗片或骨板，加上卵有外殼保護，這些特徵都能有效防止水分散失，使爬蟲類能在乾燥的陸地環境中生存。牠們行體內受精、多數卵生。"
+  },
+  {
+    stem: "下列關於「鰾」的敘述，何者正確？",
+    options: [
+      "鰾是軟骨魚特有的構造，可幫助控制浮沉",
+      "鰾是硬骨魚體內類似氣囊的構造，可膨脹或縮小使魚自由浮沉",
+      "鰾是兩生類的呼吸器官，幼體用鰾在水中呼吸",
+      "鰾與鰓蓋功能相同，都是幫助呼吸的構造"
+    ],
+    answer: 1,
+    explain: "鰾是硬骨魚體內類似氣囊的構造，可以膨脹或縮小，讓魚體在水中自由浮沉。軟骨魚沒有鰾，必須靠不斷擺動身體來控制浮沉。鰾與呼吸無關，鰃蓋才是保護鰃的外部構造。"
+  },
+  {
+    context: "有袋類因為胎盤構造不完整，幼兒在尚未發育完全時就由母體產出，之後在母體的育兒袋中繼續成長。",
+    stem: "下列哪一組動物都屬於有袋類？",
+    options: [
+      "袋鼠、無尾熊",
+      "鴨嘴獸、針鼴",
+      "鯨豚、蝙蝠",
+      "袋鼠、鴨嘴獸"
+    ],
+    answer: 0,
+    explain: "袋鼠和無尾熊都是有袋類，幼兒出生後在育兒袋中繼續發育。鴨嘴獸和針鼴是卵生哺乳類（單孔目）；鯨豚和蝙蝠是有完整胎盤的哺乳類。"
+  },
+  {
+    stem: "兩生類的皮膚無法有效防止體內水分散失，且行體外受精。根據這些特徵，下列哪一項推論最合理？",
+    options: [
+      "兩生類能適應乾燥的沙漠環境",
+      "兩生類大都生活在潮溼或靠近水的地方",
+      "兩生類的成體不需要水也能生存",
+      "兩生類因行體外受精，所以完全不需要靠近水源"
+    ],
+    answer: 1,
+    explain: "因為兩生類皮膚無法有效防止水分散失，且體外受精需要水環境，所以兩生類大都生活在潮溼或靠近水的地方，如山椒魚、蛙和蟾蜍的棲息環境。"
+  },
+  {
+    context: "科學展覽中有一個互動展板，展示了五種脊椎動物的特徵比較：\n甲：體表羽毛、骨骼中空、氣囊、前肢為翅膀\n乙：體表鱗片、鰃裂、軟骨\n丙：幼體鰃呼吸、成體肺呼吸、皮膚潮溼\n丁：體表毛髮、分泌乳汁、胎生\n戊：體表鱗片或骨板、肺呼吸、卵有外殼",
+    stem: "根據展板資訊，甲、乙、丙、丁、戊依序對應的是哪一組分類？",
+    options: [
+      "鳥類、軟骨魚、兩生類、哺乳類、爬蟲類",
+      "哺乳類、硬骨魚、兩生類、鳥類、爬蟲類",
+      "鳥類、硬骨魚、爬蟲類、哺乳類、兩生類",
+      "爬蟲類、軟骨魚、兩生類、鳥類、哺乳類"
+    ],
+    answer: 0,
+    explain: "甲（羽毛、骨骼中空、氣囊、翅膀）→鳥類；乙（鱗片、鰃裂、軟骨）→軟骨魚；丙（幼體鰃呼吸、成體肺呼吸）→兩生類；丁（毛髮、分泌乳汁、胎生）→哺乳類；戊（鱗片或骨板、肺呼吸、卵有外殼）→爬蟲類。"
+  }
+];
+
+// Google Apps Script Web App URL (replace after deployment)
+const GAS_URL = "https://script.google.com/macros/s/AKfycbz3FigGWdvCN_z8hQoCm8ToBElkYezwXEOHjVCcRYjHuXhaTL1uSYupsXS4dv9KtyDiAw/exec";
+
+let submitted = false;
+
+function buildQuiz() {
+  const container = document.getElementById("quizContainer");
+  QUESTIONS.forEach((q, i) => {
+    const card = document.createElement("div");
+    card.className = "q-card";
+    card.id = `q${i}`;
+
+    let html = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <div class="q-num">${i+1}</div>
+      <span style="font-size:.85rem;font-weight:900;color:var(--muted)">第 ${i+1} 題</span>
+    </div>`;
+
+    if (q.context) {
+      html += `<div class="q-context">${q.context.replace(/\n/g,"<br>")}</div>`;
+    }
+    html += `<div class="q-stem">${q.stem}</div><div class="options">`;
+
+    const labels = ["Ａ","Ｂ","Ｃ","Ｄ"];
+    q.options.forEach((opt, j) => {
+      html += `<label class="option-label" id="q${i}o${j}">
+        <input type="radio" name="q${i}" value="${j}" onchange="onSelect(${i},${j})">
+        <div class="opt-circle">${labels[j]}</div>
+        <span>${opt}</span>
+      </label>`;
+    });
+    html += `</div>`;
+    html += `<div class="explain" id="exp${i}">💡 <strong>詳解：</strong>${q.explain}</div>`;
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function onSelect(qi, oi) {
+  const card = document.getElementById(`q${qi}`);
+  card.classList.add("answered");
+  // Highlight selected
+  QUESTIONS[qi].options.forEach((_, j) => {
+    const lbl = document.getElementById(`q${qi}o${j}`);
+    lbl.classList.toggle("selected", j === oi);
+  });
+  checkAllAnswered();
+}
+
+function checkAllAnswered() {
+  const allDone = QUESTIONS.every((_, i) => {
+    const r = document.querySelector(`input[name="q${i}"]:checked`);
+    return r !== null;
+  });
+  document.getElementById("submitBtn").disabled = !allDone;
+}
+
+function getAnswers() {
+  return QUESTIONS.map((_, i) => {
+    const r = document.querySelector(`input[name="q${i}"]:checked`);
+    return r ? parseInt(r.value) : -1;
+  });
+}
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+  if (submitted) return;
+
+  const cls = document.getElementById("classInput").value.trim();
+  const seat = document.getElementById("seatInput").value.trim();
+  const name = document.getElementById("nameInput").value.trim();
+  if (!cls || !seat || !name) {
+    alert("請填寫班級、座號與姓名後再提交！");
+    return;
+  }
+
+  submitted = true;
+  document.getElementById("submitBtn").disabled = true;
+
+  const answers = getAnswers();
+  let correct = 0;
+  const optLabels = ["Ａ","Ｂ","Ｃ","Ｄ"];
+
+  QUESTIONS.forEach((q, i) => {
+    const userAns = answers[i];
+    const isCorrect = userAns === q.answer;
+    if (isCorrect) correct++;
+
+    // Disable all options
+    QUESTIONS[i].options.forEach((_, j) => {
+      const lbl = document.getElementById(`q${i}o${j}`);
+      lbl.style.cursor = "default";
+      lbl.classList.remove("selected");
+      if (j === q.answer) lbl.classList.add("correct");
+      else if (j === userAns) lbl.classList.add("incorrect");
+    });
+
+    // Show explanation
+    document.getElementById(`exp${i}`).classList.add("show");
+  });
+
+  const score = Math.round(correct / QUESTIONS.length * 100);
+  const scoreCard = document.getElementById("scoreCard");
+  scoreCard.style.display = "block";
+  document.getElementById("scoreBig").textContent = `${score} 分`;
+  document.getElementById("scoreSub").textContent =
+    `答對 ${correct} 題 / 共 ${QUESTIONS.length} 題`;
+  scoreCard.scrollIntoView({ behavior: "smooth" });
+
+  // Upload to Google Sheets
+  uploadResult(cls, seat, name, answers, score, correct);
+});
+
+async function uploadResult(cls, seat, name, answers, score, correct) {
+  const statusEl = document.getElementById("uploadStatus");
+  statusEl.textContent = "⏳ 正在上傳作答資料...";
+
+  const optLabels = ["A","B","C","D"];
+  const payload = {
+    class: cls,
+    seat: seat,
+    name: name,
+    score: score,
+    correct: correct,
+    total: QUESTIONS.length,
+    timestamp: new Date().toLocaleString("zh-TW"),
+    answers: answers.map((a, i) => ({
+      q: i + 1,
+      selected: a >= 0 ? optLabels[a] : "未作答",
+      correct: optLabels[QUESTIONS[i].answer],
+      isCorrect: a === QUESTIONS[i].answer
+    }))
+  };
+
+  try {
+    const resp = await fetch(GAS_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    statusEl.textContent = "✅ 作答資料已成功上傳！";
+    statusEl.className = "upload-status ok";
+  } catch (err) {
+    statusEl.textContent = "❌ 上傳失敗，請通知老師。";
+    statusEl.className = "upload-status err";
+  }
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
