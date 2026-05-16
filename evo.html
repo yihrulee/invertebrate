@@ -393,6 +393,7 @@
     .prev { background: #ffffff; color: var(--primary-dark); border: 2px solid #bde7ec; }
     .next { background: var(--primary); color: white; }
     .next.unlocked { opacity: 1; }
+    .next.locked { background: #fff0cf; color: #7b4b00; border: 2px solid #ffd184; opacity: .55; cursor: not-allowed; filter: grayscale(.2); }
     .unlock-note { margin-top: 14px; padding: 14px 16px; border-radius: 18px; background: #fff8e8; border: 1px solid #ffd992; color: #76500b; font-weight: 850; line-height: 1.6; text-align: center; }
 
     @media (max-width: 980px) {
@@ -564,7 +565,7 @@
 
     <nav class="nav" aria-label="頁面導覽">
       <a class="prev" href="test.html">← 上一頁</a>
-      <a class="next" id="nextLink" href="challenge.html">進階挑戰 →</a>
+      <a class="next locked" id="nextLink" href="#" aria-disabled="true" data-unlocked="false">🔒 進階挑戰</a>
     </nav>
     <div class="unlock-note" id="unlockNote">完成並答對延伸測驗所有題目後，才能進入進階挑戰。</div>
   </div>
@@ -572,6 +573,34 @@
   <script>
     const state = { q1: false, q2: false, q3: false, q4: false, q5: false, q6: false };
     const submitted = { q1: false, q2: false, q3: false, q4: false, q5: false, q6: false };
+    const nextLink = document.getElementById('nextLink');
+    const unlockNote = document.getElementById('unlockNote');
+
+    function lockNextPage() {
+      nextLink.href = '#';
+      nextLink.dataset.unlocked = 'false';
+      nextLink.classList.remove('unlocked');
+      nextLink.classList.add('locked');
+      nextLink.textContent = '🔒 進階挑戰';
+      nextLink.setAttribute('aria-disabled', 'true');
+    }
+
+    function unlockNextPage() {
+      nextLink.href = 'challenge.html';
+      nextLink.dataset.unlocked = 'true';
+      nextLink.classList.remove('locked');
+      nextLink.classList.add('unlocked');
+      nextLink.textContent = '進階挑戰 →';
+      nextLink.setAttribute('aria-disabled', 'false');
+    }
+
+    nextLink.addEventListener('click', event => {
+      if (nextLink.dataset.unlocked !== 'true') {
+        event.preventDefault();
+        unlockNote.textContent = '請先完成並答對延伸測驗所有題目後，才能進入進階挑戰。';
+        unlockNote.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
 
     function shuffleChildren(container) {
       const items = Array.from(container.children);
@@ -603,8 +632,7 @@
 
       const allCorrect = Object.values(state).every(Boolean);
       if (allCorrect) {
-        document.getElementById('nextLink').classList.add('unlocked');
-        const unlockNote = document.getElementById('unlockNote');
+        unlockNextPage();
         unlockNote.textContent = '全部答對！你已完成延伸閱讀測驗，可以進入進階挑戰。';
         unlockNote.style.background = '#e8f8ee';
         unlockNote.style.borderColor = '#95d8b1';
@@ -694,6 +722,7 @@
     handleSingleChoice(document.querySelector('[data-question="q4"]'), '答對了！羊膜能保護胚胎，提供較穩定的發育環境。', '再想想：羊膜和胚胎保護有關。');
     handleSingleChoice(document.querySelector('[data-question="q5"]'), '答對了！棘皮動物能提醒我們從胚胎發育與演化關係思考分類。', '再想想：棘皮動物沒有脊椎骨，但屬於後口動物方向。');
     handleMatch(document.querySelector('[data-question="q6"]'));
+    lockNextPage();
     updateScore();
   </script>
 </body>
