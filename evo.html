@@ -566,7 +566,7 @@
       <a class="prev" href="test.html">← 上一頁</a>
       <a class="next" id="nextLink" href="challenge.html">進階挑戰 →</a>
     </nav>
-    <div class="unlock-note" id="unlockNote">完成並答對延伸測驗所有題目後，才能回到進階挑戰。</div>
+    <div class="unlock-note" id="unlockNote">完成並答對延伸測驗所有題目後，才能進入進階挑戰。</div>
   </div>
 
   <script>
@@ -605,7 +605,7 @@
       if (allCorrect) {
         document.getElementById('nextLink').classList.add('unlocked');
         const unlockNote = document.getElementById('unlockNote');
-        unlockNote.textContent = '全部答對！你已完成延伸閱讀測驗，可以回到進階挑戰。';
+        unlockNote.textContent = '全部答對！你已完成延伸閱讀測驗，可以進入進階挑戰。';
         unlockNote.style.background = '#e8f8ee';
         unlockNote.style.borderColor = '#95d8b1';
         unlockNote.style.color = '#146c3b';
