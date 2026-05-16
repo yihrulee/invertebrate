@@ -417,6 +417,64 @@
   .lc-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   .lc-note { font-size: .9rem; color: var(--muted); font-weight: 700; margin-top: 8px; min-height: 2em; }
 
+
+  /* ── 學習內容互動活動：爬蟲類與鳥類 ── */
+  .learn-activity {
+    background: var(--soft); border: 2px solid var(--line);
+    border-radius: 16px; padding: 16px; margin-top: 16px;
+  }
+  .learn-activity-title {
+    font-weight: 900; color: var(--primary-dark); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .learn-activity-desc {
+    margin: 0 0 12px; color: var(--muted); font-size: .92rem;
+    font-weight: 700; line-height: 1.7;
+  }
+  .adapt-grid, .flight-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  @media(max-width:720px){ .adapt-grid, .flight-grid{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:480px){ .adapt-grid, .flight-grid{ grid-template-columns:1fr; } }
+  .adapt-card, .flight-card {
+    min-height: 78px; border: 2px solid var(--line); border-radius: 14px;
+    background: white; padding: 12px; cursor: pointer; font-family: inherit;
+    color: var(--ink); font-weight: 800; text-align: left; line-height: 1.45;
+    transition: transform .15s, border-color .15s, background .15s;
+  }
+  .adapt-card:hover, .flight-card:hover {
+    transform: translateY(-2px); border-color: var(--primary); background: #fbfeff;
+  }
+  .adapt-card.good { border-color: var(--correct-border); background: var(--correct-bg); }
+  .adapt-card.bad  { border-color: var(--incorrect-border); background: var(--incorrect-bg); }
+  .adapt-card small, .flight-card small {
+    display: block; margin-top: 4px; color: var(--muted); font-weight: 700; font-size: .8rem;
+  }
+  .flight-card img {
+    width: 100%; height: 96px; object-fit: cover; border-radius: 10px;
+    display: block; margin-bottom: 8px; border: 1.5px solid var(--line);
+  }
+  .flight-card span { display: block; font-weight: 900; color: var(--ink); }
+  .activity-feedback {
+    min-height: 2.2em; margin-top: 12px; padding: 10px 12px;
+    border-radius: 12px; background: white; border: 1.5px dashed var(--line);
+    color: var(--muted); font-size: .92rem; font-weight: 700; line-height: 1.7;
+  }
+  .activity-feedback.good { border-style: solid; border-color: var(--correct-border); background: var(--correct-bg); color:#116633; }
+  .activity-feedback.bad  { border-style: solid; border-color: var(--incorrect-border); background: var(--incorrect-bg); color:#a33; }
+  .activity-count { color: var(--primary); font-weight: 900; }
+  .flight-card.active { border-color: var(--primary); background: #dff6f8; }
+  .flight-board {
+    display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: center;
+  }
+  .bird-silhouette {
+    min-height: 180px; border-radius: 18px;
+    background: linear-gradient(145deg,#e8f8fa,#fff6df);
+    display: grid; place-items: center; font-size: 5rem;
+    border: 2px solid rgba(18,150,163,.25);
+  }
+  @media(max-width:700px){ .flight-board{ grid-template-columns:1fr; } .bird-silhouette{ min-height:120px; } }
+
   /* 觀察重點提示 */
   .obs-tip {
     background: linear-gradient(135deg,#e8f8fa,#dff6f8);
@@ -566,6 +624,8 @@
       例如蛙、蟾蜍、山椒魚等。
     </p>
 
+    <img src="57.png" alt="兩生類代表" style="width:100%;height:auto;object-fit:cover;border-radius:12px;display:block;margin-top:12px;">
+
     <!-- 兩生類生活史互動 -->
     <div class="lifecycle-wrap">
       <div style="font-weight:900;color:var(--primary-dark);margin-bottom:4px">🐸 兩生類生活史——點選各階段查看說明</div>
@@ -607,6 +667,21 @@
     </p>
     <img src="54.png" alt="爬蟲類代表" style="width:100%;height:auto;object-fit:cover;border-radius:12px;display:block;margin-top:12px;">
 
+    <!-- 爬蟲類適應乾燥陸地活動 -->
+    <div class="learn-activity" id="reptileAdaptActivity">
+      <div class="learn-activity-title">🦎 誰適合乾燥陸地？點選爬蟲類的陸地適應特徵</div>
+      <p class="learn-activity-desc">找出能幫助爬蟲類減少水分散失、離開水域繁殖或在陸地生活的特徵。</p>
+      <div class="adapt-grid">
+        <button class="adapt-card" data-good="true" data-msg="體表有鱗片或骨板，可減少水分散失，是適應乾燥環境的重要特徵。">🛡 鱗片或骨板<small>防止水分散失</small></button>
+        <button class="adapt-card" data-good="true" data-msg="卵有外殼保護，能降低乾燥環境對胚胎的影響。">🥚 有外殼的卵<small>保護胚胎</small></button>
+        <button class="adapt-card" data-good="true" data-msg="體內受精讓受精過程不必完全依賴水域，是陸地生活的重要適應。">💑 體內受精<small>不必在水中完成受精</small></button>
+        <button class="adapt-card" data-good="true" data-msg="爬蟲類以肺呼吸，可在陸地上進行氣體交換。">🫁 肺呼吸<small>適合陸地生活</small></button>
+        <button class="adapt-card" data-good="false" data-msg="皮膚潮溼、容易失水比較接近兩生類的限制，並不是爬蟲類適應乾燥陸地的重點。">💧 皮膚潮溼<small>容易失水</small></button>
+        <button class="adapt-card" data-good="false" data-msg="以鰓呼吸主要適合水中生活；爬蟲類成體以肺呼吸。">🌊 以鰓呼吸<small>適合水中生活</small></button>
+      </div>
+      <div class="activity-feedback" id="adaptFeedback">已找到 <span class="activity-count" id="adaptCount">0</span> / 4 個陸地適應特徵。點選卡片看看說明。</div>
+    </div>
+
     <p style="margin-top:20px;font-size:1.05rem;font-weight:900;color:#103f46">▌鳥類</p>
     <p>
       鳥類前肢為<span class="kw-purple">翅膀</span>，體表具有<span class="kw-purple">羽毛</span>（可協助飛行與保暖）。
@@ -617,6 +692,23 @@
       企鵝也是鳥類！翅膀呈鰭狀，身體為流線形，雖然不能飛行，但善於游泳。
     </div>
     <img src="55.png" alt="鳥類代表" style="width:100%;height:auto;object-fit:cover;border-radius:12px;display:block;margin-top:12px;">
+
+    <!-- 鳥類飛行裝備箱活動 -->
+    <div class="learn-activity" id="birdFlightActivity">
+      <div class="learn-activity-title">🪽 鳥類飛行裝備箱——點選構造看功能</div>
+      <p class="learn-activity-desc">鳥類的身體有許多適合飛行的構造。點選每個裝備，觀察它如何幫助飛行或保護身體。</p>
+      <div class="flight-board">
+        <div class="bird-silhouette" aria-hidden="true">🦜</div>
+        <div class="flight-grid">
+          <button class="flight-card" data-part="feather"><img src="58.png" alt="羽毛"><span>羽毛</span><small>飛行、保暖</small></button>
+          <button class="flight-card" data-part="wing"><img src="59.png" alt="翅膀"><span>翅膀</span><small>前肢特化</small></button>
+          <button class="flight-card" data-part="bone"><img src="60.png" alt="中空骨"><span>中空骨</span><small>減輕體重</small></button>
+          <button class="flight-card" data-part="airSac"><img src="61.png" alt="氣囊"><span>氣囊</span><small>協助呼吸</small></button>
+          <button class="flight-card" data-part="nictitating"><img src="62.png" alt="瞬膜"><span>瞬膜</span><small>保護眼睛</small></button>
+        </div>
+      </div>
+      <div class="activity-feedback" id="flightFeedback">請點選一個飛行裝備，查看它的功能。</div>
+    </div>
 
     <p style="margin-top:20px;font-size:1.05rem;font-weight:900;color:#103f46">▌哺乳類</p>
     <p>
@@ -1272,6 +1364,58 @@ function handleOrder(cardSel, correctOrder, successMsg, failMsg){
     updateUnlock();
   });
 }
+
+
+// ═══════════════════════════
+// 學習內容互動活動：爬蟲類與鳥類
+// ═══════════════════════════
+function initReptileAdapt(){
+  const wrap = document.getElementById('reptileAdaptActivity');
+  if(!wrap) return;
+  const cards = [...wrap.querySelectorAll('.adapt-card')];
+  const feedback = document.getElementById('adaptFeedback');
+  const count = document.getElementById('adaptCount');
+  const found = new Set();
+  cards.forEach((card, idx)=>{
+    card.addEventListener('click',()=>{
+      const good = card.dataset.good === 'true';
+      card.classList.remove('good','bad');
+      card.classList.add(good ? 'good' : 'bad');
+      feedback.className = 'activity-feedback ' + (good ? 'good' : 'bad');
+      feedback.textContent = card.dataset.msg;
+      if(good) found.add(idx);
+      count.textContent = found.size;
+      if(found.size === 4){
+        feedback.className = 'activity-feedback good';
+        feedback.textContent = '全部找到了！爬蟲類靠鱗片或骨板、有殼的卵、體內受精與肺呼吸，更能適應乾燥陸地。';
+      }
+    });
+  });
+}
+
+function initBirdFlight(){
+  const data = {
+    feather: '羽毛可以協助飛行與保暖，也是判斷鳥類的重要特徵。',
+    wing: '鳥類的前肢特化成翅膀，可用來飛行；企鵝的翅膀雖像鰭，仍屬於前肢。',
+    bone: '中空骨骼能減輕體重，讓飛行更有效率。',
+    airSac: '氣囊與肺相連，能協助呼吸，也有助於減輕體重。',
+    nictitating: '瞬膜像透明保護膜，可保護眼睛，減少飛行或覓食時的傷害。'
+  };
+  const wrap = document.getElementById('birdFlightActivity');
+  if(!wrap) return;
+  const feedback = document.getElementById('flightFeedback');
+  wrap.querySelectorAll('.flight-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      wrap.querySelectorAll('.flight-card').forEach(c=>c.classList.remove('active'));
+      card.classList.add('active');
+      feedback.className = 'activity-feedback good';
+      feedback.textContent = data[card.dataset.part];
+    });
+  });
+}
+
+initReptileAdapt();
+initBirdFlight();
 
 // ═══════════════════════════
 // 初始化各題
